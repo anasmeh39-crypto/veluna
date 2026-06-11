@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font loaded via <link> in layout.tsx head — no @import needed here */
+
+/* ─── Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  direction: rtl;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background-color: #FFF7FB;
+  color: #2F2430;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: #F6EEFF; }
+::-webkit-scrollbar-thumb  { background: #D98DA8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #C4738A; }
+
+/* ─── No-scrollbar utility ──────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ─── Veluna component styles ───────────────────────── */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-veluna-plum text-white
+           font-bold text-base px-7 py-3.5 rounded-full
+           hover:bg-[#653156] active:scale-[0.97]
+           transition-all duration-200 shadow-md hover:shadow-lg
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-veluna-plum focus-visible:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-veluna-plum
+           text-veluna-plum font-bold text-base px-7 py-3 rounded-full
+           hover:bg-veluna-plum hover:text-white active:scale-[0.97]
+           transition-all duration-200
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-veluna-plum focus-visible:ring-offset-2;
+  }
+
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 bg-[#25D366] text-white
+           font-bold text-base px-7 py-3.5 rounded-full
+           hover:bg-[#1eb855] active:scale-[0.97]
+           transition-all duration-200 shadow-md
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2;
+  }
+
+  .section-heading {
+    @apply text-3xl md:text-4xl font-extrabold text-veluna-dark leading-tight;
+  }
+
+  .section-sub {
+    @apply text-veluna-muted text-base md:text-lg mt-3 leading-relaxed;
+  }
+
+  .tag {
+    @apply inline-block bg-veluna-blush text-veluna-plum text-xs font-bold
+           px-3.5 py-1.5 rounded-full tracking-wide;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-veluna-petal overflow-hidden
+           hover:shadow-lg transition-all duration-300;
+  }
+
+  .lavender-line {
+    @apply w-12 h-1 bg-veluna-lavender rounded-full;
+  }
+
+  .input-field {
+    @apply w-full border border-veluna-petal rounded-xl px-4 py-3
+           text-veluna-text bg-white placeholder:text-veluna-muted
+           focus:outline-none focus:ring-2 focus:ring-veluna-mauve focus:border-transparent
+           transition-all duration-200;
+  }
+
+  .warning-box {
+    @apply bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4
+           text-sm text-amber-900 leading-relaxed;
+  }
+}
+
+/* ─── Stars ─────────────────────────────────────────── */
+.stars { color: #B07AAD; letter-spacing: 1px; }
+
+/* ─── Sticky mobile bar elevation ───────────────────── */
+.sticky-cart-bar {
+  box-shadow: 0 -4px 24px rgba(122,62,104,0.15);
+}
+
+/* ─── Selection color ───────────────────────────────── */
+::selection { background: #DCC7FF; color: #2F2430; }
+
+/* ─── Smooth FAQ / accordion ────────────────────────── */
+details summary { list-style: none; }
+details summary::-webkit-details-marker { display: none; }
+
+/* ─── Pulse animation for WhatsApp FAB ──────────────── */
+@keyframes wa-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }
+  50%       { box-shadow: 0 0 0 10px rgba(37,211,102,0); }
+}
+.wa-pulse {
+  animation: wa-pulse 2.5s ease-in-out infinite;
+}

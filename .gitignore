@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Database (SQLite file — back this up separately, don't commit)
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
