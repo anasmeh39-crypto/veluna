@@ -21,6 +21,7 @@ type CartAction =
   | { type: 'REMOVE_ITEM'; id: string }
   | { type: 'UPDATE_QTY'; id: string; quantity: number }
   | { type: 'CLEAR' }
+  | { type: 'SET_CART'; items: CartItem[] }
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
@@ -47,6 +48,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       }
     case 'CLEAR':
       return { items: [] }
+    case 'SET_CART':
+      return { items: action.items }
     default:
       return state
   }
@@ -58,6 +61,7 @@ interface CartContextType {
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
   clearCart: () => void
+  setCart: (items: CartItem[]) => void
   total: number
   itemCount: number
   isOpen: boolean
@@ -91,6 +95,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'CLEAR' })
   }, [])
 
+  const setCart = useCallback((items: CartItem[]) => {
+    dispatch({ type: 'SET_CART', items })
+  }, [])
+
   const total = state.items.reduce((sum, i) => sum + i.price * i.quantity, 0)
   const itemCount = state.items.reduce((sum, i) => sum + i.quantity, 0)
 
@@ -102,6 +110,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         removeItem,
         updateQuantity,
         clearCart,
+        setCart,
         total,
         itemCount,
         isOpen,

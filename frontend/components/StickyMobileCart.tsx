@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useCart } from '@/context/CartContext'
 import ProductImage from './ProductImage'
 import type { Product } from '@/lib/products'
 
@@ -11,7 +10,6 @@ interface Props {
 }
 
 export default function StickyMobileCart({ product, ctaRef }: Props) {
-  const { addItem } = useCart()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -25,6 +23,10 @@ export default function StickyMobileCart({ product, ctaRef }: Props) {
     return () => obs.disconnect()
   }, [ctaRef])
 
+  function scrollToOffer() {
+    ctaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <div
       className={`fixed bottom-0 inset-x-0 z-40 md:hidden bg-white border-t border-veluna-petal
@@ -34,7 +36,6 @@ export default function StickyMobileCart({ product, ctaRef }: Props) {
       aria-hidden={!visible}
     >
       <div className="px-4 py-3 flex items-center gap-3">
-        {/* Mini product image */}
         <div className="w-11 h-11 flex-shrink-0 bg-veluna-blush rounded-xl p-1">
           <ProductImage
             type={product.type}
@@ -43,7 +44,6 @@ export default function StickyMobileCart({ product, ctaRef }: Props) {
           />
         </div>
 
-        {/* Name + price */}
         <div className="flex-1 min-w-0">
           <p className="font-bold text-veluna-dark text-sm truncate leading-tight">
             {product.shortName || product.name}
@@ -53,24 +53,14 @@ export default function StickyMobileCart({ product, ctaRef }: Props) {
           </p>
         </div>
 
-        {/* Primary CTA — 48px minimum tap target */}
         <button
-          onClick={() =>
-            addItem({
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              type: 'product',
-              colorFrom: product.colorFrom,
-              colorTo: product.colorTo,
-            })
-          }
-          aria-label={`أضف ${product.name} للسلة`}
+          onClick={scrollToOffer}
+          aria-label="اختاري العرض"
           className="flex-shrink-0 bg-veluna-plum text-white font-bold text-sm
                      px-5 py-3 rounded-full hover:bg-[#653156] active:scale-95
                      transition-all duration-150 min-h-[48px]"
         >
-          أضيفي للسلة
+          اختاري العرض
         </button>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useCart } from '@/context/CartContext'
 import { usePathname } from 'next/navigation'
 
@@ -46,13 +47,16 @@ export default function Header() {
           <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
-            <Link href="/" className="flex flex-col items-center leading-none group">
-              <span className="font-serif italic text-2xl font-bold text-veluna-plum tracking-wide group-hover:text-veluna-rose transition-colors">
-                Veluna
-              </span>
-              <span className="text-xs text-veluna-mauve font-semibold tracking-wider -mt-0.5">
-                فيلونا
-              </span>
+            <Link href="/" className="flex items-center group" aria-label="Veluna – الصفحة الرئيسية">
+              <Image
+                src="/logo.png"
+                alt="Veluna"
+                width={120}
+                height={37}
+                className="h-8 w-auto transition-opacity group-hover:opacity-70"
+                priority
+                sizes="120px"
+              />
             </Link>
 
             {/* Desktop nav */}

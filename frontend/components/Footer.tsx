@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -9,9 +10,20 @@ export default function Footer() {
 
           {/* Brand */}
           <div className="md:col-span-1">
-            <div className="mb-4">
-              <span className="font-serif italic text-2xl font-bold text-white tracking-wide">Veluna</span>
-              <span className="block text-xs text-white/50 mt-0.5">فيلونا – عناية بشرة المرأة</span>
+            <div className="mb-5">
+              <Link href="/" className="inline-block group">
+                <div className="bg-veluna-cream rounded-2xl px-4 py-2.5 inline-flex items-center shadow-veluna-sm group-hover:shadow-veluna-md transition-shadow">
+                  <Image
+                    src="/logo.png"
+                    alt="Veluna"
+                    width={100}
+                    height={31}
+                    className="h-7 w-auto"
+                    sizes="100px"
+                  />
+                </div>
+              </Link>
+              <span className="block text-xs text-white/50 mt-3">فيلونا – عناية بشرة المرأة</span>
             </div>
             <p className="text-sm text-white/60 leading-relaxed">
               روتين العناية بالجسم من خطوتين. مصنوع خصيصاً لبشرة المرأة المغربية بعد إزالة الشعر.

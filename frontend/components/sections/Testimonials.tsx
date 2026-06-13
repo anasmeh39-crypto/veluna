@@ -63,7 +63,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="bg-veluna-light py-16 md:py-24">
+    <section className="bg-gradient-to-br from-[#EDE0FF] via-[#FFF0F8] to-[#F6EEFF] py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-xl mx-auto mb-12">
           <span className="tag">آراء الزبونات</span>
