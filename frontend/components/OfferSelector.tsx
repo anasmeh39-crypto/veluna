@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { useCart } from '@/context/CartContext'
 import { getProductById } from '@/lib/products'
-import ProductImage from '@/components/ProductImage'
 import type { Product } from '@/lib/products'
 
 type OfferKey = 'single' | 'double' | 'bundle'
@@ -12,6 +12,11 @@ type OfferKey = 'single' | 'double' | 'bundle'
 const BUNDLE_ID       = 'routine-complete'
 const BUNDLE_PRICE    = 249
 const BUNDLE_ORIGINAL = 278
+
+const PHOTOS: Record<'oil' | 'cream', string> = {
+  oil:   '/products/oil.png',
+  cream: '/products/cream.png',
+}
 
 interface Props { product: Product }
 
@@ -25,6 +30,8 @@ export default function OfferSelector({ product }: Props) {
   const doublePrice = product.price * 2
   const savings     = product.originalPrice ? (product.originalPrice - product.price) * 2 : 0
   const bundleSaving = BUNDLE_ORIGINAL - BUNDLE_PRICE
+
+  const photo = PHOTOS[product.type]
 
   function handleConfirm() {
     if (selected === 'bundle') {
@@ -69,6 +76,7 @@ export default function OfferSelector({ product }: Props) {
       >
         <div className="flex items-center gap-3">
           <Radio active={selected === 'single'} />
+
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2">
               <span className="font-bold text-veluna-dark text-sm">واحد فقط</span>
@@ -80,9 +88,17 @@ export default function OfferSelector({ product }: Props) {
               جربي المنتج وشوفي الفرق فالبشرة ديالك
             </p>
           </div>
-          {/* Mini product image */}
-          <div className="flex-shrink-0 w-9 h-14">
-            <ProductImage type={product.type} colorFrom={product.colorFrom} colorTo={product.colorTo} />
+
+          {/* Single product photo */}
+          <div className="flex-shrink-0 relative w-14 h-16">
+            <Image
+              src={photo}
+              alt={product.name}
+              fill
+              className="object-contain"
+              style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.18))' }}
+              sizes="56px"
+            />
           </div>
         </div>
       </button>
@@ -103,6 +119,7 @@ export default function OfferSelector({ product }: Props) {
         >
           <div className="flex items-center gap-3">
             <Radio active={selected === 'double'} />
+
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2">
                 <span className="font-bold text-veluna-dark text-sm">جوج قطع</span>
@@ -124,13 +141,25 @@ export default function OfferSelector({ product }: Props) {
                 <p className="text-xs font-semibold text-[#25D366] mt-1">وفري {savings} درهم</p>
               )}
             </div>
-            {/* Two stacked mini images */}
-            <div className="flex-shrink-0 flex items-end gap-0.5">
-              <div className="w-8 h-12">
-                <ProductImage type={product.type} colorFrom={product.colorFrom} colorTo={product.colorTo} />
+
+            {/* Two products — layered depth effect */}
+            <div className="flex-shrink-0 relative w-[4.5rem] h-16">
+              {/* Back bottle — rotated left, slightly faded */}
+              <div
+                className="absolute left-0 top-2 w-11 h-14"
+                style={{ transform: 'rotate(-8deg)', opacity: 0.75 }}
+              >
+                <Image src={photo} alt="" fill className="object-contain" sizes="44px" />
               </div>
-              <div className="w-8 h-12">
-                <ProductImage type={product.type} colorFrom={product.colorFrom} colorTo={product.colorTo} />
+              {/* Front bottle — slight right tilt, full opacity, shadow */}
+              <div
+                className="absolute right-0 top-0 w-11 h-14"
+                style={{
+                  transform: 'rotate(4deg)',
+                  filter: 'drop-shadow(2px 5px 8px rgba(0,0,0,0.22))',
+                }}
+              >
+                <Image src={photo} alt="" fill className="object-contain" sizes="44px" />
               </div>
             </div>
           </div>
@@ -154,6 +183,7 @@ export default function OfferSelector({ product }: Props) {
           >
             <div className="flex items-center gap-3">
               <Radio active={selected === 'bundle'} amber />
+
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2">
                   <span className="font-bold text-veluna-dark text-sm leading-tight">
@@ -175,13 +205,25 @@ export default function OfferSelector({ product }: Props) {
                   وفري {bundleSaving} درهم — أحسن قيمة
                 </p>
               </div>
-              {/* Both product images */}
-              <div className="flex-shrink-0 flex items-end gap-0.5">
-                <div className="w-8 h-12">
-                  <ProductImage type={product.type} colorFrom={product.colorFrom} colorTo={product.colorTo} />
+
+              {/* Oil bottle + cream jar — duo composition */}
+              <div className="flex-shrink-0 relative w-[4.5rem] h-16">
+                {/* Cream jar — left, slightly lower, gentle tilt */}
+                <div
+                  className="absolute left-0 bottom-0 w-11 h-11"
+                  style={{ transform: 'rotate(-5deg)', opacity: 0.9 }}
+                >
+                  <Image src="/products/cream.png" alt="" fill className="object-contain" sizes="44px" />
                 </div>
-                <div className="w-8 h-12">
-                  <ProductImage type={complement.type} colorFrom={complement.colorFrom} colorTo={complement.colorTo} />
+                {/* Oil bottle — right, taller, front */}
+                <div
+                  className="absolute right-0 top-0 w-9 h-14"
+                  style={{
+                    transform: 'rotate(5deg)',
+                    filter: 'drop-shadow(2px 5px 8px rgba(0,0,0,0.2))',
+                  }}
+                >
+                  <Image src="/products/oil.png" alt="" fill className="object-contain" sizes="36px" />
                 </div>
               </div>
             </div>

@@ -6,7 +6,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCart } from '@/context/CartContext'
 import { getProductById } from '@/lib/products'
-import ProductImage from '@/components/ProductImage'
 
 const BUNDLE_ID       = 'routine-complete'
 const BUNDLE_PRICE    = 249
@@ -122,12 +121,16 @@ export default function UpsellPage() {
           </div>
 
           <div className="relative flex items-end gap-5">
-            {/* Product illustration */}
-            <div className="w-32 h-48 flex-shrink-0 drop-shadow-2xl">
-              <ProductImage
-                type={upsellProduct.type}
-                colorFrom={upsellProduct.colorFrom}
-                colorTo={upsellProduct.colorTo}
+            {/* Product photo */}
+            <div className="flex-shrink-0 relative w-32 h-48">
+              <Image
+                src={upsellProduct.type === 'oil' ? '/products/oil.png' : '/products/cream.png'}
+                alt={upsellProduct.name}
+                fill
+                className="object-contain"
+                style={{ filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.35))' }}
+                sizes="128px"
+                priority
               />
             </div>
 

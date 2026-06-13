@@ -1,8 +1,8 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import Image from 'next/image'
 import { getProductBySlug } from '@/lib/products'
-import ProductImage from '@/components/ProductImage'
 import StickyMobileCart from '@/components/StickyMobileCart'
 import OfferSelector from '@/components/OfferSelector'
 
@@ -20,9 +20,16 @@ export default function CreamProductPage() {
 
           {/* Gallery */}
           <div className="space-y-3">
-            <div className="aspect-square bg-veluna-blush rounded-2xl overflow-hidden
-                            flex items-center justify-center p-10 shadow-veluna-sm">
-              <ProductImage type="cream" colorFrom={product.colorFrom} colorTo={product.colorTo} />
+            <div className="aspect-square bg-gradient-to-br from-veluna-blush to-white rounded-2xl overflow-hidden
+                            flex items-center justify-center shadow-veluna-sm relative p-8">
+              <Image
+                src="/products/cream.png"
+                alt={product.name}
+                fill
+                className="object-contain p-8"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
+              />
             </div>
             <div className="flex gap-3">
               {[0, 1].map((i) => (
@@ -30,12 +37,12 @@ export default function CreamProductPage() {
                   key={i}
                   onClick={() => setActiveImg(i)}
                   aria-label={`صورة ${i + 1}`}
-                  className={`w-20 h-20 rounded-xl bg-veluna-blush flex items-center justify-center p-2 border-2
+                  className={`relative w-20 h-20 rounded-xl bg-veluna-blush overflow-hidden border-2
                               transition-all duration-200 ${
                                 activeImg === i ? 'border-veluna-plum shadow-veluna-sm' : 'border-transparent'
                               }`}
                 >
-                  <ProductImage type="cream" colorFrom={product.colorFrom} colorTo={product.colorTo} />
+                  <Image src="/products/cream.png" alt="" fill className="object-contain p-2" sizes="80px" />
                 </button>
               ))}
             </div>

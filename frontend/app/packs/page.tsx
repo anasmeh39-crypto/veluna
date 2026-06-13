@@ -1,9 +1,14 @@
 'use client'
 
+import Image from 'next/image'
 import { useCart } from '@/context/CartContext'
 import { packs, getProductById } from '@/lib/products'
-import ProductImage from '@/components/ProductImage'
 import Link from 'next/link'
+
+const PHOTOS: Record<string, string> = {
+  'zit-manaa': '/products/oil.png',
+  'krim-jlid': '/products/cream.png',
+}
 
 const descriptions: Record<string, string> = {
   'routine-complete': 'روتين كامل لإزالة الشعر والعناية بالبشرة من بعده. الزيت يوم الإزالة — والكريم من بعد 24 ساعة.',
@@ -53,16 +58,34 @@ export default function PacksPage() {
                 {pack.badge}
               </div>
 
-              {/* Product images */}
-              <div className="bg-veluna-blush px-6 pt-6 pb-4 flex items-end justify-center gap-3 min-h-[180px]">
-                {packProducts.map((p, i) => (
-                  <div
-                    key={`${p!.id}-${i}`}
-                    className={packProducts.length === 1 ? 'w-28 h-44' : 'w-20 h-32'}
-                  >
-                    <ProductImage type={p!.type} colorFrom={p!.colorFrom} colorTo={p!.colorTo} />
-                  </div>
-                ))}
+              {/* Product photos */}
+              <div className="bg-gradient-to-br from-veluna-blush to-white px-6 pt-6 pb-4 flex items-end justify-center gap-4 min-h-[200px] relative">
+                {packProducts.map((p, i) => {
+                  const src = PHOTOS[p!.id]
+                  const isSingle = packProducts.length === 1
+                  return src ? (
+                    <div
+                      key={`${p!.id}-${i}`}
+                      className="relative"
+                      style={{
+                        width:  isSingle ? 120 : 88,
+                        height: isSingle ? 160 : 128,
+                        filter: i > 0 ? 'drop-shadow(4px 6px 12px rgba(0,0,0,0.18))' : 'drop-shadow(0 6px 14px rgba(0,0,0,0.14))',
+                        transform: packProducts.length === 2
+                          ? i === 0 ? 'rotate(-5deg) translateY(6px)' : 'rotate(4deg)'
+                          : undefined,
+                      }}
+                    >
+                      <Image
+                        src={src}
+                        alt={p!.name}
+                        fill
+                        className="object-contain"
+                        sizes={isSingle ? '120px' : '88px'}
+                      />
+                    </div>
+                  ) : null
+                })}
               </div>
 
               {/* Info */}
