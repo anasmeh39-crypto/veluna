@@ -1,16 +1,20 @@
-# Dependencies
+# ── Dependencies ──────────────────────────────────────────────────────────────
 node_modules/
 
-# Next.js build output
+# ── Next.js ───────────────────────────────────────────────────────────────────
 .next/
 out/
+build/
+dist/
 
-# Environment variables
+# ── Environment variables (NEVER commit real secrets) ─────────────────────────
 .env
 .env.local
 .env.*.local
+.env.production
+.env.production.local
 
-# Database (SQLite file — back this up separately, don't commit)
+# ── Database (SQLite — back up separately, never commit) ─────────────────────
 data/*.db
 data/*.db-shm
 data/*.db-wal
@@ -18,10 +22,25 @@ frontend/data/*.db
 frontend/data/*.db-shm
 frontend/data/*.db-wal
 
-# OS
+# ── OS ────────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-# Editor
+# ── Editor ────────────────────────────────────────────────────────────────────
 .vscode/
+.idea/
 *.swp
+*.swo
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+*.tgz
+.vercel
