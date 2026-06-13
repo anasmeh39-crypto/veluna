@@ -104,7 +104,7 @@ export default function PacksPage() {
                     </span>
                   </div>
                   <p className="text-[#25D366] text-xs font-bold mb-4">
-                    وفري {saving} درهم 🎉
+                    وفري {saving} درهم
                   </p>
 
                   <button
@@ -154,8 +154,8 @@ export default function PacksPage() {
           </p>
         </div>
         <div className="flex items-center gap-5 text-sm text-white/70">
-          <span>🚚 توصيل سريع</span>
-          <span>💬 دعم واتساب</span>
+          <span>✓ توصيل سريع</span>
+          <span>✓ دعم واتساب</span>
           <span>✓ ضمان الجودة</span>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import ProductImage from '../ProductImage'
 import { products } from '@/lib/products'
 
@@ -10,10 +11,16 @@ export default function BundlePromo() {
   const saving        = originalPrice - bundlePrice
 
   return (
-    <section className="bg-veluna-dark py-16 md:py-24 relative overflow-hidden">
-      {/* Decorative */}
-      <div className="absolute top-0 end-0 w-72 h-72 rounded-full bg-veluna-lavender opacity-10 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 start-0 w-56 h-56 rounded-full bg-veluna-pink opacity-10 blur-3xl pointer-events-none" />
+    <section className="bg-gradient-to-br from-[#1E1424] via-veluna-dark to-[#2A1A30] py-16 md:py-24 relative overflow-hidden">
+      {/* Decorative blobs */}
+      <div className="absolute top-0 end-0 w-96 h-96 rounded-full bg-veluna-lavender opacity-15 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 start-0 w-72 h-72 rounded-full bg-veluna-pink opacity-10 blur-3xl pointer-events-none" />
+      {/* Logo watermark */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+        <div className="relative w-[600px] h-[600px] opacity-[0.04]">
+          <Image src="/logo.png" alt="" fill className="object-contain opacity-100" sizes="600px" aria-hidden />
+        </div>
+      </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
@@ -21,7 +28,7 @@ export default function BundlePromo() {
           {/* Text */}
           <div className="text-white">
             <span className="inline-block bg-veluna-lavender text-veluna-dark text-xs font-bold px-3 py-1.5 rounded-full mb-5">
-              الباقة المميزة 🌸
+              الباقة المميزة ✦
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold leading-tight mb-3">
               روتين Veluna
@@ -64,7 +71,7 @@ export default function BundlePromo() {
               <span className="text-4xl font-extrabold text-veluna-lavender">{bundlePrice} <span className="text-xl">درهم</span></span>
               <span className="text-white/40 line-through text-lg">{originalPrice} درهم</span>
             </div>
-            <p className="text-[#25D366] text-sm font-semibold mb-6">وفري {saving} درهم 🎉</p>
+            <p className="text-[#25D366] text-sm font-semibold mb-6">وفري {saving} درهم</p>
 
             <div className="flex flex-wrap gap-3">
               <Link href="/packs" className="btn-primary">

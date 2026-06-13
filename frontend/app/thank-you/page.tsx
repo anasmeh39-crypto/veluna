@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface OrderItem {
   id: string
@@ -30,7 +31,7 @@ function buildWhatsAppMessage(order: Order): string {
     .map((i) => `• ${i.name_ar} × ${i.quantity} = ${i.price_mad * i.quantity} درهم`)
     .join('\n')
 
-  return `سلام، بغيت نأكد الطلب ديالي من Veluna 🌸
+  return `سلام، بغيت نأكد الطلب ديالي من Veluna
 
 رقم الطلب: ${order.id}
 الاسم: ${order.customer_name}
@@ -68,8 +69,23 @@ function ThankYouContent() {
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`
 
   return (
-    <div className="min-h-screen bg-veluna-cream flex items-center justify-center px-4 py-16">
+    <div className="min-h-screen bg-gradient-to-b from-veluna-blush to-veluna-cream flex items-center justify-center px-4 py-16">
       <div className="max-w-lg w-full space-y-6">
+
+        {/* Logo */}
+        <div className="flex justify-center mb-2">
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="Veluna"
+              width={130}
+              height={40}
+              className="h-9 w-auto transition-opacity hover:opacity-75"
+              priority
+              sizes="130px"
+            />
+          </Link>
+        </div>
 
         {/* Success header */}
         <div className="text-center">
@@ -78,7 +94,7 @@ function ThankYouContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-2xl font-extrabold text-veluna-dark">شكراً لك! 🌸</h1>
+          <h1 className="text-2xl font-extrabold text-veluna-dark">شكراً لك!</h1>
           <p className="text-veluna-muted mt-2 leading-relaxed">
             توصلنا بطلبك.
             غادي نتاصلو بك قريباً باش نأكدو تفاصيل التوصيل.
@@ -114,7 +130,7 @@ function ThankYouContent() {
             <div className="border-t border-veluna-petal pt-3 space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-veluna-muted">التوصيل</span>
-                <span>{order.delivery_fee === 0 ? 'مجاني 🎉' : `${order.delivery_fee} درهم`}</span>
+                <span>{order.delivery_fee === 0 ? 'مجاني' : `${order.delivery_fee} درهم`}</span>
               </div>
               <div className="flex justify-between font-bold text-base">
                 <span className="text-veluna-dark">المجموع</span>

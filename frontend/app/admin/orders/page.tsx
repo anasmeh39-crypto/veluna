@@ -419,7 +419,7 @@ export default function AdminOrdersPage() {
               {/* WhatsApp + tracking */}
               <div className="space-y-2">
                 <a
-                  href={`https://wa.me/${selectedOrder.phone.replace(/^0/, '212')}?text=${encodeURIComponent(`سلام ${selectedOrder.customer_name}، معاك فريق Veluna 🌸\n\nطلبيتك رقم ${selectedOrder.id}\nالمجموع: ${selectedOrder.total} درهم\n\nغادي نأكدوها معاك قريباً. شكراً!`)}`}
+                  href={`https://wa.me/${selectedOrder.phone.replace(/^0/, '212')}?text=${encodeURIComponent(`سلام ${selectedOrder.customer_name}، معاك فريق Veluna\n\nطلبيتك رقم ${selectedOrder.id}\nالمجموع: ${selectedOrder.total} درهم\n\nغادي نأكدوها معاك قريباً. شكراً!`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full bg-[#25D366] text-white font-bold py-3 rounded-xl text-sm hover:bg-[#1eb855] transition-colors"

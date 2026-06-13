@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
 import { MOROCCAN_CITIES, FREE_DELIVERY_THRESHOLD } from '@/lib/delivery'
 
@@ -189,6 +191,17 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-veluna-cream">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
         <div className="text-center mb-8">
+          <Link href="/" className="inline-block mb-5">
+            <Image
+              src="/logo.png"
+              alt="Veluna"
+              width={130}
+              height={40}
+              className="h-9 w-auto mx-auto transition-opacity hover:opacity-75"
+              priority
+              sizes="130px"
+            />
+          </Link>
           <span className="tag">إتمام الطلب</span>
           <h1 className="section-heading mt-3">تفاصيل التوصيل</h1>
           <p className="text-veluna-muted text-sm mt-2">الدفع عند الاستلام — ما كاين حتى مخاطرة</p>
@@ -402,7 +415,7 @@ export default function CheckoutPage() {
                   <span className="font-semibold">
                     {form.city
                       ? delivery === 0
-                        ? <span className="text-[#25D366]">مجاني 🎉</span>
+                        ? <span className="text-[#25D366]">مجاني</span>
                         : `${delivery} درهم`
                       : '—'}
                   </span>
@@ -423,8 +436,8 @@ export default function CheckoutPage() {
             <div className="bg-veluna-blush rounded-2xl p-4 space-y-2.5">
               {[
                 { icon: '✓', text: 'الدفع عند الاستلام في كل المغرب' },
-                { icon: '🚚', text: 'توصيل 2-4 أيام للمدن الكبرى' },
-                { icon: '💬', text: 'تأكيد الطلب عبر واتساب' },
+                { icon: '✓', text: 'توصيل 2-4 أيام للمدن الكبرى' },
+                { icon: '✓', text: 'تأكيد الطلب عبر واتساب' },
                 { icon: '↩', text: 'ضمان رضا الزبونة' },
               ].map((t) => (
                 <div key={t.text} className="flex items-center gap-2 text-xs text-veluna-text">

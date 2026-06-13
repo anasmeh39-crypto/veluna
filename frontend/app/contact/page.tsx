@@ -57,8 +57,7 @@ export default function ContactPage() {
 
           {/* WhatsApp – primary */}
           <div className="bg-[#25D366]/10 border border-[#25D366]/30 rounded-2xl p-6">
-            <h2 className="font-bold text-veluna-dark text-lg mb-2 flex items-center gap-2">
-              <span className="text-[#25D366] text-2xl">💬</span>
+            <h2 className="font-bold text-veluna-dark text-lg mb-2">
               تواصلي عبر واتساب
             </h2>
             <p className="text-sm text-veluna-muted mb-4">
@@ -103,7 +102,7 @@ export default function ContactPage() {
 
           {/* Shipping info */}
           <div className="bg-veluna-dark text-white rounded-2xl p-5">
-            <h3 className="font-bold mb-3 flex items-center gap-2">🚚 التوصيل والدفع</h3>
+            <h3 className="font-bold mb-3">التوصيل والدفع</h3>
             <ul className="space-y-2 text-sm text-white/70">
               <li>✓ الدفع عند الاستلام في كل المغرب</li>
               <li>✓ توصيل 2-4 أيام في المدن الكبرى</li>

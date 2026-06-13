@@ -139,8 +139,8 @@ export default function OilProductPage() {
             <div className="grid grid-cols-3 gap-2">
               {[
                 { icon: '✓', text: 'الدفع عند الاستلام' },
-                { icon: '🚚', text: 'توصيل المغرب' },
-                { icon: '💬', text: 'دعم واتساب' },
+                { icon: '✓', text: 'توصيل المغرب' },
+                { icon: '✓', text: 'دعم واتساب' },
               ].map((b) => (
                 <div key={b.text} className="flex flex-col items-center gap-1 bg-veluna-blush rounded-xl
                                              px-2 py-2.5 text-center text-xs font-medium text-veluna-text">
@@ -189,7 +189,7 @@ export default function OilProductPage() {
         <div className="mt-6">
           <div className="warning-box">
             <p className="font-bold text-amber-900 mb-3 flex items-center gap-2">
-              <span aria-hidden="true">⚠️</span> تحذيرات وإرشادات السلامة
+              تحذيرات وإرشادات السلامة
             </p>
             <ul className="space-y-2" role="list">
               {product.warnings.map((w, i) => (

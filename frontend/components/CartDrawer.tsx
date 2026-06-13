@@ -178,7 +178,7 @@ export default function CartDrawer() {
         {upsell && (
           <div className="px-5 py-3 bg-veluna-blush border-t border-veluna-petal flex-shrink-0 animate-fade-in">
             <p className="text-xs font-bold text-veluna-plum mb-2.5">
-              🌸 اكملي روتينك
+              🌿 اكملي روتينك
             </p>
             <div className="flex items-center gap-3 bg-white rounded-2xl p-3 border border-veluna-petal">
               <div className="w-12 h-14 flex-shrink-0">
@@ -220,7 +220,7 @@ export default function CartDrawer() {
         {bothInCart && !items.some(i => i.id === 'routine-complete') && (
           <div className="px-5 py-2.5 bg-veluna-blush border-t border-veluna-petal flex-shrink-0">
             <p className="text-xs text-center text-veluna-plum font-semibold">
-              🎉 روتين Veluna الكامل في سلتك!
+              ✦ روتين Veluna الكامل في سلتك!
             </p>
           </div>
         )}

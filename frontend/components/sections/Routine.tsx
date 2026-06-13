@@ -91,7 +91,7 @@ export default function Routine() {
               {/* Warning if any */}
               {step.warning && (
                 <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-xs text-amber-800">
-                  <span>⚠️</span>
+                  <span className="font-bold">!</span>
                   <span className="font-medium">{step.warning}</span>
                 </div>
               )}
