@@ -25,13 +25,12 @@ export default function OfferSelector({ product }: Props) {
   const { setCart } = useCart()
   const [selected, setSelected] = useState<OfferKey>('double')
 
-  const complement  = getProductById(product.complementId)
-  const singlePrice = product.price
-  const doublePrice = product.price * 2
-  const savings     = product.originalPrice ? (product.originalPrice - product.price) * 2 : 0
+  const complement   = getProductById(product.complementId)
+  const singlePrice  = product.price
+  const doublePrice  = product.price * 2
+  const savings      = product.originalPrice ? (product.originalPrice - product.price) * 2 : 0
   const bundleSaving = BUNDLE_ORIGINAL - BUNDLE_PRICE
-
-  const photo = PHOTOS[product.type]
+  const photo        = PHOTOS[product.type]
 
   function handleConfirm() {
     if (selected === 'bundle') {
@@ -68,163 +67,172 @@ export default function OfferSelector({ product }: Props) {
       <button
         type="button"
         onClick={() => setSelected('single')}
-        className={`w-full text-start rounded-2xl border-2 p-4 transition-all duration-200 ${
+        className={`w-full text-start rounded-2xl border-2 overflow-hidden transition-all duration-200 ${
           selected === 'single'
-            ? 'border-veluna-plum bg-veluna-blush shadow-veluna-sm'
-            : 'border-veluna-petal bg-white hover:border-veluna-mauve'
+            ? 'border-veluna-plum shadow-veluna-sm'
+            : 'border-veluna-petal hover:border-veluna-mauve'
         }`}
       >
-        <div className="flex items-center gap-3">
-          <Radio active={selected === 'single'} />
+        <div className="flex items-stretch">
+          {/* Image block */}
+          <div className="relative flex-shrink-0 w-24 bg-veluna-blush flex items-center justify-center py-4">
+            <div className="relative w-14 h-20" style={{ filter: 'drop-shadow(0 6px 12px rgba(0,0,0,0.18))' }}>
+              <Image src={photo} alt={product.name} fill className="object-contain" sizes="56px" />
+            </div>
+          </div>
 
-          <div className="flex-1 min-w-0">
+          {/* Info */}
+          <div className={`flex-1 px-4 py-3.5 flex flex-col justify-center gap-1 ${
+            selected === 'single' ? 'bg-veluna-blush/40' : 'bg-white'
+          }`}>
             <div className="flex items-center justify-between gap-2">
-              <span className="font-bold text-veluna-dark text-sm">واحد فقط</span>
+              <div className="flex items-center gap-2">
+                <Radio active={selected === 'single'} />
+                <span className="font-bold text-veluna-dark text-sm">واحد فقط</span>
+              </div>
               <span className="font-extrabold text-veluna-plum tabular-nums text-sm flex-shrink-0">
                 {singlePrice} <span className="text-xs font-normal">درهم</span>
               </span>
             </div>
-            <p className="text-xs text-veluna-muted mt-0.5 leading-relaxed">
+            <p className="text-xs text-veluna-muted leading-relaxed ps-6">
               جربي المنتج وشوفي الفرق فالبشرة ديالك
             </p>
-          </div>
-
-          {/* Single product photo */}
-          <div className="flex-shrink-0 relative w-14 h-16">
-            <Image
-              src={photo}
-              alt={product.name}
-              fill
-              className="object-contain"
-              style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.18))' }}
-              sizes="56px"
-            />
           </div>
         </div>
       </button>
 
       {/* ── Offer 2: double — pre-selected / highlighted ── */}
       <div className="relative">
-        <span className="absolute -top-3 start-4 z-10 bg-veluna-plum text-white text-[10px] font-bold px-3 py-1 rounded-full">
+        <span className="absolute -top-2.5 start-4 z-10 bg-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full">
           الأكثر طلباً
         </span>
         <button
           type="button"
           onClick={() => setSelected('double')}
-          className={`w-full text-start rounded-2xl border-2 p-4 pt-5 transition-all duration-200 ${
+          className={`w-full text-start rounded-2xl border-2 overflow-hidden transition-all duration-200 ${
             selected === 'double'
-              ? 'border-veluna-plum bg-veluna-blush shadow-veluna-sm'
-              : 'border-veluna-lavender bg-[#FAFAFF] hover:border-veluna-mauve'
+              ? 'border-veluna-plum shadow-veluna-sm'
+              : 'border-veluna-lavender hover:border-veluna-mauve'
           }`}
         >
-          <div className="flex items-center gap-3">
-            <Radio active={selected === 'double'} />
+          <div className="flex items-stretch">
+            {/* Image block — two bottles */}
+            <div className="relative flex-shrink-0 w-24 bg-veluna-blush flex items-center justify-center py-4">
+              {/* Badge */}
+              <span className="absolute top-2 end-2 w-5 h-5 rounded-full bg-veluna-plum text-white text-[10px] font-extrabold flex items-center justify-center shadow-sm z-10">
+                2
+              </span>
+              {/* Back bottle */}
+              <div
+                className="absolute w-12 h-[72px]"
+                style={{ transform: 'rotate(-9deg) translateX(-10px) translateY(4px)', opacity: 0.7 }}
+              >
+                <Image src={photo} alt="" fill className="object-contain" sizes="48px" />
+              </div>
+              {/* Front bottle */}
+              <div
+                className="relative w-12 h-[72px]"
+                style={{
+                  transform: 'rotate(5deg) translateX(6px)',
+                  filter: 'drop-shadow(2px 6px 10px rgba(0,0,0,0.22))',
+                  zIndex: 1,
+                }}
+              >
+                <Image src={photo} alt="" fill className="object-contain" sizes="48px" />
+              </div>
+            </div>
 
-            <div className="flex-1 min-w-0">
+            {/* Info */}
+            <div className={`flex-1 px-4 py-3.5 flex flex-col justify-center gap-1 ${
+              selected === 'double' ? 'bg-veluna-blush/40' : 'bg-[#FAFAFF]'
+            }`}>
               <div className="flex items-start justify-between gap-2">
-                <span className="font-bold text-veluna-dark text-sm">جوج قطع</span>
+                <div className="flex items-center gap-2">
+                  <Radio active={selected === 'double'} />
+                  <span className="font-bold text-veluna-dark text-sm">جوج قطع</span>
+                </div>
                 <div className="text-end flex-shrink-0">
                   <p className="font-extrabold text-veluna-plum tabular-nums text-sm leading-tight">
                     {doublePrice} <span className="text-xs font-normal">درهم</span>
                   </p>
                   {product.originalPrice && (
-                    <p className="text-xs text-veluna-muted line-through leading-tight">
-                      بدل {product.originalPrice * 2}
-                    </p>
+                    <p className="text-[10px] text-veluna-muted line-through">بدل {product.originalPrice * 2}</p>
                   )}
                 </div>
               </div>
-              <p className="text-xs text-veluna-muted mt-0.5 leading-relaxed">
-                خلي واحدة عندك وواحدة احتياطي للروتين
+              <p className="text-xs text-veluna-muted leading-relaxed ps-6">
+                خلي واحدة عندك وواحدة احتياطي
               </p>
               {savings > 0 && (
-                <p className="text-xs font-semibold text-[#25D366] mt-1">وفري {savings} درهم</p>
+                <p className="text-xs font-semibold text-[#25D366] ps-6">وفري {savings} درهم</p>
               )}
-            </div>
-
-            {/* Two products — layered depth effect */}
-            <div className="flex-shrink-0 relative w-[4.5rem] h-16">
-              {/* Back bottle — rotated left, slightly faded */}
-              <div
-                className="absolute left-0 top-2 w-11 h-14"
-                style={{ transform: 'rotate(-8deg)', opacity: 0.75 }}
-              >
-                <Image src={photo} alt="" fill className="object-contain" sizes="44px" />
-              </div>
-              {/* Front bottle — slight right tilt, full opacity, shadow */}
-              <div
-                className="absolute right-0 top-0 w-11 h-14"
-                style={{
-                  transform: 'rotate(4deg)',
-                  filter: 'drop-shadow(2px 5px 8px rgba(0,0,0,0.22))',
-                }}
-              >
-                <Image src={photo} alt="" fill className="object-contain" sizes="44px" />
-              </div>
             </div>
           </div>
         </button>
       </div>
 
-      {/* ── Offer 3: "عرض اليوم" bundle ── */}
+      {/* ── Offer 3: bundle ── */}
       {complement && (
         <div className="relative">
-          <span className="absolute -top-3 start-4 z-10 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-sm">
-            ⭐ عرض اليوم — الاختيار الأمثل
+          <span className="absolute -top-2.5 start-4 z-10 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm">
+            ✦ عرض اليوم — الاختيار الأمثل
           </span>
           <button
             type="button"
             onClick={() => setSelected('bundle')}
-            className={`w-full text-start rounded-2xl border-2 p-4 pt-5 transition-all duration-200 ${
+            className={`w-full text-start rounded-2xl border-2 overflow-hidden transition-all duration-200 ${
               selected === 'bundle'
-                ? 'border-amber-500 bg-amber-50 shadow-veluna-sm'
-                : 'border-amber-300/80 bg-[#FFFDF5] hover:border-amber-400'
+                ? 'border-amber-500 shadow-veluna-sm'
+                : 'border-amber-300/80 hover:border-amber-400'
             }`}
           >
-            <div className="flex items-center gap-3">
-              <Radio active={selected === 'bundle'} amber />
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2">
-                  <span className="font-bold text-veluna-dark text-sm leading-tight">
-                    الروتين الكامل
-                    <span className="block text-veluna-muted font-normal text-[11px] mt-0.5">
-                      الزيت + الكريم معاً
-                    </span>
-                  </span>
-                  <div className="text-end flex-shrink-0">
-                    <p className="font-extrabold text-amber-600 tabular-nums text-sm leading-tight">
-                      {BUNDLE_PRICE} <span className="text-xs font-normal">درهم</span>
-                    </p>
-                    <p className="text-xs text-veluna-muted line-through leading-tight">
-                      بدل {BUNDLE_ORIGINAL}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-xs font-semibold text-[#25D366] mt-1">
-                  وفري {bundleSaving} درهم — أحسن قيمة
-                </p>
-              </div>
-
-              {/* Oil bottle + cream jar — duo composition */}
-              <div className="flex-shrink-0 relative w-[4.5rem] h-16">
-                {/* Cream jar — left, slightly lower, gentle tilt */}
+            <div className="flex items-stretch">
+              {/* Image block — oil + cream duo */}
+              <div className={`relative flex-shrink-0 w-24 flex items-center justify-center py-4 ${
+                selected === 'bundle' ? 'bg-amber-50' : 'bg-amber-50/60'
+              }`}>
+                {/* Cream jar — left, lower */}
                 <div
-                  className="absolute left-0 bottom-0 w-11 h-11"
-                  style={{ transform: 'rotate(-5deg)', opacity: 0.9 }}
+                  className="absolute w-11 h-11"
+                  style={{ transform: 'rotate(-8deg) translateX(-10px) translateY(6px)', opacity: 0.85 }}
                 >
                   <Image src="/products/cream.png" alt="" fill className="object-contain" sizes="44px" />
                 </div>
                 {/* Oil bottle — right, taller, front */}
                 <div
-                  className="absolute right-0 top-0 w-9 h-14"
+                  className="relative w-10 h-[68px]"
                   style={{
-                    transform: 'rotate(5deg)',
-                    filter: 'drop-shadow(2px 5px 8px rgba(0,0,0,0.2))',
+                    transform: 'rotate(6deg) translateX(8px)',
+                    filter: 'drop-shadow(2px 6px 10px rgba(0,0,0,0.2))',
+                    zIndex: 1,
                   }}
                 >
-                  <Image src="/products/oil.png" alt="" fill className="object-contain" sizes="36px" />
+                  <Image src="/products/oil.png" alt="" fill className="object-contain" sizes="40px" />
                 </div>
+              </div>
+
+              {/* Info */}
+              <div className={`flex-1 px-4 py-3.5 flex flex-col justify-center gap-1 ${
+                selected === 'bundle' ? 'bg-amber-50/50' : 'bg-[#FFFDF5]'
+              }`}>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Radio active={selected === 'bundle'} amber />
+                    <span className="font-bold text-veluna-dark text-sm leading-tight">
+                      الروتين الكامل
+                    </span>
+                  </div>
+                  <div className="text-end flex-shrink-0">
+                    <p className="font-extrabold text-amber-600 tabular-nums text-sm leading-tight">
+                      {BUNDLE_PRICE} <span className="text-xs font-normal">درهم</span>
+                    </p>
+                    <p className="text-[10px] text-veluna-muted line-through">بدل {BUNDLE_ORIGINAL}</p>
+                  </div>
+                </div>
+                <p className="text-[11px] text-veluna-muted leading-relaxed ps-6">الزيت + الكريم معاً</p>
+                <p className="text-xs font-semibold text-[#25D366] ps-6">
+                  وفري {bundleSaving} درهم — أحسن قيمة
+                </p>
               </div>
             </div>
           </button>
@@ -259,7 +267,7 @@ export default function OfferSelector({ product }: Props) {
 function Radio({ active, amber = false }: { active: boolean; amber?: boolean }) {
   return (
     <div
-      className={`mt-0.5 flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors duration-150 ${
+      className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors duration-150 ${
         active
           ? amber
             ? 'border-amber-500 bg-amber-500'
