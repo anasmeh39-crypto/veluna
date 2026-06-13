@@ -3,7 +3,7 @@ import { getOrderById } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
-export function GET(
+export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -12,7 +12,7 @@ export function GET(
       return NextResponse.json({ error: 'غير مصرح' }, { status: 401 })
     }
 
-    const order = getOrderById(params.id)
+    const order = await getOrderById(params.id)
     if (!order) {
       return NextResponse.json({ error: 'الطلب غير موجود' }, { status: 404 })
     }

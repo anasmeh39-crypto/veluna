@@ -5,11 +5,11 @@ export const dynamic = 'force-dynamic'
 
 // Public endpoint — only returns fields safe to show on the thank-you page.
 // Does NOT expose admin-only data (IP, UA, UTM, etc).
-export function GET(
+export async function GET(
   _req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const order = getOrderById(params.id)
+  const order = await getOrderById(params.id)
   if (!order) {
     return NextResponse.json({ error: 'الطلب غير موجود' }, { status: 404 })
   }

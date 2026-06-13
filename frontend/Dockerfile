@@ -2,8 +2,6 @@
 FROM node:20-alpine AS builder
 
 # better-sqlite3 needs Python + C++ build tools for native compilation
-RUN apk add --no-cache python3 make g++
-
 WORKDIR /app
 
 # Install dependencies first (layer cache)
@@ -19,8 +17,6 @@ RUN npm run build
 
 # ── Stage 2: Production image ─────────────────────────────────────────────────
 FROM node:20-alpine AS runner
-
-RUN apk add --no-cache python3 make g++
 
 WORKDIR /app
 

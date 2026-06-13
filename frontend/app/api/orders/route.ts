@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     const ip_address = forwarded ? forwarded.split(',')[0].trim() : undefined
     const user_agent = req.headers.get('user-agent') ?? undefined
 
-    const order = createOrder({
+    const order = await createOrder({
       customer_name: name,
       phone: normalizePhone(phone),
       city,
@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'حالة غير صالحة' }, { status: 400 })
     }
 
-    const result = listOrders({ status: status ?? undefined, search, limit, offset })
+    const result = await listOrders({ status: status ?? undefined, search, limit, offset })
     return NextResponse.json(result)
   } catch (err) {
     console.error('[GET /api/orders] Unhandled error:', err)

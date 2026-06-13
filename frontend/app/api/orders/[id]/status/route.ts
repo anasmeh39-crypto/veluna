@@ -27,7 +27,7 @@ export async function PATCH(
       )
     }
 
-    const order = updateOrderStatus(params.id, newStatus)
+    const order = await updateOrderStatus(params.id, newStatus)
     if (!order) {
       return NextResponse.json({ error: 'الطلب غير موجود' }, { status: 404 })
     }

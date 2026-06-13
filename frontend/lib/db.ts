@@ -1,57 +1,44 @@
-import Database from 'better-sqlite3'
-import path from 'path'
-import fs from 'fs'
+import { Pool } from 'pg'
 
-const DATA_DIR = path.join(process.cwd(), 'data')
-const DB_PATH = path.join(DATA_DIR, 'veluna.db')
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true })
-}
+let schemaInitialized = false
 
-let _db: Database.Database | null = null
-
-export function getDb(): Database.Database {
-  if (!_db) {
-    _db = new Database(DB_PATH)
-    _db.pragma('journal_mode = WAL')
-    _db.pragma('foreign_keys = ON')
-    initSchema(_db)
-  }
-  return _db
-}
-
-function initSchema(db: Database.Database) {
-  db.exec(`
+async function initSchema(): Promise<void> {
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS orders (
-      id            TEXT PRIMARY KEY,
-      customer_name TEXT NOT NULL,
-      phone         TEXT NOT NULL,
-      city          TEXT NOT NULL,
-      address       TEXT NOT NULL,
-      items         TEXT NOT NULL,
-      subtotal      REAL NOT NULL,
-      delivery_fee  REAL NOT NULL,
-      total         REAL NOT NULL,
-      payment_method TEXT NOT NULL DEFAULT 'cod',
-      status        TEXT NOT NULL DEFAULT 'new',
-      notes         TEXT,
-      source        TEXT,
-      utm_source    TEXT,
-      utm_medium    TEXT,
-      utm_campaign  TEXT,
-      utm_content   TEXT,
-      fbclid        TEXT,
-      user_agent    TEXT,
-      ip_address    TEXT,
-      created_at    TEXT NOT NULL,
-      updated_at    TEXT NOT NULL
+      id             VARCHAR(20)   PRIMARY KEY,
+      customer_name  TEXT          NOT NULL,
+      phone          VARCHAR(20)   NOT NULL,
+      city           VARCHAR(100)  NOT NULL,
+      address        TEXT          NOT NULL,
+      items          TEXT          NOT NULL,
+      subtotal       DECIMAL(10,2) NOT NULL,
+      delivery_fee   DECIMAL(10,2) NOT NULL,
+      total          DECIMAL(10,2) NOT NULL,
+      payment_method VARCHAR(20)   NOT NULL DEFAULT 'cod',
+      status         VARCHAR(20)   NOT NULL DEFAULT 'new',
+      notes          TEXT,
+      source         VARCHAR(100),
+      utm_source     VARCHAR(100),
+      utm_medium     VARCHAR(100),
+      utm_campaign   VARCHAR(100),
+      utm_content    VARCHAR(100),
+      fbclid         VARCHAR(200),
+      user_agent     TEXT,
+      ip_address     VARCHAR(45),
+      created_at     VARCHAR(30)   NOT NULL,
+      updated_at     VARCHAR(30)   NOT NULL
     );
-
     CREATE INDEX IF NOT EXISTS idx_orders_status     ON orders(status);
     CREATE INDEX IF NOT EXISTS idx_orders_phone      ON orders(phone);
     CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
   `)
+  schemaInitialized = true
+}
+
+async function ensureSchema(): Promise<void> {
+  if (!schemaInitialized) await initSchema()
 }
 
 export type OrderStatus =
@@ -105,112 +92,133 @@ export interface Order {
 
 function rowToOrder(row: Record<string, unknown>): Order {
   return {
-    ...(row as Omit<Order, 'items'>),
-    items: JSON.parse(row.items as string) as OrderItem[],
+    ...(row as Omit<Order, 'items' | 'subtotal' | 'delivery_fee' | 'total'>),
+    subtotal:     Number(row.subtotal),
+    delivery_fee: Number(row.delivery_fee),
+    total:        Number(row.total),
+    items:        JSON.parse(row.items as string) as OrderItem[],
   }
 }
 
-export function createOrder(data: Omit<Order, 'id' | 'created_at' | 'updated_at'>): Order {
-  const db = getDb()
+export async function createOrder(
+  data: Omit<Order, 'id' | 'created_at' | 'updated_at'>
+): Promise<Order> {
+  await ensureSchema()
   const now = new Date().toISOString()
 
-  // Retry up to 3 times in the unlikely event of an ID collision
-  let id = ''
   for (let attempt = 0; attempt < 3; attempt++) {
-    id = generateOrderId()
+    const id = generateOrderId()
     try {
-      db.prepare(`
-        INSERT INTO orders (
+      const result = await pool.query(
+        `INSERT INTO orders (
           id, customer_name, phone, city, address, items,
           subtotal, delivery_fee, total, payment_method, status, notes,
           source, utm_source, utm_medium, utm_campaign, utm_content,
           fbclid, user_agent, ip_address, created_at, updated_at
         ) VALUES (
-          @id, @customer_name, @phone, @city, @address, @items,
-          @subtotal, @delivery_fee, @total, @payment_method, @status, @notes,
-          @source, @utm_source, @utm_medium, @utm_campaign, @utm_content,
-          @fbclid, @user_agent, @ip_address, @created_at, @updated_at
-        )
-      `).run({
-        ...data,
-        id,
-        items: JSON.stringify(data.items),
-        notes: data.notes ?? null,
-        source: data.source ?? null,
-        utm_source: data.utm_source ?? null,
-        utm_medium: data.utm_medium ?? null,
-        utm_campaign: data.utm_campaign ?? null,
-        utm_content: data.utm_content ?? null,
-        fbclid: data.fbclid ?? null,
-        user_agent: data.user_agent ?? null,
-        ip_address: data.ip_address ?? null,
-        created_at: now,
-        updated_at: now,
-      })
-      break // success
+          $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22
+        ) RETURNING *`,
+        [
+          id,
+          data.customer_name,
+          data.phone,
+          data.city,
+          data.address,
+          JSON.stringify(data.items),
+          data.subtotal,
+          data.delivery_fee,
+          data.total,
+          data.payment_method,
+          data.status,
+          data.notes ?? null,
+          data.source ?? null,
+          data.utm_source ?? null,
+          data.utm_medium ?? null,
+          data.utm_campaign ?? null,
+          data.utm_content ?? null,
+          data.fbclid ?? null,
+          data.user_agent ?? null,
+          data.ip_address ?? null,
+          now,
+          now,
+        ]
+      )
+      return rowToOrder(result.rows[0])
     } catch (err: unknown) {
       const isUnique =
-        err instanceof Error && err.message.includes('UNIQUE constraint failed')
+        err instanceof Error && err.message.includes('unique') ||
+        (err as { code?: string })?.code === '23505'
       if (!isUnique || attempt === 2) throw err
-      // try again with a new ID
     }
   }
-
-  const saved = getOrderById(id)
-  if (!saved) throw new Error(`Order ${id} was not saved correctly`)
-  return saved
+  throw new Error('Failed to generate unique order ID after 3 attempts')
 }
 
-export function getOrderById(id: string): Order | undefined {
-  const db = getDb()
-  const row = db.prepare('SELECT * FROM orders WHERE id = ?').get(id) as Record<string, unknown> | undefined
-  return row ? rowToOrder(row) : undefined
+export async function getOrderById(id: string): Promise<Order | undefined> {
+  await ensureSchema()
+  const result = await pool.query('SELECT * FROM orders WHERE id = $1', [id])
+  return result.rows[0] ? rowToOrder(result.rows[0]) : undefined
 }
 
-export function listOrders(opts: {
+export async function listOrders(opts: {
   status?: OrderStatus
   search?: string
   limit?: number
   offset?: number
-}): { orders: Order[]; total: number } {
-  const db = getDb()
+}): Promise<{ orders: Order[]; total: number }> {
+  await ensureSchema()
   const { status, search, limit = 50, offset = 0 } = opts
 
   const conditions: string[] = []
   const params: (string | number)[] = []
+  let idx = 1
 
   if (status) {
-    conditions.push('status = ?')
+    conditions.push(`status = $${idx++}`)
     params.push(status)
   }
 
   if (search) {
     const like = `%${search}%`
-    conditions.push('(customer_name LIKE ? OR phone LIKE ? OR id LIKE ?)')
+    conditions.push(`(customer_name ILIKE $${idx} OR phone ILIKE $${idx + 1} OR id ILIKE $${idx + 2})`)
     params.push(like, like, like)
+    idx += 3
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''
 
-  const total = (db.prepare(`SELECT COUNT(*) as c FROM orders ${where}`).get(...params) as { c: number }).c
-  const rows = db.prepare(`SELECT * FROM orders ${where} ORDER BY created_at DESC LIMIT ? OFFSET ?`).all(...params, limit, offset) as Record<string, unknown>[]
+  const countResult = await pool.query(
+    `SELECT COUNT(*)::int AS c FROM orders ${where}`,
+    params
+  )
+  const total: number = countResult.rows[0].c
 
-  return { orders: rows.map(rowToOrder), total }
+  const rowsResult = await pool.query(
+    `SELECT * FROM orders ${where} ORDER BY created_at DESC LIMIT $${idx} OFFSET $${idx + 1}`,
+    [...params, limit, offset]
+  )
+
+  return { orders: rowsResult.rows.map(rowToOrder), total }
 }
 
-export function updateOrderStatus(id: string, status: OrderStatus): Order | undefined {
-  const db = getDb()
+export async function updateOrderStatus(
+  id: string,
+  status: OrderStatus
+): Promise<Order | undefined> {
+  await ensureSchema()
   const updated_at = new Date().toISOString()
-  const result = db.prepare('UPDATE orders SET status = ?, updated_at = ? WHERE id = ?').run(status, updated_at, id)
-  if (result.changes === 0) return undefined
-  return getOrderById(id)
+  const result = await pool.query(
+    'UPDATE orders SET status = $1, updated_at = $2 WHERE id = $3 RETURNING *',
+    [status, updated_at, id]
+  )
+  return result.rows[0] ? rowToOrder(result.rows[0]) : undefined
 }
 
 function generateOrderId(): string {
   const date = new Date()
-  const yy = String(date.getFullYear()).slice(-2)
-  const mm = String(date.getMonth() + 1).padStart(2, '0')
-  const dd = String(date.getDate()).padStart(2, '0')
+  const yy   = String(date.getFullYear()).slice(-2)
+  const mm   = String(date.getMonth() + 1).padStart(2, '0')
+  const dd   = String(date.getDate()).padStart(2, '0')
   const rand = Math.random().toString(36).substring(2, 6).toUpperCase()
   return `VL${yy}${mm}${dd}-${rand}`
 }
