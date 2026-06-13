@@ -10,6 +10,9 @@ WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 
+# Ensure public dir exists even if empty
+RUN mkdir -p /app/public
+
 # Copy all frontend source and build
 COPY frontend/ .
 RUN npm run build

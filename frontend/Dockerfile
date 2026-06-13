@@ -10,6 +10,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
+# Ensure public dir exists even if empty
+RUN mkdir -p /app/public
+
 # Copy source and build
 COPY . .
 RUN npm run build
