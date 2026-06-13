@@ -19,34 +19,61 @@ export default function OilProductPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
 
           {/* Gallery */}
-          <div className="space-y-3">
-            <div className="aspect-square bg-gradient-to-br from-veluna-blush to-white rounded-2xl overflow-hidden
-                            flex items-center justify-center shadow-veluna-sm relative p-8">
-              <Image
-                src="/products/oil.png"
-                alt={product.name}
-                fill
-                className="object-contain p-8"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-            </div>
-            <div className="flex gap-3">
-              {[0, 1].map((i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveImg(i)}
-                  aria-label={`صورة ${i + 1}`}
-                  className={`relative w-20 h-20 rounded-xl bg-veluna-blush overflow-hidden border-2
-                              transition-all duration-200 ${
-                                activeImg === i ? 'border-veluna-plum shadow-veluna-sm' : 'border-transparent'
-                              }`}
-                >
-                  <Image src="/products/oil.png" alt="" fill className="object-contain p-2" sizes="80px" />
-                </button>
-              ))}
-            </div>
-          </div>
+          {(() => {
+            const gallery = [
+              { src: '/products/oil.png',   alt: 'زيت إزالة الشعر Veluna — الوجه الأمامي',   bg: 'from-veluna-blush to-white',     pad: 'p-8'  },
+              { src: '/products/oil-2.jpg', alt: 'زيت إزالة الشعر Veluna — طريقة الاستخدام', bg: 'from-[#F9F4FC] to-white',        pad: 'p-6'  },
+              { src: '/products/oil-3.jpg', alt: 'زيت إزالة الشعر Veluna — المكونات',         bg: 'from-[#F9F4FC] to-white',        pad: 'p-6'  },
+            ]
+            const active = gallery[activeImg]
+            return (
+              <div className="space-y-3">
+                {/* Main display */}
+                <div className={`aspect-square bg-gradient-to-br ${active.bg} rounded-2xl overflow-hidden
+                                relative shadow-veluna-sm`}>
+                  {gallery.map((g, i) => (
+                    <Image
+                      key={g.src}
+                      src={g.src}
+                      alt={g.alt}
+                      fill
+                      className={`object-contain ${active.pad} transition-opacity duration-300 ${
+                        i === activeImg ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                      }`}
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      priority={i === 0}
+                    />
+                  ))}
+                </div>
+
+                {/* Thumbnails */}
+                <div className="flex gap-2.5">
+                  {gallery.map((g, i) => (
+                    <button
+                      key={g.src}
+                      onClick={() => setActiveImg(i)}
+                      aria-label={g.alt}
+                      className={`relative flex-1 aspect-square rounded-xl overflow-hidden border-2
+                                  transition-all duration-200 ${
+                                    i === activeImg
+                                      ? 'border-veluna-plum shadow-veluna-sm'
+                                      : 'border-veluna-petal hover:border-veluna-mauve'
+                                  }`}
+                    >
+                      <div className={`absolute inset-0 bg-gradient-to-br ${g.bg}`} />
+                      <Image
+                        src={g.src}
+                        alt=""
+                        fill
+                        className="object-contain p-2 relative"
+                        sizes="(max-width: 1024px) 33vw, 140px"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )
+          })()}
 
           {/* Product info */}
           <div className="flex flex-col gap-4">
