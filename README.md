@@ -41,7 +41,7 @@ veluna/
 │   ├── data/               # SQLite database file (gitignored, needs volume)
 │   ├── Dockerfile          # For Easypanel deployment
 │   └── middleware.ts       # Admin route protection
-├── docs/
+├── backend/
 │   ├── EASYPANEL_DEPLOYMENT.md
 │   ├── DATABASE.md
 │   ├── BACKEND.md
@@ -96,7 +96,7 @@ npm run lint      # Run ESLint
 
 ## Production Deployment
 
-See [docs/EASYPANEL_DEPLOYMENT.md](docs/EASYPANEL_DEPLOYMENT.md) for full step-by-step Easypanel instructions.
+See [backend/EASYPANEL_DEPLOYMENT.md](backend/EASYPANEL_DEPLOYMENT.md) for full step-by-step Easypanel instructions.
 
 **Summary:**
 - Deploy `frontend/` as a single app service on Easypanel
