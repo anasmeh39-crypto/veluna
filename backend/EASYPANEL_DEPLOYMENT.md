@@ -1,177 +1,175 @@
 # Easypanel Deployment — Veluna
 
-Veluna is a **single full-stack Next.js app** (Case B). One service, one volume, one domain.
+## Architecture
+
+Veluna is a **single Next.js 14 app**. There is no separate backend server.
+The same app handles store pages, API routes, and the admin dashboard.
+
+```
+GitHub repo (veluna)
+        │
+        ▼
+Easypanel service: "backend"   ← ONE service only
+        │
+        ├── Store pages        (veluna.ma, veluna.ma/products/*, etc.)
+        ├── API routes         (veluna.ma/api/orders, veluna.ma/api/products)
+        └── Admin dashboard    (veluna.ma/admin)
+```
+
+**Port: 3000** — set this in the Easypanel service port field.
 
 ---
 
-## Prerequisites
+## Services in Easypanel
 
-- Easypanel running on your Hostinger VPS
-- GitHub repo: `github.com/YOUR_USERNAME/veluna` (pushed and public or connected)
-- Domain `veluna.ma` pointed to your VPS IP (A record)
-- Secrets ready:
-  - A strong `ADMIN_PASSWORD`
-  - A random `ADMIN_SECRET_TOKEN` — generate with: `openssl rand -hex 32`
-
----
-
-## Step 1 — Create a new Easypanel Project
-
-1. Open Easypanel → click **"New Project"**
-2. Name: `veluna`
-3. Click **Create**
+| Service | Status | Reason |
+|---|---|---|
+| `backend` | ✅ Keep | Runs the full Next.js app |
+| `frontend` | ❌ Delete | Duplicate — same app, not needed |
+| `veluna-db` | ⏳ Keep | PostgreSQL ready for future migration from SQLite |
 
 ---
 
-## Step 2 — Create the App Service
+## Step 1 — Source Settings
 
-1. Inside the `veluna` project → click **"+ Service"** → choose **"App"**
-2. Name: `veluna-store`
-3. Click **Create**
-
----
-
-## Step 3 — Connect GitHub
-
-1. In the `veluna-store` service → go to **"Source"** tab
-2. Connect your GitHub account if not already connected
-3. Select repository: `veluna`
-4. Branch: `main`
-5. **Root directory:** `frontend`
-6. Click **Save**
-
----
-
-## Step 4 — Configure Build & Start
-
-In the **"Build"** tab:
+In Easypanel → veluna → backend → **Source** tab:
 
 | Setting | Value |
 |---|---|
+| Repository | `anasmeh39-crypto/veluna` |
+| Branch | `main` |
+| **Root directory** | `frontend` |
 | Build type | **Dockerfile** |
-| Dockerfile path | `Dockerfile` (relative to root dir `frontend/`) |
-
-> Easypanel will use `frontend/Dockerfile` to build the image.
-> This handles native module compilation for `better-sqlite3` automatically.
+| Dockerfile path | `Dockerfile` |
 
 ---
 
-## Step 5 — Set Environment Variables
+## Step 2 — Port
 
-In the **"Environment"** tab, add these variables:
+In Easypanel → veluna → backend → **General** tab:
 
-| Variable | Value |
+| Setting | Value |
 |---|---|
-| `ADMIN_PASSWORD` | Your chosen admin password |
-| `ADMIN_SECRET_TOKEN` | Output of `openssl rand -hex 32` |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Your WA number, e.g. `212612345678` |
-| `NEXT_PUBLIC_SITE_URL` | `https://veluna.ma` |
-| `NEXT_PUBLIC_META_PIXEL_ID` | Your Pixel ID (or leave empty) |
-| `NODE_ENV` | `production` |
-
-Click **Save**.
+| **Port** | `3000` |
 
 ---
 
-## Step 6 — Add a Persistent Volume for SQLite
+## Step 3 — Environment Variables
 
-> This is critical. Without a volume, your orders database is wiped every time the app restarts.
+In Easypanel → veluna → backend → **Environment** tab.
 
-1. In the `veluna-store` service → go to **"Mounts"** (or "Volumes") tab
-2. Click **"+ Add Volume"**
-3. Set:
-   - **Volume name:** `veluna-data`
-   - **Mount path in container:** `/app/data`
-4. Click **Save**
+### Required (app will not start without these)
 
-This mounts a persistent disk at `/app/data`, which is where `data/veluna.db` lives.
+```
+NODE_ENV=production
+ADMIN_PASSWORD=your-strong-admin-password
+ADMIN_SECRET_TOKEN=output-of-openssl-rand-hex-32
+NEXT_PUBLIC_SITE_URL=https://veluna.ma
+NEXT_PUBLIC_WHATSAPP_NUMBER=212612345678
+```
+
+Generate `ADMIN_SECRET_TOKEN` on your VPS: `openssl rand -hex 32`
+
+### Optional — add when ready
+
+```
+NEXT_PUBLIC_META_PIXEL_ID=
+META_ACCESS_TOKEN=
+META_TEST_EVENT_CODE=
+
+NEXT_PUBLIC_TIKTOK_PIXEL_ID=
+TIKTOK_ACCESS_TOKEN=
+
+GOOGLE_SHEETS_WEBHOOK_URL=
+GOOGLE_SHEET_ID=
+GOOGLE_SERVICE_ACCOUNT_JSON=
+
+LOG_LEVEL=INFO
+```
+
+### Future — PostgreSQL (not needed now, SQLite is active)
+
+```
+DATABASE_URL=postgres://postgres:PASSWORD@veluna-db:5432/veluna?sslmode=disable
+```
 
 ---
 
-## Step 7 — Configure Domain
+## Step 4 — Persistent Volume (SQLite)
 
-1. Go to the **"Domains"** tab
-2. Click **"+ Add Domain"**
-3. Add: `veluna.ma`
-4. Also add: `www.veluna.ma` → redirect to `veluna.ma`
-5. Enable **HTTPS / Let's Encrypt** (Easypanel handles this automatically)
+In Easypanel → veluna → backend → **Mounts** tab:
 
----
+| Setting | Value |
+|---|---|
+| Volume name | `veluna-data` |
+| **Mount path** | `/app/data` |
 
-## Step 8 — Deploy
-
-1. Click **"Deploy"** (or push to GitHub — Easypanel auto-deploys on push if configured)
-2. Watch the build logs for any errors
-3. Build takes ~2-4 minutes (native module compilation)
-4. Once green → open `https://veluna.ma`
+Without this volume, all orders are lost every time the container restarts.
 
 ---
 
-## Step 9 — Verify the Deployment
+## Step 5 — Domain
 
-Run these checks after deploy:
+In Easypanel → veluna → backend → **Domains** tab:
+
+- Add `veluna.ma` → enable HTTPS
+- Add `www.veluna.ma` → redirect to `veluna.ma`
+
+---
+
+## Step 6 — Deploy
+
+Click **Deploy**. Build takes ~3 minutes.
+
+After deploy, verify:
 
 ```bash
-# 1. Homepage loads
+# Homepage
 curl -I https://veluna.ma
 
-# 2. Products API
+# Products API
 curl https://veluna.ma/api/products
 
-# 3. Admin login page loads
-curl -I https://veluna.ma/admin/login
-
-# 4. Test order submission (replace with real values)
+# Test order submission
 curl -X POST https://veluna.ma/api/orders \
   -H "Content-Type: application/json" \
   -d '{
     "customer_name": "فاطمة الزهراء",
     "phone": "0612345678",
     "city": "الدار البيضاء",
-    "address": "حي المعاريف، شارع محمد الخامس",
+    "address": "حي المعاريف",
     "items": [{"id": "zit-manaa", "quantity": 1}]
   }'
 ```
 
-Expected: `{"order": {"id": "VL...", "status": "new", ...}}`
+---
+
+## Startup Failure: Missing Env Vars
+
+If `ADMIN_PASSWORD` or `ADMIN_SECRET_TOKEN` are missing, the app refuses to start:
+
+```
+[Veluna] Missing required environment variables: ADMIN_PASSWORD, ADMIN_SECRET_TOKEN
+Add them in Easypanel → veluna → backend → Environment tab.
+```
+
+Fix: add the missing variables in Easypanel and redeploy.
 
 ---
 
-## Updating the App
+## Updating the Store
 
-Every push to the `main` branch triggers an automatic redeploy on Easypanel (if webhook is configured). Alternatively, click **"Deploy"** manually in the Easypanel UI.
-
-The SQLite database persists across deployments because it's on the mounted volume.
-
----
-
-## Rollback
-
-If a deploy breaks the site:
-1. Go to the `veluna-store` service → **"Deployments"** tab
-2. Find the last working deployment
-3. Click **"Rollback"**
-
-The database is unaffected by rollbacks (it's on the volume, not the container).
-
----
-
-## Port Reference
-
-| Service | Internal Port |
-|---|---|
-| Next.js app | `3000` |
-
-Easypanel's reverse proxy handles SSL termination and routes `veluna.ma → :3000` automatically.
+Every `git push origin main` triggers an automatic redeploy.
+The database at `/app/data/veluna.db` is on the persistent volume — unaffected by redeploys.
 
 ---
 
 ## Troubleshooting
 
-| Problem | Fix |
+| Error | Fix |
 |---|---|
-| `better-sqlite3` build error | Make sure the Dockerfile is used (not nixpacks) |
-| `/app/data` is empty after restart | Volume not mounted — re-check Step 6 |
-| Admin login fails | Check `ADMIN_PASSWORD` and `ADMIN_SECRET_TOKEN` env vars |
-| Orders not saving | Check volume is mounted at `/app/data` and writable |
-| 500 on `/api/orders` | Check build logs; `better-sqlite3` may have failed to compile |
+| `open Dockerfile: no such file or directory` | Root directory must be `frontend` |
+| `/app/public: not found` | Run `git add frontend/public/ && git push` |
+| `Missing required environment variables` | Add `ADMIN_PASSWORD` + `ADMIN_SECRET_TOKEN` in Easypanel |
+| Orders lost after restart | Volume not mounted at `/app/data` — check Mounts tab |
+| Admin login fails | Verify `ADMIN_PASSWORD` and `ADMIN_SECRET_TOKEN` are set correctly |
