@@ -21,9 +21,30 @@ export default function OilProductPage() {
           {/* Gallery */}
           {(() => {
             const gallery = [
-              { src: '/products/oil.png',   alt: 'زيت إزالة الشعر Veluna — الوجه الأمامي',   bg: 'from-veluna-blush to-white',     pad: 'p-8'  },
-              { src: '/products/oil-2.jpg', alt: 'زيت إزالة الشعر Veluna — طريقة الاستخدام', bg: 'from-[#F9F4FC] to-white',        pad: 'p-6'  },
-              { src: '/products/oil-3.jpg', alt: 'زيت إزالة الشعر Veluna — المكونات',         bg: 'from-[#F9F4FC] to-white',        pad: 'p-6'  },
+              {
+                src:   '/products/oil.png',
+                alt:   'زيت إزالة الشعر Veluna — صورة المنتج',
+                bg:    'from-veluna-blush to-white',
+                fit:   'contain' as const,
+                pad:   'p-10',
+                thumb: 'contain' as const,
+              },
+              {
+                src:   '/products/oil-2.jpg',
+                alt:   'نعومة من الطبيعة — نتائج قبل وبعد استخدام زيت إزالة الشعر',
+                bg:    'from-[#EDD0C3] to-[#F4E3DA]',
+                fit:   'contain' as const,
+                pad:   'p-0',
+                thumb: 'cover' as const,
+              },
+              {
+                src:   '/products/oil-3.jpg',
+                alt:   'زيت إزالة الشعر Veluna — تركيبة طبيعية من أجود المكونات',
+                bg:    'from-[#EDD0C3] to-[#F4E3DA]',
+                fit:   'contain' as const,
+                pad:   'p-0',
+                thumb: 'cover' as const,
+              },
             ]
             const active = gallery[activeImg]
             return (
@@ -37,9 +58,10 @@ export default function OilProductPage() {
                       src={g.src}
                       alt={g.alt}
                       fill
-                      className={`object-contain ${active.pad} transition-opacity duration-300 ${
-                        i === activeImg ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                      }`}
+                      className={`${g.fit === 'cover' ? 'object-cover' : 'object-contain'} ${g.pad}
+                                  transition-opacity duration-300 ${
+                                    i === activeImg ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                                  }`}
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       priority={i === 0}
                     />
@@ -65,7 +87,7 @@ export default function OilProductPage() {
                         src={g.src}
                         alt=""
                         fill
-                        className="object-contain p-2 relative"
+                        className={`${g.thumb === 'cover' ? 'object-cover' : 'object-contain p-2'} relative`}
                         sizes="(max-width: 1024px) 33vw, 140px"
                       />
                     </button>
