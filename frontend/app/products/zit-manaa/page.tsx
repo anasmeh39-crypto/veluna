@@ -25,25 +25,22 @@ export default function OilProductPage() {
                 src:   '/products/oil.png',
                 alt:   'زيت إزالة الشعر Veluna — صورة المنتج',
                 bg:    'from-veluna-blush to-white',
-                fit:   'contain' as const,
                 pad:   'p-10',
-                thumb: 'contain' as const,
+                thumbCover: false,
               },
               {
                 src:   '/products/oil-2.jpg',
                 alt:   'نعومة من الطبيعة — نتائج قبل وبعد استخدام زيت إزالة الشعر',
                 bg:    'from-[#EDD0C3] to-[#F4E3DA]',
-                fit:   'contain' as const,
                 pad:   'p-0',
-                thumb: 'cover' as const,
+                thumbCover: true,
               },
               {
                 src:   '/products/oil-3.jpg',
                 alt:   'زيت إزالة الشعر Veluna — تركيبة طبيعية من أجود المكونات',
                 bg:    'from-[#EDD0C3] to-[#F4E3DA]',
-                fit:   'contain' as const,
                 pad:   'p-0',
-                thumb: 'cover' as const,
+                thumbCover: true,
               },
             ]
             const active = gallery[activeImg]
@@ -58,8 +55,7 @@ export default function OilProductPage() {
                       src={g.src}
                       alt={g.alt}
                       fill
-                      className={`${g.fit === 'cover' ? 'object-cover' : 'object-contain'} ${g.pad}
-                                  transition-opacity duration-300 ${
+                      className={`object-contain ${g.pad} transition-opacity duration-300 ${
                                     i === activeImg ? 'opacity-100' : 'opacity-0 pointer-events-none'
                                   }`}
                       sizes="(max-width: 1024px) 100vw, 50vw"
@@ -87,7 +83,7 @@ export default function OilProductPage() {
                         src={g.src}
                         alt=""
                         fill
-                        className={`${g.thumb === 'cover' ? 'object-cover' : 'object-contain p-2'} relative`}
+                        className={`${g.thumbCover ? 'object-cover' : 'object-contain p-2'} relative`}
                         sizes="(max-width: 1024px) 33vw, 140px"
                       />
                     </button>
