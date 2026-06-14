@@ -1,4 +1,17 @@
 import { Pool } from 'pg'
+import {
+  appendFallbackOrder,
+  getFallbackOrderById,
+  listFallbackOrders,
+  updateFallbackOrderStatus,
+} from './order-fallback'
+
+if (!process.env.DATABASE_URL) {
+  console.error(
+    '[db] DATABASE_URL is not set — Postgres is unavailable. Orders will use the fallback store. ' +
+    'Set DATABASE_URL in your environment (e.g. postgres://postgres:PASSWORD@veluna-db:5432/veluna?sslmode=disable).'
+  )
+}
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
@@ -103,61 +116,75 @@ function rowToOrder(row: Record<string, unknown>): Order {
 export async function createOrder(
   data: Omit<Order, 'id' | 'created_at' | 'updated_at'>
 ): Promise<Order> {
-  await ensureSchema()
   const now = new Date().toISOString()
 
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const id = generateOrderId()
-    try {
-      const result = await pool.query(
-        `INSERT INTO orders (
-          id, customer_name, phone, city, address, items,
-          subtotal, delivery_fee, total, payment_method, status, notes,
-          source, utm_source, utm_medium, utm_campaign, utm_content,
-          fbclid, user_agent, ip_address, created_at, updated_at
-        ) VALUES (
-          $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22
-        ) RETURNING *`,
-        [
-          id,
-          data.customer_name,
-          data.phone,
-          data.city,
-          data.address,
-          JSON.stringify(data.items),
-          data.subtotal,
-          data.delivery_fee,
-          data.total,
-          data.payment_method,
-          data.status,
-          data.notes ?? null,
-          data.source ?? null,
-          data.utm_source ?? null,
-          data.utm_medium ?? null,
-          data.utm_campaign ?? null,
-          data.utm_content ?? null,
-          data.fbclid ?? null,
-          data.user_agent ?? null,
-          data.ip_address ?? null,
-          now,
-          now,
-        ]
-      )
-      return rowToOrder(result.rows[0])
-    } catch (err: unknown) {
-      const isUnique =
-        err instanceof Error && err.message.includes('unique') ||
-        (err as { code?: string })?.code === '23505'
-      if (!isUnique || attempt === 2) throw err
+  try {
+    await ensureSchema()
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const id = generateOrderId()
+      try {
+        const result = await pool.query(
+          `INSERT INTO orders (
+            id, customer_name, phone, city, address, items,
+            subtotal, delivery_fee, total, payment_method, status, notes,
+            source, utm_source, utm_medium, utm_campaign, utm_content,
+            fbclid, user_agent, ip_address, created_at, updated_at
+          ) VALUES (
+            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22
+          ) RETURNING *`,
+          [
+            id,
+            data.customer_name,
+            data.phone,
+            data.city,
+            data.address,
+            JSON.stringify(data.items),
+            data.subtotal,
+            data.delivery_fee,
+            data.total,
+            data.payment_method,
+            data.status,
+            data.notes ?? null,
+            data.source ?? null,
+            data.utm_source ?? null,
+            data.utm_medium ?? null,
+            data.utm_campaign ?? null,
+            data.utm_content ?? null,
+            data.fbclid ?? null,
+            data.user_agent ?? null,
+            data.ip_address ?? null,
+            now,
+            now,
+          ]
+        )
+        return rowToOrder(result.rows[0])
+      } catch (err: unknown) {
+        const isUnique =
+          (err instanceof Error && err.message.includes('unique')) ||
+          (err as { code?: string })?.code === '23505'
+        if (!isUnique || attempt === 2) throw err
+      }
     }
+    throw new Error('Failed to generate unique order ID after 3 attempts')
+  } catch (err) {
+    // Postgres unavailable (or insert failed) — never lose the order.
+    console.error('[createOrder] Postgres write failed, using fallback store:', err)
+    const order: Order = { id: generateOrderId(), ...data, created_at: now, updated_at: now }
+    await appendFallbackOrder(order)
+    return order
   }
-  throw new Error('Failed to generate unique order ID after 3 attempts')
 }
 
 export async function getOrderById(id: string): Promise<Order | undefined> {
-  await ensureSchema()
-  const result = await pool.query('SELECT * FROM orders WHERE id = $1', [id])
-  return result.rows[0] ? rowToOrder(result.rows[0]) : undefined
+  try {
+    await ensureSchema()
+    const result = await pool.query('SELECT * FROM orders WHERE id = $1', [id])
+    if (result.rows[0]) return rowToOrder(result.rows[0])
+  } catch (err) {
+    console.error('[getOrderById] Postgres read failed, checking fallback store:', err)
+  }
+  return getFallbackOrderById(id)
 }
 
 export async function listOrders(opts: {
@@ -166,52 +193,91 @@ export async function listOrders(opts: {
   limit?: number
   offset?: number
 }): Promise<{ orders: Order[]; total: number }> {
-  await ensureSchema()
   const { status, search, limit = 50, offset = 0 } = opts
 
-  const conditions: string[] = []
-  const params: (string | number)[] = []
-  let idx = 1
+  let dbOrders: Order[] = []
+  let dbTotal = 0
 
-  if (status) {
-    conditions.push(`status = $${idx++}`)
-    params.push(status)
+  try {
+    await ensureSchema()
+
+    const conditions: string[] = []
+    const params: (string | number)[] = []
+    let idx = 1
+
+    if (status) {
+      conditions.push(`status = $${idx++}`)
+      params.push(status)
+    }
+
+    if (search) {
+      const like = `%${search}%`
+      conditions.push(`(customer_name ILIKE $${idx} OR phone ILIKE $${idx + 1} OR id ILIKE $${idx + 2})`)
+      params.push(like, like, like)
+      idx += 3
+    }
+
+    const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''
+
+    const countResult = await pool.query(
+      `SELECT COUNT(*)::int AS c FROM orders ${where}`,
+      params
+    )
+    dbTotal = countResult.rows[0].c
+
+    const rowsResult = await pool.query(
+      `SELECT * FROM orders ${where} ORDER BY created_at DESC LIMIT $${idx} OFFSET $${idx + 1}`,
+      [...params, limit, offset]
+    )
+    dbOrders = rowsResult.rows.map(rowToOrder)
+  } catch (err) {
+    console.error('[listOrders] Postgres read failed, serving fallback store only:', err)
   }
 
+  // Merge in any fallback-store orders (usually none).
+  const fallback = await listFallbackOrders()
+  if (fallback.length === 0) {
+    return { orders: dbOrders, total: dbTotal }
+  }
+
+  let extra = fallback
+  if (status) extra = extra.filter((o) => o.status === status)
   if (search) {
-    const like = `%${search}%`
-    conditions.push(`(customer_name ILIKE $${idx} OR phone ILIKE $${idx + 1} OR id ILIKE $${idx + 2})`)
-    params.push(like, like, like)
-    idx += 3
+    const q = search.toLowerCase()
+    extra = extra.filter(
+      (o) =>
+        o.customer_name.toLowerCase().includes(q) ||
+        o.phone.toLowerCase().includes(q) ||
+        o.id.toLowerCase().includes(q)
+    )
   }
 
-  const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : ''
+  const byId = new Map<string, Order>()
+  for (const o of [...extra, ...dbOrders]) byId.set(o.id, o)
+  const merged = [...byId.values()].sort((a, b) => b.created_at.localeCompare(a.created_at))
 
-  const countResult = await pool.query(
-    `SELECT COUNT(*)::int AS c FROM orders ${where}`,
-    params
-  )
-  const total: number = countResult.rows[0].c
-
-  const rowsResult = await pool.query(
-    `SELECT * FROM orders ${where} ORDER BY created_at DESC LIMIT $${idx} OFFSET $${idx + 1}`,
-    [...params, limit, offset]
-  )
-
-  return { orders: rowsResult.rows.map(rowToOrder), total }
+  return {
+    orders: merged.slice(offset, offset + limit),
+    total: merged.length,
+  }
 }
 
 export async function updateOrderStatus(
   id: string,
   status: OrderStatus
 ): Promise<Order | undefined> {
-  await ensureSchema()
   const updated_at = new Date().toISOString()
-  const result = await pool.query(
-    'UPDATE orders SET status = $1, updated_at = $2 WHERE id = $3 RETURNING *',
-    [status, updated_at, id]
-  )
-  return result.rows[0] ? rowToOrder(result.rows[0]) : undefined
+  try {
+    await ensureSchema()
+    const result = await pool.query(
+      'UPDATE orders SET status = $1, updated_at = $2 WHERE id = $3 RETURNING *',
+      [status, updated_at, id]
+    )
+    if (result.rows[0]) return rowToOrder(result.rows[0])
+  } catch (err) {
+    console.error('[updateOrderStatus] Postgres update failed, checking fallback store:', err)
+  }
+  return updateFallbackOrderStatus(id, status)
 }
 
 function generateOrderId(): string {
