@@ -48,7 +48,7 @@ export const products: Product[] = [
     originalPrice: 179,
     reviewCount: 214,
     rating: 4.8,
-    volume: '150 مل',
+    volume: '30 مل',
     colorFrom: '#DCC7FF',
     colorTo:   '#8B5E9E',
     benefits: [
@@ -117,7 +117,7 @@ export const products: Product[] = [
     originalPrice: 159,
     reviewCount: 186,
     rating: 4.9,
-    volume: '200 مل',
+    volume: '50 غ',
     colorFrom: '#F8BBD0',
     colorTo:   '#C4738A',
     benefits: [
