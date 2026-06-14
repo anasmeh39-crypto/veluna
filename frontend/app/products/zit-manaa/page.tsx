@@ -149,12 +149,11 @@ export default function OilProductPage() {
               )}
             </div>
             <p className="text-xs text-veluna-muted -mt-2">الحجم: {product.volume}</p>
-            <button
-              onClick={() => offerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-              className="btn-primary w-full py-4 text-base"
-            >
-              طلبي دابا
-            </button>
+
+            {/* ── Offer / bundle selector — primary buy box, right under the price ── */}
+            <div ref={offerRef} className="mt-2 pt-5 border-t border-veluna-petal">
+              <OfferSelector product={product} onSelectedChange={setSelectedPrice} />
+            </div>
           </div>
         </div>
 
@@ -281,9 +280,9 @@ export default function OilProductPage() {
           </div>
         </section>
 
-        {/* ══ 7. OFFER BLOCK ══ */}
+        {/* ══ 7. OFFER BLOCK (mid-page recap) ══ */}
         <section className="py-10">
-          <div ref={offerRef} className="bg-gradient-to-br from-veluna-blush to-white rounded-2xl p-6 md:p-10 max-w-xl mx-auto">
+          <div className="bg-gradient-to-br from-veluna-blush to-white rounded-2xl p-6 md:p-10 max-w-xl mx-auto">
             <div className="text-center mb-6">
               <span className="tag">اختاري العرض المناسب لك</span>
               <h2 className="text-xl font-extrabold text-veluna-dark mt-2">بداي روتين Veluna اليوم</h2>
@@ -311,18 +310,6 @@ export default function OilProductPage() {
                 </div>
               </details>
             ))}
-          </div>
-        </section>
-
-        {/* ══ 9.5 FINAL OFFER — أطلبي الآن ══ */}
-        <section className="py-10">
-          <div className="bg-gradient-to-br from-veluna-blush via-white to-veluna-blush rounded-2xl p-6 md:p-10 max-w-xl mx-auto border-2 border-veluna-lavender shadow-veluna-md">
-            <div className="text-center mb-6">
-              <span className="tag">آخر خطوة</span>
-              <h2 className="text-xl md:text-2xl font-extrabold text-veluna-dark mt-2">أطلبي الآن وخلصي عند الاستلام</h2>
-              <p className="text-sm text-veluna-muted mt-1">اختاري العرض اللي يناسبك — التوصيل لكل المغرب</p>
-            </div>
-            <OfferSelector product={product} onSelectedChange={setSelectedPrice} />
           </div>
         </section>
 
