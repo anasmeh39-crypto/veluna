@@ -176,6 +176,16 @@ export async function createOrder(
   }
 }
 
+/** Lightweight DB connectivity check for diagnostics. */
+export async function pingDb(): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await pool.query('SELECT 1')
+    return { ok: true }
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : String(err) }
+  }
+}
+
 export async function getOrderById(id: string): Promise<Order | undefined> {
   try {
     await ensureSchema()

@@ -12,7 +12,8 @@ import type { Order, OrderStatus } from './db'
  * For durability across redeploys, point ORDER_FALLBACK_PATH at a mounted
  * volume. Otherwise it lives in /tmp for the container's lifetime.
  */
-const FILE = process.env.ORDER_FALLBACK_PATH || path.join('/tmp', 'veluna-orders.json')
+const TMP_FILE = path.join('/tmp', 'veluna-orders.json')
+const FILE = process.env.ORDER_FALLBACK_PATH || TMP_FILE
 
 async function readAll(): Promise<Order[]> {
   try {
@@ -24,20 +25,35 @@ async function readAll(): Promise<Order[]> {
   }
 }
 
-async function writeAll(orders: Order[]): Promise<void> {
-  try {
-    await fs.writeFile(FILE, JSON.stringify(orders), 'utf8')
-  } catch (err) {
-    console.error('[order-fallback] Failed to write fallback file:', err)
-    throw err
+async function writeAll(orders: Order[]): Promise<boolean> {
+  // Try the configured path first, then /tmp as a last resort.
+  const targets = FILE === TMP_FILE ? [FILE] : [FILE, TMP_FILE]
+  for (const target of targets) {
+    try {
+      await fs.writeFile(target, JSON.stringify(orders), 'utf8')
+      return true
+    } catch (err) {
+      console.error(`[order-fallback] Failed to write fallback file at ${target}:`, err)
+    }
   }
+  return false
 }
 
 export async function appendFallbackOrder(order: Order): Promise<void> {
-  const all = await readAll()
-  all.push(order)
-  await writeAll(all)
-  console.warn(`[order-fallback] Order ${order.id} saved to fallback store (Postgres unavailable).`)
+  // Must never throw — an order is never allowed to fail at this point.
+  try {
+    const all = await readAll()
+    all.push(order)
+    const ok = await writeAll(all)
+    if (ok) {
+      console.warn(`[order-fallback] Order ${order.id} saved to fallback store (Postgres unavailable).`)
+      return
+    }
+  } catch (err) {
+    console.error('[order-fallback] appendFallbackOrder error:', err)
+  }
+  // Could not persist anywhere — log the full order so it is recoverable from logs.
+  console.error('[order-fallback] ORDER NOT PERSISTED — recover from this log line:\n' + JSON.stringify(order))
 }
 
 export async function getFallbackOrderById(id: string): Promise<Order | undefined> {
