@@ -6,19 +6,18 @@ import Image from 'next/image'
 interface ResultItem {
   src: string
   alt: string
-  label: string
 }
 
 /**
- * Default result images. Drop the real files in /public/results/ with these
- * exact names and they appear automatically — no code change needed.
- * Until then each card shows a styled branded placeholder (never a broken img).
+ * Real before/after result photos (each image = قبل on the left half,
+ * بعد on the right half). Drop replacements in /public/results/ with the
+ * same names. Missing files fall back to a branded placeholder (never broken).
  */
 const DEFAULT_RESULTS: ResultItem[] = [
-  { src: '/results/result-1.jpg', alt: 'نتيجة قبل وبعد فيلونا',        label: 'قبل / بعد' },
-  { src: '/results/result-2.jpg', alt: 'ملمس بشرة أنعم مع فيلونا',     label: 'ملمس أنعم' },
-  { src: '/results/result-3.jpg', alt: 'مظهر حبيبات أقل بروزاً',        label: 'حبيبات أقل' },
-  { src: '/results/result-4.jpg', alt: 'بشرة أهدأ بعد الروتين',         label: 'بشرة أهدأ' },
+  { src: '/results/result-1.jpg', alt: 'نتيجة قبل وبعد — بشرة أنعم مع روتين فيلونا' },
+  { src: '/results/result-2.jpg', alt: 'نتيجة قبل وبعد — شعر أقل وملمس أنعم' },
+  { src: '/results/result-3.jpg', alt: 'نتيجة قبل وبعد — مظهر أصفى للبشرة' },
+  { src: '/results/result-4.jpg', alt: 'نتيجة قبل وبعد — رجلين أنعم بعد الإزالة' },
 ]
 
 interface Props {
@@ -36,7 +35,7 @@ export default function ResultsGallery({ header, subheadline, images = DEFAULT_R
         <p className="section-sub mt-2">{subheadline}</p>
       </div>
 
-      {/* 2 cols on phone · 4 cols on desktop */}
+      {/* 2 cols on phone · 4 cols on desktop — equal square framed cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {images.map((img) => (
           <ResultCard key={img.src} {...img} />
@@ -44,25 +43,24 @@ export default function ResultsGallery({ header, subheadline, images = DEFAULT_R
       </div>
 
       <p className="text-xs text-veluna-muted text-center mt-5 italic max-w-xl mx-auto leading-relaxed">
-        النتائج كتختلف من بشرة لبشرة، والصور للتوضيح فقط حتى نضيفو صور حقيقية.
+        النتائج كتختلف من بشرة لبشرة، والصور للتوضيح فقط.
       </p>
     </section>
   )
 }
 
-function ResultCard({ src, alt, label }: ResultItem) {
+function ResultCard({ src, alt }: ResultItem) {
   const [failed, setFailed] = useState(false)
 
   return (
-    <div
-      className="relative rounded-2xl overflow-hidden border border-veluna-petal shadow-veluna-sm
-                 bg-veluna-blush hover:shadow-veluna-md transition-shadow duration-200"
-      style={{ aspectRatio: '4/5' }}
+    <figure
+      className="relative rounded-2xl bg-white p-1.5 border-[2.5px] border-[#E7A8CB] shadow-veluna-sm
+                 hover:shadow-veluna-md transition-shadow duration-200"
     >
-      {failed ? (
-        <Placeholder />
-      ) : (
-        <>
+      <div className="relative rounded-xl overflow-hidden bg-veluna-blush" style={{ aspectRatio: '1/1' }}>
+        {failed ? (
+          <Placeholder />
+        ) : (
           <Image
             src={src}
             alt={alt}
@@ -71,21 +69,23 @@ function ResultCard({ src, alt, label }: ResultItem) {
             sizes="(max-width: 1024px) 50vw, 25vw"
             onError={() => setFailed(true)}
           />
-          {/* soft gradient for label legibility */}
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/35 to-transparent pointer-events-none" />
-        </>
-      )}
+        )}
 
-      {/* overlay label chip */}
-      <span className="absolute bottom-2.5 start-2.5 bg-white/90 backdrop-blur-sm text-veluna-plum
-                       text-[11px] font-bold px-2.5 py-1 rounded-full shadow-sm">
-        {label}
-      </span>
-    </div>
+        {/* before / after badges — pinned to the physical sides of the split image */}
+        <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-veluna-dark
+                         text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+          قبل
+        </span>
+        <span className="absolute top-2 right-2 bg-veluna-plum text-white
+                         text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+          بعد
+        </span>
+      </div>
+    </figure>
   )
 }
 
-/* Branded placeholder shown when the real photo isn't available yet */
+/* Branded fallback if a photo isn't available */
 function Placeholder() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-2
