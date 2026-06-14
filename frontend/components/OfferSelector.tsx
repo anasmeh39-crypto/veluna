@@ -227,14 +227,14 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
       {/* ── CTAs ── */}
       <div className="flex flex-col gap-2 mt-1">
         <button type="button" onClick={handleConfirm} className="w-full btn-primary py-4 text-base">
-          أكدي الطلب
+          تأكيد الطلب ـ الدفع عند الإستلام
         </button>
         <button
           type="button"
           onClick={handleAddToCart}
           className="w-full py-3.5 text-sm font-bold text-veluna-plum border-2 border-veluna-plum rounded-full hover:bg-veluna-blush active:scale-95 transition-all duration-150"
         >
-          زيدي للسلة
+          أضيفي إلى السلة
         </button>
       </div>
 
