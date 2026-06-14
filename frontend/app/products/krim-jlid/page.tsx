@@ -82,8 +82,9 @@ export default function CreamProductPage() {
   const offerRef     = useRef<HTMLDivElement>(null)
 
   const gallery = [
-    { src: '/products/cream.png',   alt: 'كريم الشعر تحت الجلد فيلونا — صورة المنتج',    bg: 'from-[#F8EEF5] to-[#FDF6FA]', pad: 'p-6', thumbCover: false },
-    { src: '/products/cream-2.jpg', alt: 'روتين فيلونا الكامل — الكريم والزيت معاً',      bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true  },
+    { src: '/products/cream.png',          alt: 'كريم الشعر تحت الجلد فيلونا — صورة المنتج',    bg: 'from-[#F8EEF5] to-[#FDF6FA]', pad: 'p-6', thumbCover: false },
+    { src: '/products/cream-2.jpg',        alt: 'روتين فيلونا الكامل — الكريم والزيت معاً',      bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true  },
+    { src: '/products/duo-lifestyle.jpg',  alt: 'روتين فيلونا — الزيت والكريم للعناية بعد الإزالة', bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true  },
   ]
   const active = gallery[activeImg]
 

@@ -82,8 +82,9 @@ export default function OilProductPage() {
   const offerRef     = useRef<HTMLDivElement>(null)
 
   const gallery = [
-    { src: '/products/oil-lifestyle.jpg', alt: 'زيت إزالة الشعر فيلونا — صورة المنتج',          bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
-    { src: '/products/oil-2.jpg',         alt: 'نتائج قبل وبعد استخدام زيت إزالة الشعر فيلونا', bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
+    { src: '/products/oil-lifestyle.jpg',  alt: 'زيت إزالة الشعر فيلونا — صورة المنتج',          bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
+    { src: '/products/oil-2.jpg',          alt: 'نتائج قبل وبعد استخدام زيت إزالة الشعر فيلونا', bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
+    { src: '/products/duo-lifestyle.jpg',  alt: 'روتين فيلونا الكامل — الزيت والكريم معاً',      bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
   ]
   const active = gallery[activeImg]
 
