@@ -42,24 +42,24 @@ function IconIngrown() {
 }
 
 const PROBLEMS = [
-  { Icon: IconGrowth,     title: 'الشعر كيبان بسرعة',          desc: 'مهما داوزتيه يرجع في أيام — ما كاين حل حقيقي' },
-  { Icon: IconBumps,      title: 'الحبوب من بعد الحلاقة',       desc: 'كل مرة تحلقي يطلعو حبيبات مزعجة' },
-  { Icon: IconIrritation, title: 'الحمرة والتهيج',              desc: 'البشرة كتحمر وكتتهيج من بعد كل إزالة' },
-  { Icon: IconIngrown,    title: 'جلد الوزة والشعر تحت الجلد', desc: 'ملمس خشن وحبيبات مؤلمة تحت البشرة' },
+  { Icon: IconGrowth,     title: 'الشعر تحت الجلد',            desc: 'الشعر كيبقى محبوس وكيبان بحال نقط صغيرة' },
+  { Icon: IconBumps,      title: 'الحبيبات من بعد الحلاقة',     desc: 'حبيبات صغيرة كتخلي ملمس البشرة غير ناعم' },
+  { Icon: IconIrritation, title: 'تهيج وحمرة',                  desc: 'البشرة كتتحسس خصوصاً من بعد الموس أو الحلاوة' },
+  { Icon: IconIngrown,    title: 'جلد الوزة',                   desc: 'خشونة ونقط كتظهر فالرجلين، اليدين، أو مناطق الجسم' },
 ]
 
 const REVIEWS = [
   {
     name: 'إيمان', city: 'فاس', stars: 5,
-    text: 'من بعد أسبوع من الاستعمال بدات نشوف فرق فالحبيبات ديال جلد الوزة. كريم رائع صراحة.',
+    text: 'كنت كنحس بملمس خشن فالرجلين. مع الاستعمال المنتظم بدا الملمس كيتحسن وولات البشرة أنعم.',
   },
   {
     name: 'خديجة', city: 'طنجة', stars: 5,
-    text: 'بشرتي ولات أنعم وما عادش كيزعجني الملمس الخشن فالرجلين. ننصح بيه لكل واحدة.',
+    text: 'عجبني حيث ماشي روتين معقد. كنستعملو من بعد 24 ساعة من الحلاقة وكيعاونني على الحبيبات.',
   },
   {
     name: 'سارة', city: 'أكادير', stars: 4,
-    text: 'جربتو وكيخدم. تحتاجي صبر شوية باش نشوف النتيجة ولكن يستاهل.',
+    text: 'خاصو شوية ديال الانتظام، ولكن كيبان الفرق فنعومة البشرة مع الوقت.',
   },
 ]
 
@@ -179,8 +179,8 @@ export default function CreamProductPage() {
         {/* ══ 3. PROBLEMS ══ */}
         <section className="py-10">
           <div className="text-center mb-8">
-            <span className="tag">هاد المشاكل تعرفيها؟</span>
-            <h2 className="section-heading mt-3">البشرة كتعاني — ودابا كاين الحل</h2>
+            <span className="tag">هاد الملمس كيزعجك؟</span>
+            <h2 className="section-heading mt-3">الحبيبات والشعر تحت الجلد محتاجين روتين منتظم</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {PROBLEMS.map(({ Icon, title, desc }) => (
@@ -198,8 +198,8 @@ export default function CreamProductPage() {
         {/* ══ 4. SOLUTION + HOW TO USE ══ */}
         <section className="py-10 bg-veluna-blush rounded-2xl px-6 md:px-10">
           <div className="text-center mb-8">
-            <span className="tag">الحل</span>
-            <h2 className="section-heading mt-3">كريم Veluna — بشرة ناعمة وخالية من الحبيبات</h2>
+            <span className="tag">الروتين الصحيح</span>
+            <h2 className="section-heading mt-3">كريم Veluna لملمس أنعم ومظهر أصفى</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
@@ -238,8 +238,8 @@ export default function CreamProductPage() {
         {/* ══ 5. BEFORE / AFTER (text-based — no dedicated photo yet) ══ */}
         <section className="py-12">
           <div className="text-center mb-8">
-            <span className="tag">النتائج</span>
-            <h2 className="section-heading mt-3">قبل وبعد الكريم</h2>
+            <span className="tag">الفرق مع الاستعمال المنتظم</span>
+            <h2 className="section-heading mt-3">من ملمس خشن لروتين عناية أوضح</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
             <div className="rounded-2xl p-7 text-center border border-veluna-petal bg-white">
@@ -247,17 +247,17 @@ export default function CreamProductPage() {
               <ul className="space-y-3 text-sm text-veluna-muted">
                 <li>جلد الوزة والملمس الخشن</li>
                 <li>حبيبات وشعر تحت الجلد</li>
-                <li>تهيج وحمرة بعد الحلاقة</li>
-                <li>بشرة غير متناسقة</li>
+                <li>احمرار خفيف من بعد الإزالة</li>
+                <li>مظهر غير متجانس</li>
               </ul>
             </div>
             <div className="rounded-2xl p-7 text-center border-2 border-veluna-plum bg-veluna-blush">
               <p className="font-bold text-veluna-plum text-xs uppercase tracking-widest mb-5">بعد</p>
               <ul className="space-y-3 text-sm text-veluna-text font-medium">
-                <li>بشرة ناعمة ومريحة</li>
-                <li>ملمس متناسق وأنعم</li>
-                <li>راحة من الحبيبات</li>
-                <li>جلد أكثر تناسق ولمعان</li>
+                <li>ملمس أنعم مع الوقت</li>
+                <li>مظهر أكثر تناسق</li>
+                <li>حبيبات أقل بروزاً</li>
+                <li>بشرة مرطبة ومريحة أكثر</li>
               </ul>
             </div>
           </div>
@@ -267,8 +267,8 @@ export default function CreamProductPage() {
         {/* ══ 6. REVIEWS ══ */}
         <section className="py-10">
           <div className="text-center mb-8">
-            <span className="tag">آراء العملاء</span>
-            <h2 className="section-heading mt-3">شنو كيقولو الناس</h2>
+            <span className="tag">تجارب العملاء</span>
+            <h2 className="section-heading mt-3">شنو قالو على روتين الكريم</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {REVIEWS.map((r) => (
@@ -295,9 +295,9 @@ export default function CreamProductPage() {
         <section className="py-10">
           <div ref={offerRef} className="bg-gradient-to-br from-veluna-blush to-white rounded-2xl p-6 md:p-10 max-w-xl mx-auto">
             <div className="text-center mb-6">
-              <span className="tag">اختاري عرضك</span>
-              <h2 className="text-xl font-extrabold text-veluna-dark mt-2">احصلي على Veluna دابا</h2>
-              <p className="text-sm text-veluna-muted mt-1">الدفع عند الاستلام · بدون مخاطرة</p>
+              <span className="tag">اختاري العرض المناسب لك</span>
+              <h2 className="text-xl font-extrabold text-veluna-dark mt-2">بداي روتين العناية بالملمس</h2>
+              <p className="text-sm text-veluna-muted mt-1">الدفع عند الاستلام · تأكيد الطلب بالهاتف</p>
             </div>
             <OfferSelector product={product} onSelectedChange={setSelectedPrice} />
           </div>
@@ -307,9 +307,9 @@ export default function CreamProductPage() {
         <section className="py-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
-              { icon: '🌿', title: 'مكونات طبيعية',     desc: 'حمض الساليسيليك وزيت شجرة الشاي — مكونات مختارة لبشرة أنعم' },
-              { icon: '💧', title: 'تقشير لطيف',         desc: 'مصمم باش يساعد يزيل الجلد الميت بلطف دون تهيج' },
-              { icon: '✦',  title: 'مصنوع للمرأة',       desc: 'مصمم خصيصاً لاحتياجات بشرة المرأة — فعال ومريح' },
+              { icon: '🌿', title: 'حمض الساليسيليك',    desc: 'كيعاون على تقشير لطيف للجلد الميت وتحسين ملمس البشرة' },
+              { icon: '💧', title: 'زيت شجرة الشاي',     desc: 'مكوّن معروف فالعناية بالبشرة وكيعطي إحساس مهدئ' },
+              { icon: '✦',  title: 'روتين يومي بسيط',    desc: 'كيستعمل من بعد 24 ساعة من إزالة الشعر وبكمية صغيرة' },
             ].map((c) => (
               <div key={c.title} className="bg-white rounded-2xl p-6 border border-veluna-petal text-center">
                 <p className="text-3xl mb-3 leading-none">{c.icon}</p>
@@ -324,7 +324,7 @@ export default function CreamProductPage() {
         <section className="py-10">
           <div className="text-center mb-8">
             <span className="tag">أسئلة شائعة</span>
-            <h2 className="section-heading mt-3">عندك سؤال؟</h2>
+            <h2 className="section-heading mt-3">قبل ما تطلبي، هادي أهم الأجوبة</h2>
           </div>
           <div className="space-y-2 max-w-2xl mx-auto">
             {FAQ.map((f, i) => (
@@ -342,7 +342,7 @@ export default function CreamProductPage() {
         </section>
 
         <p className="text-xs text-veluna-muted italic mt-2 mb-10 text-center">
-          النتائج كتختلف من بشرة لبشرة. المنتج مخصص للعناية التجميلية وليس علاجاً طبياً. ديري اختبار قبل الاستعمال الكامل.
+          النتائج كتختلف من بشرة لبشرة. المنتج مخصص للعناية التجميلية وليس علاجاً طبياً. ديري اختبار صغير قبل الاستعمال الكامل.
         </p>
       </div>
 

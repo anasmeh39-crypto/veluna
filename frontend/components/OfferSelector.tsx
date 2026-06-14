@@ -14,7 +14,7 @@ const BUNDLE_PRICE    = 249
 const BUNDLE_ORIGINAL = 278
 
 const PHOTOS: Record<'oil' | 'cream', string> = {
-  oil:   '/products/oil.png',
+  oil:   '/products/oil-studio.jpg',
   cream: '/products/cream.png',
 }
 
@@ -105,14 +105,14 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Radio active={selected === 'single'} />
-                <span className="font-bold text-veluna-dark text-sm">قطعة واحدة</span>
+                <span className="font-bold text-veluna-dark text-sm">واحد فقط</span>
               </div>
               <span className="font-extrabold text-veluna-plum tabular-nums text-sm flex-shrink-0">
                 {singlePrice} <span className="text-xs font-normal">درهم</span>
               </span>
             </div>
             <p className="text-xs text-veluna-muted leading-relaxed ps-6">
-              جربي المنتج وشوفي الفرق فالبشرة
+              مناسب إذا بغيتي تجربي الروتين لأول مرة
             </p>
           </div>
         </div>
@@ -153,7 +153,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Radio active={selected === 'double'} />
-                  <span className="font-bold text-veluna-dark text-sm">جوج قطع</span>
+                <span className="font-bold text-veluna-dark text-sm">جوج قطع</span>
                 </div>
                 <div className="text-end flex-shrink-0">
                   <p className="font-extrabold text-veluna-plum tabular-nums text-sm leading-tight">
@@ -165,12 +165,12 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
                 </div>
               </div>
               <p className="text-xs text-veluna-muted leading-relaxed ps-6">
-                قطعة عندك وقطعة احتياطي
+                وفري أكثر وخلي الروتين واجد عندك
               </p>
               <div className="ps-6 space-y-0.5">
                 {perUnitSaving > 0 && (
                   <p className="text-[11px] text-veluna-muted">
-                    ثمن القطعة: {singlePrice} درهم — وفري {perUnitSaving} درهم فالقطعة
+                    ثمن القطعة: {singlePrice} درهم — توفير {perUnitSaving} درهم فالقطعة
                   </p>
                 )}
                 {totalSavings > 0 && (
@@ -186,7 +186,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
       {complement && (
         <div className="relative">
           <span className="absolute -top-2.5 start-4 z-10 bg-gradient-to-r from-[#7A3E68] to-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm">
-            ✦ الاختيار الأمثل — وفري أكثر
+            ✦ أحسن اختيار للروتين الكامل
           </span>
           <button type="button" onClick={() => handleSelect('bundle')} className={cardCls(selected === 'bundle')}>
             <div className="flex items-stretch">
@@ -223,9 +223,9 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
                     <p className="text-[10px] text-veluna-muted line-through">{BUNDLE_ORIGINAL} درهم</p>
                   </div>
                 </div>
-                <p className="text-[11px] text-veluna-muted leading-relaxed ps-6">الزيت + الكريم معاً</p>
+                <p className="text-[11px] text-veluna-muted leading-relaxed ps-6">إزالة الشعر + العناية بالملمس من بعده</p>
                 <p className="text-xs font-semibold text-[#25D366] ps-6">
-                  وفري {bundleSaving} درهم — أحسن قيمة
+                  وفري {bundleSaving} درهم — العرض الأنسب
                 </p>
               </div>
             </div>
@@ -235,12 +235,12 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
 
       {/* ── CTA ── */}
       <button type="button" onClick={handleConfirm} className="w-full btn-primary py-4 text-base mt-1">
-        طلبي دابا
+        كملي الطلب
       </button>
 
       {/* ── Trust strip ── */}
       <div className="grid grid-cols-3 gap-2">
-        {['الدفع عند الاستلام', 'التوصيل داخل المغرب', 'طلب آمن وسهل'].map((t) => (
+        {['الدفع عند الاستلام', 'توصيل داخل المغرب', 'غادي نتاصلو بك للتأكيد'].map((t) => (
           <div key={t} className="flex flex-col items-center gap-0.5 bg-veluna-blush rounded-xl px-2 py-2.5 text-center">
             <span className="text-veluna-plum text-xs font-bold">✓</span>
             <span className="text-[10px] font-medium text-veluna-text leading-tight">{t}</span>

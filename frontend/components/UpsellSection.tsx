@@ -20,7 +20,7 @@ export default function UpsellSection({ complement, currentProductName }: Props)
       id: complement.id,
       type: complement.type,
       name: complement.name,
-      desc: 'المنتج المكمل للروتين الكامل',
+      desc: 'كملي به الروتين باش تهتمي بالبشرة من بعد الإزالة',
       price: complement.price,
       colorFrom: complement.colorFrom,
       colorTo: complement.colorTo,
@@ -32,7 +32,7 @@ export default function UpsellSection({ complement, currentProductName }: Props)
       id: bundle.id,
       type: null,
       name: bundle.name,
-      desc: 'الاثنين مع بعضهم بسعر أحسن',
+      desc: 'الزيت والكريم مع بعضهم لروتين كامل',
       price: bundle.price,
       originalPrice: bundle.originalPrice,
       colorFrom: '#DCC7FF',
@@ -45,7 +45,7 @@ export default function UpsellSection({ complement, currentProductName }: Props)
       id: `${complement.id}-x2`,
       type: complement.type,
       name: `${complement.name} × 2`,
-      desc: 'علبتين – وفري على المدى الطويل',
+      desc: 'علبتين باش يبقى الروتين مستمر',
       price: Math.round(complement.price * 1.85),
       originalPrice: complement.price * 2,
       colorFrom: complement.colorFrom,
@@ -60,7 +60,7 @@ export default function UpsellSection({ complement, currentProductName }: Props)
     <section className="bg-veluna-blush py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-xl font-bold text-veluna-dark mb-6">
-          قد يعجبك أيضاً
+          كملي روتين Veluna
         </h2>
 
         {/* Horizontal scroll on mobile, grid on desktop */}
@@ -122,7 +122,7 @@ export default function UpsellSection({ complement, currentProductName }: Props)
                 }}
                 className="w-full btn-primary py-2.5 text-xs"
               >
-                {u.type ? 'أضيفي للسلة' : 'اشتري الباقة'}
+                {u.type ? 'زيديه للطلب' : 'شوفي الباقة'}
               </button>
             </div>
           ))}

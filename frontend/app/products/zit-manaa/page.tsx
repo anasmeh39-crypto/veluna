@@ -42,24 +42,24 @@ function IconIngrown() {
 }
 
 const PROBLEMS = [
-  { Icon: IconGrowth,     title: 'الشعر كيبان بسرعة',          desc: 'مهما داوزتيه يرجع في أيام — ما كاين حل حقيقي' },
-  { Icon: IconBumps,      title: 'الحبوب من بعد الحلاقة',       desc: 'كل مرة تحلقي يطلعو حبيبات مزعجة' },
-  { Icon: IconIrritation, title: 'الحمرة والتهيج',              desc: 'البشرة كتحمر وكتتهيج من بعد كل إزالة' },
-  { Icon: IconIngrown,    title: 'جلد الوزة والشعر تحت الجلد', desc: 'ملمس خشن وحبيبات مؤلمة تحت البشرة' },
+  { Icon: IconGrowth,     title: 'الشعر كيبان بسرعة',          desc: 'الحلاقة كتحتاج تعاوديها بزاف وكتخلي البشرة خشنة' },
+  { Icon: IconBumps,      title: 'الحبوب من بعد الحلاقة',       desc: 'حبيبات صغيرة كتظهر من بعد الموس أو الحلاوة' },
+  { Icon: IconIrritation, title: 'الحمرة والتهيج',              desc: 'البشرة كتولي حساسة ومحمرة من بعد الإزالة' },
+  { Icon: IconIngrown,    title: 'جلد الوزة والشعر تحت الجلد', desc: 'ملمس غير ناعم ونقط كيبانو خصوصاً فالرجلين واليدين' },
 ]
 
 const REVIEWS = [
   {
     name: 'سلمى', city: 'الدار البيضاء', stars: 5,
-    text: 'والله هاد الزيت خدم مزيان! كنت خايفة نجربه، دابا الإزالة ولات أسهل وبشرتي ما بقاتش تحمر بحال قبل.',
+    text: 'كنت كنستعمل الموس بزاف وبشرتي كتولي ناشفة. مع Veluna ولات الإزالة أسهل والملمس أنعم من قبل.',
   },
   {
     name: 'نادية', city: 'الرباط', stars: 5,
-    text: 'جربتو 3 أسابيع وكيفرق فعلاً. بديت نستعملو بعد الحلاوة والإزالة ولات أسهل وأقل تهيج.',
+    text: 'عجبني حيث الاستعمال ديالو واضح وسريع. كنديرو غير الوقت المحدد ومن بعد كنرطب البشرة مزيان.',
   },
   {
     name: 'مريم', city: 'مراكش', stars: 4,
-    text: 'المنتج مزيان ورائحتو لطيفة. خصك تنتاظري شوية باش تشوفي النتيجة، بصح يستاهل.',
+    text: 'منتج عملي للي باغية تبدل من الحلاقة اليومية. غير خاصك تتبعي التعليمات وما تفوتيش الوقت.',
   },
 ]
 
@@ -79,8 +79,8 @@ export default function OilProductPage() {
   const offerRef     = useRef<HTMLDivElement>(null)
 
   const gallery = [
-    { src: '/products/oil.png',   alt: 'زيت إزالة الشعر Veluna — صورة المنتج',           bg: 'from-[#F8EEF5] to-[#FDF6FA]', pad: 'p-10', thumbCover: false },
-    { src: '/products/oil-2.jpg', alt: 'نتائج قبل وبعد استخدام زيت إزالة الشعر Veluna',  bg: 'from-[#EDD0C3] to-[#F4E3DA]', pad: 'p-0',  thumbCover: true  },
+    { src: '/products/oil-lifestyle.jpg', alt: 'زيت إزالة الشعر Veluna — صورة المنتج',          bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
+    { src: '/products/oil-2.jpg',         alt: 'نتائج قبل وبعد استخدام زيت إزالة الشعر Veluna', bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
   ]
   const active = gallery[activeImg]
 
@@ -97,7 +97,7 @@ export default function OilProductPage() {
               {gallery.map((g, i) => (
                 <Image
                   key={g.src} src={g.src} alt={g.alt} fill
-                  className={`object-contain ${g.pad} transition-opacity duration-300 ${i === activeImg ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                  className={`${g.thumbCover ? 'object-cover' : 'object-contain p-10'} transition-opacity duration-300 ${i === activeImg ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   priority={i === 0}
                 />
@@ -129,7 +129,7 @@ export default function OilProductPage() {
                 <span className="stars text-sm" aria-label={`${product.rating} نجوم من 5`}>{'★'.repeat(Math.round(product.rating))}</span>
                 <span className="text-xs text-veluna-muted font-medium">{product.rating} ({product.reviewCount} تقييم)</span>
               </div>
-              <p className="text-veluna-plum font-semibold mt-1.5">{product.tagline}</p>
+            <p className="text-veluna-plum font-semibold mt-1.5">{product.tagline}</p>
             </div>
             <p className="text-veluna-muted text-sm leading-relaxed">{product.shortDesc}</p>
             <div className="flex items-baseline gap-3">
@@ -168,8 +168,8 @@ export default function OilProductPage() {
         {/* ══ 3. PROBLEMS ══ */}
         <section className="py-10">
           <div className="text-center mb-8">
-            <span className="tag">هاد المشاكل تعرفيها؟</span>
-            <h2 className="section-heading mt-3">البشرة كتعاني — ودابا كاين الحل</h2>
+            <span className="tag">واش هادشي كيتكرر معاك؟</span>
+            <h2 className="section-heading mt-3">إزالة الشعر ما خاصهاش تخلي بشرتك متعبة</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {PROBLEMS.map(({ Icon, title, desc }) => (
@@ -187,8 +187,8 @@ export default function OilProductPage() {
         {/* ══ 4. SOLUTION + HOW TO USE ══ */}
         <section className="py-10 bg-veluna-blush rounded-2xl px-6 md:px-10">
           <div className="text-center mb-8">
-            <span className="tag">الحل</span>
-            <h2 className="section-heading mt-3">زيت Veluna — إزالة ألطف وبشرة أنعم</h2>
+            <span className="tag">الروتين الصحيح</span>
+            <h2 className="section-heading mt-3">زيت Veluna لإزالة سهلة وملمس ناعم</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
@@ -227,8 +227,8 @@ export default function OilProductPage() {
         {/* ══ 5. BEFORE / AFTER ══ */}
         <section className="py-12">
           <div className="text-center mb-8">
-            <span className="tag">النتائج</span>
-            <h2 className="section-heading mt-3">قبل وبعد</h2>
+            <span className="tag">الفرق فالإحساس والملمس</span>
+            <h2 className="section-heading mt-3">بشرة أهدأ وأنعم مع روتين واضح</h2>
           </div>
           <div className="relative rounded-2xl overflow-hidden max-w-2xl mx-auto shadow-veluna-md" style={{ aspectRatio: '4/3' }}>
             <Image
@@ -245,8 +245,8 @@ export default function OilProductPage() {
         {/* ══ 6. REVIEWS ══ */}
         <section className="py-10">
           <div className="text-center mb-8">
-            <span className="tag">آراء العملاء</span>
-            <h2 className="section-heading mt-3">شنو كيقولو الناس</h2>
+            <span className="tag">تجارب العملاء</span>
+            <h2 className="section-heading mt-3">آراء بسيطة من نساء جربو الروتين</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {REVIEWS.map((r) => (
@@ -273,9 +273,9 @@ export default function OilProductPage() {
         <section className="py-10">
           <div ref={offerRef} className="bg-gradient-to-br from-veluna-blush to-white rounded-2xl p-6 md:p-10 max-w-xl mx-auto">
             <div className="text-center mb-6">
-              <span className="tag">اختاري عرضك</span>
-              <h2 className="text-xl font-extrabold text-veluna-dark mt-2">احصلي على Veluna دابا</h2>
-              <p className="text-sm text-veluna-muted mt-1">الدفع عند الاستلام · بدون مخاطرة</p>
+              <span className="tag">اختاري العرض المناسب لك</span>
+              <h2 className="text-xl font-extrabold text-veluna-dark mt-2">بداي روتين Veluna اليوم</h2>
+              <p className="text-sm text-veluna-muted mt-1">الدفع عند الاستلام · تأكيد الطلب بالهاتف</p>
             </div>
             <OfferSelector product={product} onSelectedChange={setSelectedPrice} />
           </div>
@@ -285,9 +285,9 @@ export default function OilProductPage() {
         <section className="py-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
-              { icon: '🌿', title: 'مكونات طبيعية', desc: 'تركيبة بزيوت نباتية مختارة — زيت اللوز، جوز الهند، واللافندر' },
-              { icon: '💧', title: 'يرطب ويهدي',    desc: 'مصمم باش يعاون يقلل الجفاف والتهيج بعد إزالة الشعر' },
-              { icon: '✦',  title: 'مصنوع للمرأة',  desc: 'مصمم خصيصاً لاحتياجات بشرة المرأة — ناعم وفعال' },
+              { icon: '🌿', title: 'زيوت مرطبة',    desc: 'تركيبة فيها زيوت معروفة بالترطيب بحال اللوز، جوز الهند، واللافندر' },
+              { icon: '💧', title: 'استعمال واضح',   desc: '5 حتى 8 دقايق فقط، ومن بعد كيتغسل بالماء الدافئ' },
+              { icon: '✦',  title: 'روتين عملي',     desc: 'مناسب للي باغية إزالة سهلة بلا موس وبلا تعقيد' },
             ].map((c) => (
               <div key={c.title} className="bg-white rounded-2xl p-6 border border-veluna-petal text-center">
                 <p className="text-3xl mb-3 leading-none">{c.icon}</p>
@@ -302,7 +302,7 @@ export default function OilProductPage() {
         <section className="py-10">
           <div className="text-center mb-8">
             <span className="tag">أسئلة شائعة</span>
-            <h2 className="section-heading mt-3">عندك سؤال؟</h2>
+            <h2 className="section-heading mt-3">قبل ما تطلبي، هادي أهم الأجوبة</h2>
           </div>
           <div className="space-y-2 max-w-2xl mx-auto">
             {FAQ.map((f, i) => (
@@ -320,7 +320,7 @@ export default function OilProductPage() {
         </section>
 
         <p className="text-xs text-veluna-muted italic mt-2 mb-10 text-center">
-          النتائج كتختلف من بشرة لبشرة. المنتج مخصص للعناية التجميلية وليس علاجاً طبياً. ديري اختبار قبل الاستعمال الكامل.
+          النتائج كتختلف من بشرة لبشرة. المنتج مخصص للعناية التجميلية وليس علاجاً طبياً. ديري اختبار صغير قبل الاستعمال الكامل.
         </p>
       </div>
 
