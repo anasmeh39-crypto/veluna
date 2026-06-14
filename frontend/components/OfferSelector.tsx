@@ -18,12 +18,15 @@ const PHOTOS: Record<'oil' | 'cream', string> = {
   cream: '/products/cream.png',
 }
 
-interface Props { product: Product }
+interface Props {
+  product: Product
+  onSelectedChange?: (price: number) => void
+}
 
-export default function OfferSelector({ product }: Props) {
+export default function OfferSelector({ product, onSelectedChange }: Props) {
   const router = useRouter()
   const { setCart } = useCart()
-  const [selected, setSelected] = useState<OfferKey>('double')
+  const [selected, setSelected] = useState<OfferKey>('bundle')
 
   const complement    = getProductById(product.complementId)
   const singlePrice   = product.price
@@ -32,6 +35,16 @@ export default function OfferSelector({ product }: Props) {
   const totalSavings  = perUnitSaving * 2
   const bundleSaving  = BUNDLE_ORIGINAL - BUNDLE_PRICE
   const photo         = PHOTOS[product.type]
+
+  function handleSelect(key: OfferKey) {
+    setSelected(key)
+    const prices: Record<OfferKey, number> = {
+      single: singlePrice,
+      double: doublePrice,
+      bundle: BUNDLE_PRICE,
+    }
+    onSelectedChange?.(prices[key])
+  }
 
   function handleConfirm() {
     if (selected === 'bundle') {
@@ -78,7 +91,7 @@ export default function OfferSelector({ product }: Props) {
       <p className="font-bold text-veluna-dark text-sm">اختاري العرض المناسب لك</p>
 
       {/* ── قطعة واحدة ── */}
-      <button type="button" onClick={() => setSelected('single')} className={cardCls(selected === 'single')}>
+      <button type="button" onClick={() => handleSelect('single')} className={cardCls(selected === 'single')}>
         <div className="flex items-stretch">
           <div className={imgPanel}>
             <div
@@ -110,7 +123,7 @@ export default function OfferSelector({ product }: Props) {
         <span className="absolute -top-2.5 start-4 z-10 bg-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full">
           الأكثر طلباً
         </span>
-        <button type="button" onClick={() => setSelected('double')} className={cardCls(selected === 'double')}>
+        <button type="button" onClick={() => handleSelect('double')} className={cardCls(selected === 'double')}>
           <div className="flex items-stretch">
             <div className={imgPanel}>
               {/* quantity badge */}
@@ -175,7 +188,7 @@ export default function OfferSelector({ product }: Props) {
           <span className="absolute -top-2.5 start-4 z-10 bg-gradient-to-r from-[#7A3E68] to-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm">
             ✦ الاختيار الأمثل — وفري أكثر
           </span>
-          <button type="button" onClick={() => setSelected('bundle')} className={cardCls(selected === 'bundle')}>
+          <button type="button" onClick={() => handleSelect('bundle')} className={cardCls(selected === 'bundle')}>
             <div className="flex items-stretch">
               <div className={imgPanel}>
                 {/* cream jar — back left */}
@@ -222,7 +235,7 @@ export default function OfferSelector({ product }: Props) {
 
       {/* ── CTA ── */}
       <button type="button" onClick={handleConfirm} className="w-full btn-primary py-4 text-base mt-1">
-        أكدي الطلب
+        طلبي دابا
       </button>
 
       {/* ── Trust strip ── */}

@@ -7,9 +7,10 @@ import type { Product } from '@/lib/products'
 interface Props {
   product: Product
   ctaRef: React.RefObject<HTMLElement>
+  selectedPrice?: number
 }
 
-export default function StickyMobileCart({ product, ctaRef }: Props) {
+export default function StickyMobileCart({ product, ctaRef, selectedPrice }: Props) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function StickyMobileCart({ product, ctaRef }: Props) {
             {product.shortName || product.name}
           </p>
           <p className="text-veluna-plum font-extrabold text-sm tabular-nums">
-            {product.price} <span className="text-xs font-semibold">درهم</span>
+            {selectedPrice ?? product.price} <span className="text-xs font-semibold">درهم</span>
           </p>
         </div>
 
