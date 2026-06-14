@@ -36,13 +36,13 @@ export default function Routine() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="tag">روتين Veluna</span>
+          <span className="tag">روتين فيلونا</span>
           <h2 className="section-heading mt-4">
             خطوتين فقط —{' '}
             <span className="text-veluna-plum">بشرة مثالية</span>
           </h2>
           <p className="section-sub">
-            ما محتاجة منتجات كثيرة. روتين Veluna من خطوتين كيعطيك نتيجة حقيقية.
+            ما محتاجة منتجات كثيرة. روتين فيلونا من خطوتين كيعطيك نتيجة حقيقية.
           </p>
           <div className="lavender-line mx-auto mt-6" />
         </div>
@@ -115,7 +115,7 @@ export default function Routine() {
             أو خذي الاثنين مع بعضهم بسعر أحسن مع الباقة الكاملة
           </p>
           <Link href="/packs" className="btn-primary">
-            شوفي روتين Veluna الكامل
+            شوفي روتين فيلونا الكامل
           </Link>
         </div>
       </div>

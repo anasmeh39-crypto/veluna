@@ -3,7 +3,7 @@ const testimonials = [
     name: 'سلمى م.',
     city: 'الدار البيضاء',
     rating: 5,
-    text: 'جربت زيت Veluna وحسيت فرق في كيفية إزالة الشعر. البشرة ما تهيجاتش بحال قبل، وكانت مرطبة بعد الاستعمال. راضية بزاف!',
+    text: 'جربت زيت فيلونا وحسيت فرق في كيفية إزالة الشعر. البشرة ما تهيجاتش بحال قبل، وكانت مرطبة بعد الاستعمال. راضية بزاف!',
     product: 'زيت إزالة الشعر',
     avatar: 'س',
     avatarColor: 'bg-veluna-lavender text-veluna-plum',
@@ -13,7 +13,7 @@ const testimonials = [
     name: 'نور الهدى ب.',
     city: 'مراكش',
     rating: 5,
-    text: 'كنت نعاني من الشعر تحت الجلد من زمان. كريم Veluna هو الوحيد اللي حسيت بتحسن حقيقي في مظهر البشرة.',
+    text: 'كنت نعاني من الشعر تحت الجلد من زمان. كريم فيلونا هو الوحيد اللي حسيت بتحسن حقيقي في مظهر البشرة.',
     product: 'كريم الشعر تحت الجلد',
     avatar: 'ن',
     avatarColor: 'bg-veluna-pink text-veluna-plum',
@@ -24,7 +24,7 @@ const testimonials = [
     city: 'فاس',
     rating: 5,
     text: 'خذيت الباقة الكاملة. الزيت سهّل عليا الإزالة والكريم خلى البشرة ناعمة. روتين بسيط ومريح.',
-    product: 'روتين Veluna الكامل',
+    product: 'روتين فيلونا الكامل',
     avatar: 'آ',
     avatarColor: 'bg-[#F0E6FF] text-veluna-plum',
     placeholder: true,
@@ -53,8 +53,8 @@ const testimonials = [
     name: 'رانيا ع.',
     city: 'أكادير',
     rating: 5,
-    text: 'خدمة الزبونة ممتازة. جاوبوني على واتساب بسرعة وساعدوني في الاختيار. شكراً Veluna!',
-    product: 'روتين Veluna الكامل',
+    text: 'خدمة الزبونة ممتازة. جاوبوني على واتساب بسرعة وساعدوني في الاختيار. شكراً فيلونا!',
+    product: 'روتين فيلونا الكامل',
     avatar: 'ر',
     avatarColor: 'bg-veluna-lavender text-veluna-plum',
     placeholder: true,
@@ -71,7 +71,7 @@ export default function Testimonials() {
             واش كيقولو{' '}
             <span className="text-veluna-plum">زبوناتنا</span>
           </h2>
-          <p className="section-sub">آراء من زبونات استعملن روتين Veluna</p>
+          <p className="section-sub">آراء من زبونات استعملن روتين فيلونا</p>
           <p className="text-xs text-veluna-muted mt-2 italic">
             * هاد التقييمات نماذج توضيحية وسيتم استبدالها بتقييمات حقيقية
           </p>

@@ -82,8 +82,8 @@ export default function CreamProductPage() {
   const offerRef     = useRef<HTMLDivElement>(null)
 
   const gallery = [
-    { src: '/products/cream.png',   alt: 'كريم الشعر تحت الجلد Veluna — صورة المنتج',    bg: 'from-[#F8EEF5] to-[#FDF6FA]', pad: 'p-6', thumbCover: false },
-    { src: '/products/cream-2.jpg', alt: 'روتين Veluna الكامل — الكريم والزيت معاً',      bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true  },
+    { src: '/products/cream.png',   alt: 'كريم الشعر تحت الجلد فيلونا — صورة المنتج',    bg: 'from-[#F8EEF5] to-[#FDF6FA]', pad: 'p-6', thumbCover: false },
+    { src: '/products/cream-2.jpg', alt: 'روتين فيلونا الكامل — الكريم والزيت معاً',      bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true  },
   ]
   const active = gallery[activeImg]
 
@@ -193,14 +193,14 @@ export default function CreamProductPage() {
         {/* ══ 3.5 RESULTS GALLERY ══ */}
         <ResultsGallery
           header="بشرة أنعم... وحبيبات أقل بروزاً"
-          subheadline="كريم Veluna كيساعد يحسن مظهر جلد الوزة والشعر تحت الجلد مع الاستعمال المنتظم."
+          subheadline="كريم فيلونا كيساعد يحسن مظهر جلد الوزة والشعر تحت الجلد مع الاستعمال المنتظم."
         />
 
         {/* ══ 4. SOLUTION + HOW TO USE ══ */}
         <section className="py-12">
           <div className="text-center mb-10">
             <span className="tag">الروتين الصحيح</span>
-            <h2 className="section-heading mt-3">كريم Veluna لملمس أنعم ومظهر أصفى</h2>
+            <h2 className="section-heading mt-3">كريم فيلونا لملمس أنعم ومظهر أصفى</h2>
             <p className="section-sub mt-2">فوائد واضحة وطريقة استعمال بسيطة فخطوات</p>
           </div>
 

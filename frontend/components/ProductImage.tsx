@@ -69,10 +69,10 @@ export default function ProductImage({ type, colorFrom, colorTo, className = '' 
           {/* Label top accent line */}
           <rect x="28" y="106" width="44" height="4" rx="7" fill={colorFrom} opacity="0.45" />
 
-          {/* "Veluna" brand name */}
+          {/* "فيلونا" brand name */}
           <text x="50" y="127" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif"
             fontSize="10" fill="#2F1F2E" fontStyle="italic" fontWeight="bold">
-            Veluna
+            فيلونا
           </text>
 
           {/* Thin separator line */}
@@ -154,11 +154,11 @@ export default function ProductImage({ type, colorFrom, colorTo, className = '' 
         {/* Lid top highlight */}
         <ellipse cx="86" cy="59" rx="44" ry="9" fill="rgba(255,255,255,0.25)" />
 
-        {/* "Veluna" text on lid */}
+        {/* "فيلونا" text on lid */}
         <text x="86" y="95" textAnchor="middle" fontFamily="Georgia, 'Times New Roman', serif"
           fontSize="13" fill="white" fontStyle="italic" fontWeight="bold"
           style={{ letterSpacing: '0.5px' }}>
-          Veluna
+          فيلونا
         </text>
 
         {/* Label background */}

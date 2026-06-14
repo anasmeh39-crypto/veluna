@@ -220,7 +220,7 @@ export default function CartDrawer() {
         {bothInCart && !items.some(i => i.id === 'routine-complete') && (
           <div className="px-5 py-2.5 bg-veluna-blush border-t border-veluna-petal flex-shrink-0">
             <p className="text-xs text-center text-veluna-plum font-semibold">
-              ✦ روتين Veluna الكامل في سلتك!
+              ✦ روتين فيلونا الكامل في سلتك!
             </p>
           </div>
         )}

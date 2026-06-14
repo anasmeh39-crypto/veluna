@@ -54,7 +54,7 @@ const PROBLEMS = [
 const REVIEWS = [
   {
     name: 'سلمى', city: 'الدار البيضاء', stars: 5,
-    text: 'كنت كنستعمل الموس بزاف وبشرتي كتولي ناشفة. مع Veluna ولات الإزالة أسهل والملمس أنعم من قبل.',
+    text: 'كنت كنستعمل الموس بزاف وبشرتي كتولي ناشفة. مع فيلونا ولات الإزالة أسهل والملمس أنعم من قبل.',
   },
   {
     name: 'نادية', city: 'الرباط', stars: 5,
@@ -82,8 +82,8 @@ export default function OilProductPage() {
   const offerRef     = useRef<HTMLDivElement>(null)
 
   const gallery = [
-    { src: '/products/oil-lifestyle.jpg', alt: 'زيت إزالة الشعر Veluna — صورة المنتج',          bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
-    { src: '/products/oil-2.jpg',         alt: 'نتائج قبل وبعد استخدام زيت إزالة الشعر Veluna', bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
+    { src: '/products/oil-lifestyle.jpg', alt: 'زيت إزالة الشعر فيلونا — صورة المنتج',          bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
+    { src: '/products/oil-2.jpg',         alt: 'نتائج قبل وبعد استخدام زيت إزالة الشعر فيلونا', bg: 'from-[#EDD0C3] to-[#F4E3DA]', thumbCover: true },
   ]
   const active = gallery[activeImg]
 
@@ -182,14 +182,14 @@ export default function OilProductPage() {
         {/* ══ 3.5 RESULTS GALLERY ══ */}
         <ResultsGallery
           header="تخيلي إزالة الشعر بلا توتر وبلا وجع كل مرة"
-          subheadline="روتين Veluna كيساعدك تزيلي الشعر بسهولة ويخلي البشرة أنعم ومرتاحة."
+          subheadline="روتين فيلونا كيساعدك تزيلي الشعر بسهولة ويخلي البشرة أنعم ومرتاحة."
         />
 
         {/* ══ 4. SOLUTION + HOW TO USE ══ */}
         <section className="py-12">
           <div className="text-center mb-10">
             <span className="tag">الروتين الصحيح</span>
-            <h2 className="section-heading mt-3">زيت Veluna لإزالة سهلة وملمس ناعم</h2>
+            <h2 className="section-heading mt-3">زيت فيلونا لإزالة سهلة وملمس ناعم</h2>
             <p className="section-sub mt-2">فوائد واضحة وطريقة استعمال بسيطة فخطوات</p>
           </div>
 
@@ -285,7 +285,7 @@ export default function OilProductPage() {
           <div className="bg-gradient-to-br from-veluna-blush to-white rounded-2xl p-6 md:p-10 max-w-xl mx-auto">
             <div className="text-center mb-6">
               <span className="tag">اختاري العرض المناسب لك</span>
-              <h2 className="text-xl font-extrabold text-veluna-dark mt-2">بداي روتين Veluna اليوم</h2>
+              <h2 className="text-xl font-extrabold text-veluna-dark mt-2">بداي روتين فيلونا اليوم</h2>
               <p className="text-sm text-veluna-muted mt-1">الدفع عند الاستلام · تأكيد الطلب بالهاتف</p>
             </div>
             <OfferSelector product={product} onSelectedChange={setSelectedPrice} />

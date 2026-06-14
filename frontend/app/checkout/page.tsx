@@ -194,7 +194,7 @@ export default function CheckoutPage() {
           <Link href="/" className="inline-block mb-5">
             <Image
               src="/logo.png"
-              alt="Veluna"
+              alt="فيلونا"
               width={130}
               height={40}
               className="h-9 w-auto mx-auto transition-opacity hover:opacity-75"

@@ -32,7 +32,7 @@ function buildWhatsAppMessage(order: Order): string {
     .map((i) => `• ${i.name_ar} × ${i.quantity} = ${i.price_mad * i.quantity} درهم`)
     .join('\n')
 
-  return `سلام، بغيت نأكد الطلب ديالي من Veluna
+  return `سلام، بغيت نأكد الطلب ديالي من فيلونا
 
 رقم الطلب: ${order.id}
 الاسم: ${order.customer_name}
@@ -92,7 +92,7 @@ function ThankYouContent() {
           <Link href="/">
             <Image
               src="/logo.png"
-              alt="Veluna"
+              alt="فيلونا"
               width={130}
               height={40}
               className="h-9 w-auto transition-opacity hover:opacity-75"

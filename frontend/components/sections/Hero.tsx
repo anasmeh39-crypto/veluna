@@ -17,7 +17,7 @@ export default function Hero() {
         <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
           <Image
             src="/hero-duo.jpg"
-            alt="منتجات Veluna — الزيت والكريم"
+            alt="منتجات فيلونا — الزيت والكريم"
             fill
             className="object-cover object-center"
             sizes="100vw"
@@ -48,7 +48,7 @@ export default function Hero() {
           </h1>
 
           <p className="text-veluna-muted text-[15px] leading-relaxed">
-            Veluna كتجمع بين{' '}
+            فيلونا كتجمع بين{' '}
             <span className="text-veluna-plum font-semibold">زيت إزالة الشعر</span>{' '}
             و<span className="text-veluna-plum font-semibold">كريم الشعر تحت الجلد</span>،
             باش تبقى بشرتك ناعمة ومرتاحة بعد كل إزالة.
@@ -73,7 +73,7 @@ export default function Hero() {
           {/* CTAs */}
           <div className="flex gap-3 pt-1">
             <Link href="/packs" className="btn-primary text-sm px-5 py-3.5 flex-1 text-center">
-              طلبي روتين Veluna
+              طلبي روتين فيلونا
             </Link>
             <Link href="/products/zit-manaa" className="btn-outline text-sm px-4 py-3.5">
               اكتشفي
@@ -118,7 +118,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-veluna-muted text-base lg:text-[17px] leading-relaxed">
-              Veluna كتجمع بين{' '}
+              فيلونا كتجمع بين{' '}
               <span className="text-veluna-plum font-semibold">زيت إزالة الشعر</span>{' '}
               و{' '}
               <span className="text-veluna-plum font-semibold">كريم الشعر تحت الجلد</span>،
@@ -144,7 +144,7 @@ export default function Hero() {
             {/* CTA buttons */}
             <div className="flex flex-wrap gap-3 pt-1">
               <Link href="/packs" className="btn-primary text-sm px-8 py-4">
-                طلبي روتين Veluna
+                طلبي روتين فيلونا
               </Link>
               <Link href="/products/zit-manaa" className="btn-outline text-sm px-7 py-4">
                 اكتشفي المنتجات
@@ -177,7 +177,7 @@ export default function Hero() {
         <div className="relative w-[56%] xl:w-[58%] flex-shrink-0">
           <Image
             src="/hero-duo.jpg"
-            alt="منتجات Veluna — الزيت والكريم على طبق رخامي"
+            alt="منتجات فيلونا — الزيت والكريم على طبق رخامي"
             fill
             className="object-cover object-center"
             sizes="(max-width: 1280px) 56vw, 58vw"

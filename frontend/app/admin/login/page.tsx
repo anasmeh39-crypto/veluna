@@ -41,7 +41,7 @@ function LoginForm() {
     <div className="min-h-screen bg-veluna-dark flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-extrabold text-white">Veluna Admin</h1>
+          <h1 className="text-2xl font-extrabold text-white">فيلونا Admin</h1>
           <p className="text-white/50 text-sm mt-1">لوحة تحكم الطلبات</p>
         </div>
 

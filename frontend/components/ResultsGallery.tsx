@@ -15,8 +15,8 @@ interface ResultItem {
  * Until then each card shows a styled branded placeholder (never a broken img).
  */
 const DEFAULT_RESULTS: ResultItem[] = [
-  { src: '/results/result-1.jpg', alt: 'نتيجة قبل وبعد Veluna',        label: 'قبل / بعد' },
-  { src: '/results/result-2.jpg', alt: 'ملمس بشرة أنعم مع Veluna',     label: 'ملمس أنعم' },
+  { src: '/results/result-1.jpg', alt: 'نتيجة قبل وبعد فيلونا',        label: 'قبل / بعد' },
+  { src: '/results/result-2.jpg', alt: 'ملمس بشرة أنعم مع فيلونا',     label: 'ملمس أنعم' },
   { src: '/results/result-3.jpg', alt: 'مظهر حبيبات أقل بروزاً',        label: 'حبيبات أقل' },
   { src: '/results/result-4.jpg', alt: 'بشرة أهدأ بعد الروتين',         label: 'بشرة أهدأ' },
 ]

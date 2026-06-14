@@ -27,7 +27,7 @@ export default function PacksPage() {
         <span className="tag">الباقات والعروض</span>
         <h1 className="section-heading mt-4">
           وفري أكثر مع{' '}
-          <span className="text-veluna-plum">باقات Veluna</span>
+          <span className="text-veluna-plum">باقات فيلونا</span>
         </h1>
         <p className="section-sub">اختاري الباقة اللي تناسبك وابدأي روتين العناية بسعر أحسن.</p>
       </div>

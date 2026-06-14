@@ -61,7 +61,7 @@ export default function UpsellPage() {
   function acceptUpsell() {
     setCart([{
       id:        BUNDLE_ID,
-      name:      'روتين Veluna الكامل',
+      name:      'روتين فيلونا الكامل',
       price:     BUNDLE_PRICE,
       quantity:  1,
       type:      'pack',
@@ -83,7 +83,7 @@ export default function UpsellPage() {
         <Link href="/">
           <Image
             src="/logo.png"
-            alt="Veluna"
+            alt="فيلونا"
             width={110}
             height={34}
             className="h-8 w-auto"

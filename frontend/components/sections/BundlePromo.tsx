@@ -31,7 +31,7 @@ export default function BundlePromo() {
               الباقة المميزة ✦
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold leading-tight mb-3">
-              روتين Veluna
+              روتين فيلونا
               <span className="text-veluna-lavender"> الكامل</span>
             </h2>
             <p className="text-white/70 text-sm leading-relaxed mb-2">

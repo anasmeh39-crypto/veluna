@@ -139,7 +139,7 @@ export default function AdminOrdersPage() {
       {/* Top bar */}
       <div className="bg-veluna-dark text-white px-4 sm:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h1 className="font-extrabold text-lg">Veluna Admin</h1>
+          <h1 className="font-extrabold text-lg">فيلونا Admin</h1>
           <span className="text-white/50 text-sm hidden sm:block">لوحة الطلبات</span>
         </div>
         <div className="flex items-center gap-3">
@@ -265,7 +265,7 @@ export default function AdminOrdersPage() {
                           </button>
                           {/* WhatsApp */}
                           <a
-                            href={`https://wa.me/${order.phone.replace(/^0/, '212')}?text=${encodeURIComponent(`سلام ${order.customer_name}، معاك فريق Veluna. طلبيتك رقم ${order.id} (${order.total} درهم) غادي نأكدوها معاك.`)}`}
+                            href={`https://wa.me/${order.phone.replace(/^0/, '212')}?text=${encodeURIComponent(`سلام ${order.customer_name}، معاك فريق فيلونا. طلبيتك رقم ${order.id} (${order.total} درهم) غادي نأكدوها معاك.`)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             title="واتساب"
@@ -419,7 +419,7 @@ export default function AdminOrdersPage() {
               {/* WhatsApp + tracking */}
               <div className="space-y-2">
                 <a
-                  href={`https://wa.me/${selectedOrder.phone.replace(/^0/, '212')}?text=${encodeURIComponent(`سلام ${selectedOrder.customer_name}، معاك فريق Veluna\n\nطلبيتك رقم ${selectedOrder.id}\nالمجموع: ${selectedOrder.total} درهم\n\nغادي نأكدوها معاك قريباً. شكراً!`)}`}
+                  href={`https://wa.me/${selectedOrder.phone.replace(/^0/, '212')}?text=${encodeURIComponent(`سلام ${selectedOrder.customer_name}، معاك فريق فيلونا\n\nطلبيتك رقم ${selectedOrder.id}\nالمجموع: ${selectedOrder.total} درهم\n\nغادي نأكدوها معاك قريباً. شكراً!`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full bg-[#25D366] text-white font-bold py-3 rounded-xl text-sm hover:bg-[#1eb855] transition-colors"

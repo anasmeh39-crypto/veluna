@@ -55,7 +55,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
     if (selected === 'bundle') {
       setCart([{
         id:        BUNDLE_ID,
-        name:      'روتين Veluna الكامل',
+        name:      'روتين فيلونا الكامل',
         price:     BUNDLE_PRICE,
         quantity:  1,
         type:      'pack',
@@ -162,7 +162,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
           </span>
           <button type="button" onClick={() => handleSelect('bundle')} className={cardCls(selected === 'bundle')}>
             <div className="flex items-stretch">
-              <OfferImage src={BUNDLE_IMG} alt="روتين Veluna الكامل — الزيت والكريم" />
+              <OfferImage src={BUNDLE_IMG} alt="روتين فيلونا الكامل — الزيت والكريم" />
               <div className={infoCls(selected === 'bundle')}>
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">

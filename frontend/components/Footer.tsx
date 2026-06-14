@@ -15,7 +15,7 @@ export default function Footer() {
                 <div className="bg-veluna-cream rounded-2xl px-4 py-2.5 inline-flex items-center shadow-veluna-sm group-hover:shadow-veluna-md transition-shadow">
                   <Image
                     src="/logo.png"
-                    alt="Veluna"
+                    alt="فيلونا"
                     width={100}
                     height={31}
                     className="h-7 w-auto"
@@ -103,9 +103,9 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row gap-3 items-center justify-between text-xs text-white/40">
-          <p>© {new Date().getFullYear()} Veluna. جميع الحقوق محفوظة.</p>
+          <p>© {new Date().getFullYear()} فيلونا. جميع الحقوق محفوظة.</p>
           <p className="text-center max-w-2xl">
-            النتائج كتختلف من بشرة لبشرة. منتجات Veluna مخصصة للعناية التجميلية بالبشرة وماشي علاج طبي. ديري اختبار بسيط قبل الاستعمال، وما تستعمليش المنتجات على البشرة المجروحة أو المتهيجة.
+            النتائج كتختلف من بشرة لبشرة. منتجات فيلونا مخصصة للعناية التجميلية بالبشرة وماشي علاج طبي. ديري اختبار بسيط قبل الاستعمال، وما تستعمليش المنتجات على البشرة المجروحة أو المتهيجة.
           </p>
         </div>
       </div>

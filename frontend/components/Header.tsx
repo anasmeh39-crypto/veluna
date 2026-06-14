@@ -47,10 +47,10 @@ export default function Header() {
           <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center group" aria-label="Veluna – الصفحة الرئيسية">
+            <Link href="/" className="flex items-center group" aria-label="فيلونا – الصفحة الرئيسية">
               <Image
                 src="/logo.png"
-                alt="Veluna"
+                alt="فيلونا"
                 width={120}
                 height={37}
                 className="h-8 w-auto transition-opacity group-hover:opacity-70"

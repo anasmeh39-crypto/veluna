@@ -3,7 +3,7 @@ import './globals.css'
 import ClientLayout from '@/components/ClientLayout'
 
 export const metadata: Metadata = {
-  title: 'Veluna | فيلونا – عناية بشرة المرأة',
+  title: 'فيلونا – عناية بشرة المرأة',
   description: 'روتين العناية بالجسم من خطوتين. زيت إزالة الشعر وكريم الشعر تحت الجلد. مصنوع خصيصاً لبشرة المرأة المغربية.',
   icons: {
     icon: [
@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: 'Veluna | فيلونا',
+    title: 'فيلونا',
     description: 'روتين العناية بالجسم من خطوتين. زيت إزالة الشعر وكريم الشعر تحت الجلد.',
     locale: 'ar_MA',
     type: 'website',
-    images: [{ url: '/icon-512.png', width: 512, height: 512, alt: 'Veluna' }],
+    images: [{ url: '/icon-512.png', width: 512, height: 512, alt: 'فيلونا' }],
   },
 }
 

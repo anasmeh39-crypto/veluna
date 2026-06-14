@@ -33,7 +33,7 @@ export const BACKEND_PRODUCTS: BackendProduct[] = [
   {
     id: 'routine-complete',
     slug: 'routine-complete',
-    name_ar: 'روتين Veluna الكامل',
+    name_ar: 'روتين فيلونا الكامل',
     price_mad: 249,
     compare_at_price_mad: 278,
     product_type: 'pack',
