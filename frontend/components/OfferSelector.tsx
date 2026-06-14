@@ -73,7 +73,10 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
 
   function handleConfirm() {
     setCart(buildCartItems(upsellChecked))
-    router.push('/checkout')
+    // Route through the upsell popup. If the complement (cream) is already in
+    // the cart, /upsell auto-forwards to /checkout — so it only shows when the
+    // customer hasn't added the cream yet.
+    router.push('/upsell')
   }
 
   function handleAddToCart() {
