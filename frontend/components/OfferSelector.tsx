@@ -207,7 +207,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
 /* Shared image panel — clean, same footprint for every option */
 function OfferImage({ src, alt, badge }: { src: string; alt: string; badge?: string }) {
   return (
-    <div className="relative flex-shrink-0 w-[104px] bg-gradient-to-br from-veluna-blush to-[#F1E5EE] overflow-hidden">
+    <div className="relative flex-shrink-0 w-[124px] bg-gradient-to-br from-veluna-blush to-[#F1E5EE] overflow-hidden">
       {badge && (
         <span className="absolute top-2 end-2 z-10 bg-veluna-plum text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full shadow-sm leading-none">
           {badge}
@@ -217,8 +217,8 @@ function OfferImage({ src, alt, badge }: { src: string; alt: string; badge?: str
         src={src}
         alt={alt}
         fill
-        className="object-contain p-2.5"
-        sizes="104px"
+        className="object-contain p-1.5"
+        sizes="124px"
         style={{ filter: 'drop-shadow(0 5px 9px rgba(122,62,104,0.20))' }}
       />
     </div>

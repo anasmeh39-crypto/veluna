@@ -5,6 +5,9 @@ import Image from 'next/image'
 import { getProductBySlug } from '@/lib/products'
 import StickyMobileCart from '@/components/StickyMobileCart'
 import OfferSelector from '@/components/OfferSelector'
+import BeforeAfterSlider from '@/components/BeforeAfterSlider'
+import ProductTrustStrip from '@/components/ProductTrustStrip'
+import ImagePlaceholder from '@/components/ImagePlaceholder'
 
 // ── Problem card icons ──────────────────────────────────────────
 function IconGrowth() {
@@ -156,14 +159,7 @@ export default function OilProductPage() {
         </div>
 
         {/* ══ 2. TRUST STRIP ══ */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pb-10">
-          {['الدفع عند الاستلام', 'توصيل داخل المغرب', 'دعم واتساب', 'طلب آمن'].map((label) => (
-            <div key={label} className="flex items-center gap-2.5 bg-veluna-blush rounded-2xl px-4 py-3">
-              <span className="w-7 h-7 rounded-full bg-veluna-plum text-white text-xs font-bold flex items-center justify-center flex-shrink-0" aria-hidden="true">✓</span>
-              <span className="text-xs font-semibold text-veluna-dark leading-tight">{label}</span>
-            </div>
-          ))}
-        </div>
+        <ProductTrustStrip />
 
         {/* ══ 3. PROBLEMS ══ */}
         <section className="py-10">
@@ -184,31 +180,54 @@ export default function OilProductPage() {
           </div>
         </section>
 
+        {/* ══ 3.5 IMAGE SLOT (real photos coming soon) ══ */}
+        <section className="pb-12">
+          <ImagePlaceholder label="صورة الاستعمال / النتيجة" ratio="21/9" />
+        </section>
+
         {/* ══ 4. SOLUTION + HOW TO USE ══ */}
-        <section className="py-10 bg-veluna-blush rounded-2xl px-6 md:px-10">
-          <div className="text-center mb-8">
+        <section className="py-12">
+          <div className="text-center mb-10">
             <span className="tag">الروتين الصحيح</span>
             <h2 className="section-heading mt-3">زيت Veluna لإزالة سهلة وملمس ناعم</h2>
+            <p className="section-sub mt-2">فوائد واضحة وطريقة استعمال بسيطة فخطوات</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-bold text-veluna-dark text-base mb-4">فوائد المنتج</h3>
-              <ul className="space-y-3" role="list">
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            {/* Benefits — premium card with check pills */}
+            <div className="bg-gradient-to-br from-veluna-blush to-white rounded-3xl p-7 border border-veluna-petal">
+              <div className="flex items-center gap-2.5 mb-5">
+                <span className="w-9 h-9 rounded-xl bg-veluna-plum text-white flex items-center justify-center flex-shrink-0">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M20 6L9 17l-5-5" /></svg>
+                </span>
+                <h3 className="font-extrabold text-veluna-dark text-lg">فوائد المنتج</h3>
+              </div>
+              <ul className="space-y-2.5" role="list">
                 {product.benefits.map((b, i) => (
-                  <li key={i} className="flex gap-3 text-sm text-veluna-text">
-                    <span className="w-5 h-5 rounded-full bg-veluna-plum text-white text-xs flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">✓</span>
-                    {b}
+                  <li key={i} className="flex items-start gap-3 bg-white rounded-2xl px-4 py-3 border border-veluna-petal/70 shadow-veluna-sm">
+                    <span className="w-5 h-5 rounded-full bg-veluna-plum/10 text-veluna-plum text-[11px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">✓</span>
+                    <span className="text-sm text-veluna-text leading-relaxed">{b}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div>
-              <h3 className="font-bold text-veluna-dark text-base mb-4">طريقة الاستخدام</h3>
-              <ol className="space-y-3">
+
+            {/* How to use — vertical timeline */}
+            <div className="bg-white rounded-3xl p-7 border border-veluna-petal">
+              <div className="flex items-center gap-2.5 mb-5">
+                <span className="w-9 h-9 rounded-xl bg-veluna-plum text-white flex items-center justify-center flex-shrink-0">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+                </span>
+                <h3 className="font-extrabold text-veluna-dark text-lg">طريقة الاستخدام</h3>
+              </div>
+              <ol className="relative space-y-4 ps-2">
+                {/* connecting line */}
+                <span className="absolute top-2 bottom-2 start-[18px] w-0.5 bg-gradient-to-b from-veluna-plum/60 to-veluna-lavender/40" aria-hidden="true" />
                 {product.howToUse.map((s) => (
-                  <li key={s.step} className="flex gap-3">
-                    <span className="w-7 h-7 rounded-full bg-veluna-plum text-white font-bold text-sm flex items-center justify-center flex-shrink-0" aria-hidden="true">{s.step}</span>
-                    <p className="text-sm text-veluna-text leading-relaxed pt-0.5">{s.text}</p>
+                  <li key={s.step} className="relative flex gap-4">
+                    <span className="relative z-10 w-9 h-9 rounded-full bg-veluna-plum text-white font-bold text-sm flex items-center justify-center flex-shrink-0 ring-4 ring-white" aria-hidden="true">{s.step}</span>
+                    <p className="text-sm text-veluna-text leading-relaxed pt-1.5">{s.text}</p>
                   </li>
                 ))}
               </ol>
@@ -224,22 +243,14 @@ export default function OilProductPage() {
           </div>
         </section>
 
-        {/* ══ 5. BEFORE / AFTER ══ */}
+        {/* ══ 5. BEFORE / AFTER (interactive slider) ══ */}
         <section className="py-12">
           <div className="text-center mb-8">
             <span className="tag">الفرق فالإحساس والملمس</span>
             <h2 className="section-heading mt-3">بشرة أهدأ وأنعم مع روتين واضح</h2>
+            <p className="section-sub mt-2">زلّي الزر باش تشوفي الفرق قبل وبعد</p>
           </div>
-          <div className="relative rounded-2xl overflow-hidden max-w-2xl mx-auto shadow-veluna-md" style={{ aspectRatio: '4/3' }}>
-            <Image
-              src="/products/oil-2.jpg"
-              alt="نتائج استخدام زيت إزالة الشعر Veluna — قبل وبعد"
-              fill className="object-cover"
-              sizes="(max-width: 768px) 100vw, 672px"
-              loading="lazy"
-            />
-          </div>
-          <p className="text-xs text-veluna-muted text-center mt-3 italic">النتائج كتختلف من بشرة لبشرة.</p>
+          <BeforeAfterSlider caption="النتائج كتختلف من بشرة لبشرة." />
         </section>
 
         {/* ══ 6. REVIEWS ══ */}
@@ -278,23 +289,6 @@ export default function OilProductPage() {
               <p className="text-sm text-veluna-muted mt-1">الدفع عند الاستلام · تأكيد الطلب بالهاتف</p>
             </div>
             <OfferSelector product={product} onSelectedChange={setSelectedPrice} />
-          </div>
-        </section>
-
-        {/* ══ 8. BRAND CONFIDENCE ══ */}
-        <section className="py-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              { icon: '🌿', title: 'زيوت مرطبة',    desc: 'تركيبة فيها زيوت معروفة بالترطيب بحال اللوز، جوز الهند، واللافندر' },
-              { icon: '💧', title: 'استعمال واضح',   desc: '5 حتى 8 دقايق فقط، ومن بعد كيتغسل بالماء الدافئ' },
-              { icon: '✦',  title: 'روتين عملي',     desc: 'مناسب للي باغية إزالة سهلة بلا موس وبلا تعقيد' },
-            ].map((c) => (
-              <div key={c.title} className="bg-white rounded-2xl p-6 border border-veluna-petal text-center">
-                <p className="text-3xl mb-3 leading-none">{c.icon}</p>
-                <p className="font-bold text-veluna-dark text-sm mb-2">{c.title}</p>
-                <p className="text-xs text-veluna-muted leading-relaxed">{c.desc}</p>
-              </div>
-            ))}
           </div>
         </section>
 
