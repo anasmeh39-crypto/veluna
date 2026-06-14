@@ -7,7 +7,7 @@ import StickyMobileCart from '@/components/StickyMobileCart'
 import OfferSelector from '@/components/OfferSelector'
 import BeforeAfterSlider from '@/components/BeforeAfterSlider'
 import ProductTrustStrip from '@/components/ProductTrustStrip'
-import ImagePlaceholder from '@/components/ImagePlaceholder'
+import ResultsGallery from '@/components/ResultsGallery'
 
 // ── Problem card icons ──────────────────────────────────────────
 function IconGrowth() {
@@ -191,10 +191,11 @@ export default function CreamProductPage() {
           </div>
         </section>
 
-        {/* ══ 3.5 IMAGE SLOT (real photos coming soon) ══ */}
-        <section className="pb-12">
-          <ImagePlaceholder label="صورة الاستعمال / النتيجة" ratio="21/9" />
-        </section>
+        {/* ══ 3.5 RESULTS GALLERY ══ */}
+        <ResultsGallery
+          header="بشرة أنعم... وحبيبات أقل بروزاً"
+          subheadline="كريم Veluna كيساعد يحسن مظهر جلد الوزة والشعر تحت الجلد مع الاستعمال المنتظم."
+        />
 
         {/* ══ 4. SOLUTION + HOW TO USE ══ */}
         <section className="py-12">
