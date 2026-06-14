@@ -319,6 +319,18 @@ export default function OilProductPage() {
           </div>
         </section>
 
+        {/* ══ 9.5 FINAL OFFER — أطلبي الآن ══ */}
+        <section className="py-10">
+          <div className="bg-gradient-to-br from-veluna-blush via-white to-veluna-blush rounded-2xl p-6 md:p-10 max-w-xl mx-auto border-2 border-veluna-lavender shadow-veluna-md">
+            <div className="text-center mb-6">
+              <span className="tag">آخر خطوة</span>
+              <h2 className="text-xl md:text-2xl font-extrabold text-veluna-dark mt-2">أطلبي الآن وخلصي عند الاستلام</h2>
+              <p className="text-sm text-veluna-muted mt-1">اختاري العرض اللي يناسبك — التوصيل لكل المغرب</p>
+            </div>
+            <OfferSelector product={product} onSelectedChange={setSelectedPrice} />
+          </div>
+        </section>
+
         <p className="text-xs text-veluna-muted italic mt-2 mb-10 text-center">
           النتائج كتختلف من بشرة لبشرة. المنتج مخصص للعناية التجميلية وليس علاجاً طبياً. ديري اختبار صغير قبل الاستعمال الكامل.
         </p>

@@ -13,10 +13,16 @@ const BUNDLE_ID       = 'routine-complete'
 const BUNDLE_PRICE    = 249
 const BUNDLE_ORIGINAL = 278
 
-const PHOTOS: Record<'oil' | 'cream', string> = {
-  oil:   '/products/oil-studio.jpg',
-  cream: '/products/cream.png',
+/* Clean transparent cutouts (composed in advance for a premium look) */
+const SINGLE_IMG: Record<'oil' | 'cream', string> = {
+  oil:   '/products/oil-cutout.png',
+  cream: '/products/cream-cutout.png',
 }
+const PAIR_IMG: Record<'oil' | 'cream', string> = {
+  oil:   '/products/oil-pair.png',
+  cream: '/products/cream-pair.png',
+}
+const BUNDLE_IMG = '/products/bundle-duo.png'
 
 interface Props {
   product: Product
@@ -34,7 +40,6 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
   const perUnitSaving = product.originalPrice ? product.originalPrice - product.price : 0
   const totalSavings  = perUnitSaving * 2
   const bundleSaving  = BUNDLE_ORIGINAL - BUNDLE_PRICE
-  const photo         = PHOTOS[product.type]
 
   function handleSelect(key: OfferKey) {
     setSelected(key)
@@ -83,9 +88,6 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
   const infoCls = (active: boolean) =>
     `flex-1 px-4 py-3.5 flex flex-col justify-center gap-1 ${active ? 'bg-veluna-blush/30' : 'bg-white'}`
 
-  /* Image panel — same size & background for all three options */
-  const imgPanel = 'relative flex-shrink-0 w-24 bg-veluna-blush flex items-center justify-center py-4 overflow-hidden'
-
   return (
     <div className="flex flex-col gap-3">
       <p className="font-bold text-veluna-dark text-sm">اختاري العرض المناسب لك</p>
@@ -93,14 +95,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
       {/* ── قطعة واحدة ── */}
       <button type="button" onClick={() => handleSelect('single')} className={cardCls(selected === 'single')}>
         <div className="flex items-stretch">
-          <div className={imgPanel}>
-            <div
-              className="relative w-12 h-[72px]"
-              style={{ filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.18))' }}
-            >
-              <Image src={photo} alt={product.name} fill className="object-contain" sizes="48px" />
-            </div>
-          </div>
+          <OfferImage src={SINGLE_IMG[product.type]} alt={product.name} />
           <div className={infoCls(selected === 'single')}>
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
@@ -125,35 +120,12 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
         </span>
         <button type="button" onClick={() => handleSelect('double')} className={cardCls(selected === 'double')}>
           <div className="flex items-stretch">
-            <div className={imgPanel}>
-              {/* quantity badge */}
-              <span className="absolute top-2 end-2 w-5 h-5 rounded-full bg-veluna-plum text-white text-[10px] font-extrabold flex items-center justify-center shadow-sm z-10">
-                2
-              </span>
-              {/* back bottle */}
-              <div
-                className="absolute w-12 h-[72px]"
-                style={{ transform: 'rotate(-9deg) translateX(-10px) translateY(4px)', opacity: 0.65 }}
-              >
-                <Image src={photo} alt="" fill className="object-contain" sizes="48px" />
-              </div>
-              {/* front bottle */}
-              <div
-                className="relative w-12 h-[72px]"
-                style={{
-                  transform: 'rotate(5deg) translateX(6px)',
-                  filter: 'drop-shadow(2px 6px 10px rgba(0,0,0,0.22))',
-                  zIndex: 1,
-                }}
-              >
-                <Image src={photo} alt="" fill className="object-contain" sizes="48px" />
-              </div>
-            </div>
+            <OfferImage src={PAIR_IMG[product.type]} alt={`${product.name} × 2`} badge="×2" />
             <div className={infoCls(selected === 'double')}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Radio active={selected === 'double'} />
-                <span className="font-bold text-veluna-dark text-sm">جوج قطع</span>
+                  <span className="font-bold text-veluna-dark text-sm">جوج قطع</span>
                 </div>
                 <div className="text-end flex-shrink-0">
                   <p className="font-extrabold text-veluna-plum tabular-nums text-sm leading-tight">
@@ -190,26 +162,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
           </span>
           <button type="button" onClick={() => handleSelect('bundle')} className={cardCls(selected === 'bundle')}>
             <div className="flex items-stretch">
-              <div className={imgPanel}>
-                {/* cream jar — back left */}
-                <div
-                  className="absolute w-11 h-11"
-                  style={{ transform: 'rotate(-8deg) translateX(-10px) translateY(6px)', opacity: 0.85 }}
-                >
-                  <Image src="/products/cream.png" alt="" fill className="object-contain" sizes="44px" />
-                </div>
-                {/* oil bottle — front right */}
-                <div
-                  className="relative w-10 h-[68px]"
-                  style={{
-                    transform: 'rotate(6deg) translateX(8px)',
-                    filter: 'drop-shadow(2px 6px 10px rgba(0,0,0,0.2))',
-                    zIndex: 1,
-                  }}
-                >
-                  <Image src="/products/oil.png" alt="" fill className="object-contain" sizes="40px" />
-                </div>
-              </div>
+              <OfferImage src={BUNDLE_IMG} alt="روتين Veluna الكامل — الزيت والكريم" />
               <div className={infoCls(selected === 'bundle')}>
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
@@ -247,6 +200,27 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
           </div>
         ))}
       </div>
+    </div>
+  )
+}
+
+/* Shared image panel — clean, same footprint for every option */
+function OfferImage({ src, alt, badge }: { src: string; alt: string; badge?: string }) {
+  return (
+    <div className="relative flex-shrink-0 w-[104px] bg-gradient-to-br from-veluna-blush to-[#F1E5EE] overflow-hidden">
+      {badge && (
+        <span className="absolute top-2 end-2 z-10 bg-veluna-plum text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full shadow-sm leading-none">
+          {badge}
+        </span>
+      )}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-contain p-2.5"
+        sizes="104px"
+        style={{ filter: 'drop-shadow(0 5px 9px rgba(122,62,104,0.20))' }}
+      />
     </div>
   )
 }

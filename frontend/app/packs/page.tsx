@@ -6,8 +6,8 @@ import { packs, getProductById } from '@/lib/products'
 import Link from 'next/link'
 
 const PHOTOS: Record<string, string> = {
-  'zit-manaa': '/products/oil.png',
-  'krim-jlid': '/products/cream.png',
+  'zit-manaa': '/products/oil-cutout.png',
+  'krim-jlid': '/products/cream-cutout.png',
 }
 
 const descriptions: Record<string, string> = {

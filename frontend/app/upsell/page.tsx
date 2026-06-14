@@ -124,7 +124,7 @@ export default function UpsellPage() {
             {/* Product photo */}
             <div className="flex-shrink-0 relative w-32 h-48">
               <Image
-                src={upsellProduct.type === 'oil' ? '/products/oil.png' : '/products/cream.png'}
+                src={upsellProduct.type === 'oil' ? '/products/oil-cutout.png' : '/products/cream-cutout.png'}
                 alt={upsellProduct.name}
                 fill
                 className="object-contain"
