@@ -78,7 +78,7 @@ const FAQ = [
 export default function OilProductPage() {
   const product      = getProductBySlug('zit-manaa')!
   const [activeImg, setActiveImg] = useState(0)
-  const [selectedPrice, setSelectedPrice] = useState(249)
+  const [selectedPrice, setSelectedPrice] = useState(149 * 3 - 50)
   const offerRef     = useRef<HTMLDivElement>(null)
 
   const gallery = [

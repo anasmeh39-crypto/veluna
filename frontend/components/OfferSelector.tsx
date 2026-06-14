@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -7,22 +6,18 @@ import { useCart } from '@/context/CartContext'
 import { getProductById } from '@/lib/products'
 import type { Product } from '@/lib/products'
 
-type OfferKey = 'single' | 'double' | 'bundle'
+type OfferKey = 'single' | 'double' | 'triple'
 
-const BUNDLE_ID       = 'routine-complete'
-const BUNDLE_PRICE    = 249
-const BUNDLE_ORIGINAL = 278
+// ── Pricing discounts (درهم off total) — edit here to change promos ──
+const DOUBLE_SAVINGS = 20
+const TRIPLE_SAVINGS = 50
 
-/* Clean transparent cutouts (composed in advance for a premium look) */
-const SINGLE_IMG: Record<'oil' | 'cream', string> = {
-  oil:   '/products/oil-cutout.png',
-  cream: '/products/cream-cutout.png',
+const PRODUCT_IMG: Record<'oil' | 'cream', string> = {
+  oil:   '/products/oil-studio.jpg',
+  cream: '/products/cream.png',
 }
-const PAIR_IMG: Record<'oil' | 'cream', string> = {
-  oil:   '/products/oil-pair.png',
-  cream: '/products/cream-pair.png',
-}
-const BUNDLE_IMG = '/products/bundle-duo.png'
+
+const CREAM_ID = 'krim-jlid'
 
 interface Props {
   product: Product
@@ -31,71 +26,81 @@ interface Props {
 
 export default function OfferSelector({ product, onSelectedChange }: Props) {
   const router = useRouter()
-  const { setCart } = useCart()
-  const [selected, setSelected] = useState<OfferKey>('bundle')
+  const { setCart, items: cartItems, openCart } = useCart()
+  const [selected, setSelected] = useState<OfferKey>('triple')
+  const [upsellChecked, setUpsellChecked] = useState(false)
 
-  const complement    = getProductById(product.complementId)
-  const singlePrice   = product.price
-  const doublePrice   = product.price * 2
-  const perUnitSaving = product.originalPrice ? product.originalPrice - product.price : 0
-  const totalSavings  = perUnitSaving * 2
-  const bundleSaving  = BUNDLE_ORIGINAL - BUNDLE_PRICE
+  const cream = product.type === 'oil' ? getProductById(CREAM_ID) : undefined
+  const singlePrice = product.price
+  const doublePrice = singlePrice * 2 - DOUBLE_SAVINGS
+  const triplePrice = singlePrice * 3 - TRIPLE_SAVINGS
+
+  function priceFor(key: OfferKey) {
+    return key === 'single' ? singlePrice : key === 'double' ? doublePrice : triplePrice
+  }
 
   function handleSelect(key: OfferKey) {
     setSelected(key)
-    const prices: Record<OfferKey, number> = {
-      single: singlePrice,
-      double: doublePrice,
-      bundle: BUNDLE_PRICE,
+    onSelectedChange?.(priceFor(key))
+  }
+
+  function buildCartItems(includeCream: boolean) {
+    const qty = selected === 'single' ? 1 : selected === 'double' ? 2 : 3
+    const total = priceFor(selected)
+    const perUnit = Math.round(total / qty)
+    const result = [{
+      id:        product.id,
+      name:      qty === 1 ? product.name : `${product.name} × ${qty}`,
+      price:     perUnit,
+      quantity:  qty,
+      type:      'product' as const,
+      colorFrom: product.colorFrom,
+      colorTo:   product.colorTo,
+    }]
+    if (includeCream && cream) {
+      result.push({
+        id:        cream.id,
+        name:      cream.name,
+        price:     cream.price,
+        quantity:  1,
+        type:      'product' as const,
+        colorFrom: cream.colorFrom,
+        colorTo:   cream.colorTo,
+      })
     }
-    onSelectedChange?.(prices[key])
+    return result
   }
 
   function handleConfirm() {
-    if (selected === 'bundle') {
-      setCart([{
-        id:        BUNDLE_ID,
-        name:      'روتين فيلونا الكامل',
-        price:     BUNDLE_PRICE,
-        quantity:  1,
-        type:      'pack',
-        colorFrom: '#DCC7FF',
-        colorTo:   '#7A3E68',
-      }])
-      router.push('/checkout')
-    } else {
-      const qty = selected === 'single' ? 1 : 2
-      setCart([{
-        id:        product.id,
-        name:      qty === 1 ? product.name : `${product.name} × 2`,
-        price:     product.price,
-        quantity:  qty,
-        type:      'product',
-        colorFrom: product.colorFrom,
-        colorTo:   product.colorTo,
-      }])
-      router.push('/upsell')
-    }
+    setCart(buildCartItems(upsellChecked))
+    router.push('/checkout')
+  }
+
+  function handleAddToCart() {
+    const newItems = buildCartItems(upsellChecked)
+    const kept = cartItems.filter(i => i.id !== product.id && i.id !== CREAM_ID)
+    setCart([...kept, ...newItems])
+    openCart()
   }
 
   const cardCls = (active: boolean) =>
     `w-full text-start rounded-2xl border-2 overflow-hidden transition-all duration-200 ${
-      active
-        ? 'border-veluna-plum shadow-veluna-sm'
-        : 'border-veluna-petal hover:border-veluna-mauve'
+      active ? 'border-veluna-plum shadow-veluna-sm' : 'border-veluna-petal hover:border-veluna-mauve'
     }`
 
   const infoCls = (active: boolean) =>
     `flex-1 px-4 py-3.5 flex flex-col justify-center gap-1 ${active ? 'bg-veluna-blush/30' : 'bg-white'}`
 
+  const imgSrc = PRODUCT_IMG[product.type]
+
   return (
     <div className="flex flex-col gap-3">
       <p className="font-bold text-veluna-dark text-sm">اختاري العرض المناسب لك</p>
 
-      {/* ── قطعة واحدة ── */}
+      {/* ── واحد فقط ── */}
       <button type="button" onClick={() => handleSelect('single')} className={cardCls(selected === 'single')}>
         <div className="flex items-stretch">
-          <OfferImage src={SINGLE_IMG[product.type]} alt={product.name} />
+          <OfferImage src={imgSrc} alt={product.name} />
           <div className={infoCls(selected === 'single')}>
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
@@ -107,89 +112,131 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
               </span>
             </div>
             <p className="text-xs text-veluna-muted leading-relaxed ps-6">
-              مناسب إذا بغيتي تجربي الروتين لأول مرة
+              مناسب إذا بغيتي تجربي لأول مرة
             </p>
           </div>
         </div>
       </button>
 
-      {/* ── جوج قطع ── */}
+      {/* ── جوج قنينات ── */}
       <div className="relative">
         <span className="absolute -top-2.5 start-4 z-10 bg-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full">
           الأكثر طلباً
         </span>
         <button type="button" onClick={() => handleSelect('double')} className={cardCls(selected === 'double')}>
           <div className="flex items-stretch">
-            <OfferImage src={PAIR_IMG[product.type]} alt={`${product.name} × 2`} badge="×2" />
+            <OfferImage src={imgSrc} alt={`${product.name} × 2`} badge="×2" />
             <div className={infoCls(selected === 'double')}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Radio active={selected === 'double'} />
-                  <span className="font-bold text-veluna-dark text-sm">جوج قطع</span>
+                  <span className="font-bold text-veluna-dark text-sm">جوج قنينات</span>
                 </div>
                 <div className="text-end flex-shrink-0">
                   <p className="font-extrabold text-veluna-plum tabular-nums text-sm leading-tight">
                     {doublePrice} <span className="text-xs font-normal">درهم</span>
                   </p>
-                  {product.originalPrice && (
-                    <p className="text-[10px] text-veluna-muted line-through">{product.originalPrice * 2} درهم</p>
-                  )}
+                  <p className="text-[10px] text-veluna-muted line-through">{singlePrice * 2} درهم</p>
                 </div>
               </div>
-              <p className="text-xs text-veluna-muted leading-relaxed ps-6">
-                وفري أكثر وخلي الروتين واجد عندك
+              <p className="text-xs font-semibold text-[#25D366] ps-6">
+                وفري {DOUBLE_SAVINGS} درهم
               </p>
-              <div className="ps-6 space-y-0.5">
-                {perUnitSaving > 0 && (
-                  <p className="text-[11px] text-veluna-muted">
-                    ثمن القطعة: {singlePrice} درهم — توفير {perUnitSaving} درهم فالقطعة
-                  </p>
-                )}
-                {totalSavings > 0 && (
-                  <p className="text-xs font-semibold text-[#25D366]">وفري {totalSavings} درهم فالمجموع</p>
-                )}
-              </div>
             </div>
           </div>
         </button>
       </div>
 
-      {/* ── الروتين الكامل (bundle) ── */}
-      {complement && (
-        <div className="relative">
-          <span className="absolute -top-2.5 start-4 z-10 bg-gradient-to-r from-[#7A3E68] to-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm">
-            ✦ أحسن اختيار للروتين الكامل
-          </span>
-          <button type="button" onClick={() => handleSelect('bundle')} className={cardCls(selected === 'bundle')}>
-            <div className="flex items-stretch">
-              <OfferImage src={BUNDLE_IMG} alt="روتين فيلونا الكامل — الزيت والكريم" />
-              <div className={infoCls(selected === 'bundle')}>
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <Radio active={selected === 'bundle'} />
-                    <span className="font-bold text-veluna-dark text-sm">الروتين الكامل</span>
-                  </div>
-                  <div className="text-end flex-shrink-0">
-                    <p className="font-extrabold text-veluna-plum tabular-nums text-sm leading-tight">
-                      {BUNDLE_PRICE} <span className="text-xs font-normal">درهم</span>
-                    </p>
-                    <p className="text-[10px] text-veluna-muted line-through">{BUNDLE_ORIGINAL} درهم</p>
-                  </div>
+      {/* ── ثلاث قنينات ── */}
+      <div className="relative">
+        <span className="absolute -top-2.5 start-4 z-10 bg-gradient-to-r from-[#7A3E68] to-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm">
+          أفضل توفير
+        </span>
+        <button type="button" onClick={() => handleSelect('triple')} className={cardCls(selected === 'triple')}>
+          <div className="flex items-stretch">
+            <OfferImage src={imgSrc} alt={`${product.name} × 3`} badge="×3" />
+            <div className={infoCls(selected === 'triple')}>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Radio active={selected === 'triple'} />
+                  <span className="font-bold text-veluna-dark text-sm">ثلاث قنينات</span>
                 </div>
-                <p className="text-[11px] text-veluna-muted leading-relaxed ps-6">إزالة الشعر + العناية بالملمس من بعده</p>
-                <p className="text-xs font-semibold text-[#25D366] ps-6">
-                  وفري {bundleSaving} درهم — العرض الأنسب
+                <div className="text-end flex-shrink-0">
+                  <p className="font-extrabold text-veluna-plum tabular-nums text-sm leading-tight">
+                    {triplePrice} <span className="text-xs font-normal">درهم</span>
+                  </p>
+                  <p className="text-[10px] text-veluna-muted line-through">{singlePrice * 3} درهم</p>
+                </div>
+              </div>
+              <p className="text-xs font-semibold text-[#25D366] ps-6">
+                وفري {TRIPLE_SAVINGS} درهم — أحسن سعر
+              </p>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      {/* ── Cream upsell (oil page only) ── */}
+      {product.type === 'oil' && cream && (
+        <label className="flex items-start gap-3 mt-1 rounded-2xl border border-veluna-petal bg-veluna-blush/20 p-4 cursor-pointer">
+          <div className="flex-1 min-w-0">
+            <p className="font-bold text-veluna-dark text-sm mb-1">كملي الروتين مع كريم جلد الوزة</p>
+            <div className="flex items-start gap-3">
+              <div className="relative w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-white">
+                <Image
+                  src="/products/cream.png"
+                  alt={cream.name}
+                  fill
+                  className="object-contain p-1"
+                  sizes="56px"
+                  loading="lazy"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-veluna-dark text-xs leading-snug">{cream.name}</p>
+                <p className="text-[11px] text-veluna-muted leading-relaxed mt-0.5">
+                  من بعد إزالة الشعر، البشرة كتحتاج عناية باش يتحسن مظهر الحبيبات والشعر تحت الجلد.
+                </p>
+                <p className="font-bold text-veluna-plum text-sm mt-1">
+                  {cream.price} <span className="text-xs font-normal">درهم</span>
                 </p>
               </div>
             </div>
-          </button>
-        </div>
+          </div>
+          <div className="flex-shrink-0 flex flex-col items-center gap-1 pt-1">
+            <input
+              type="checkbox"
+              checked={upsellChecked}
+              onChange={(e) => setUpsellChecked(e.target.checked)}
+              className="sr-only"
+            />
+            <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
+              upsellChecked ? 'bg-veluna-plum border-veluna-plum' : 'bg-white border-veluna-petal'
+            }`}>
+              {upsellChecked && (
+                <svg className="w-3 h-3 text-white" viewBox="0 0 12 10" fill="none">
+                  <path d="M1 5l3.5 3.5L11 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+            </div>
+            <span className="text-[10px] font-semibold text-veluna-dark text-center leading-tight max-w-[52px]">زيدي للطلب</span>
+          </div>
+        </label>
       )}
 
-      {/* ── CTA ── */}
-      <button type="button" onClick={handleConfirm} className="w-full btn-primary py-4 text-base mt-1">
-        كملي الطلب
-      </button>
+      {/* ── CTAs ── */}
+      <div className="flex flex-col gap-2 mt-1">
+        <button type="button" onClick={handleConfirm} className="w-full btn-primary py-4 text-base">
+          أكدي الطلب
+        </button>
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          className="w-full py-3.5 text-sm font-bold text-veluna-plum border-2 border-veluna-plum rounded-full hover:bg-veluna-blush active:scale-95 transition-all duration-150"
+        >
+          زيدي للسلة
+        </button>
+      </div>
 
       {/* ── Trust strip ── */}
       <div className="grid grid-cols-3 gap-2">
@@ -204,7 +251,6 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
   )
 }
 
-/* Shared image panel — clean, same footprint for every option */
 function OfferImage({ src, alt, badge }: { src: string; alt: string; badge?: string }) {
   return (
     <div className="relative flex-shrink-0 w-[124px] bg-gradient-to-br from-veluna-blush to-[#F1E5EE] overflow-hidden">
@@ -227,11 +273,9 @@ function OfferImage({ src, alt, badge }: { src: string; alt: string; badge?: str
 
 function Radio({ active }: { active: boolean }) {
   return (
-    <div
-      className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors duration-150 ${
-        active ? 'border-veluna-plum bg-veluna-plum' : 'border-veluna-petal bg-white'
-      }`}
-    >
+    <div className={`flex-shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors duration-150 ${
+      active ? 'border-veluna-plum bg-veluna-plum' : 'border-veluna-petal bg-white'
+    }`}>
       {active && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
     </div>
   )
