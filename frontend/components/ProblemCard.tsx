@@ -26,20 +26,14 @@ export default function ProblemCard({ icon, title, desc, img }: Props) {
       {/* Visual */}
       <div className="relative bg-gradient-to-br from-veluna-blush to-veluna-lavender/30" style={{ aspectRatio: '4/3' }}>
         {showImg ? (
-          <>
-            <Image
-              src={img!}
-              alt={title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 50vw, 25vw"
-              onError={() => setFailed(true)}
-            />
-            {/* small icon badge over the photo */}
-            <span className="absolute bottom-2 start-2 w-9 h-9 rounded-xl bg-veluna-plum text-white flex items-center justify-center shadow-md">
-              {icon}
-            </span>
-          </>
+          <Image
+            src={img!}
+            alt={title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 50vw, 25vw"
+            onError={() => setFailed(true)}
+          />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-14 h-14 rounded-2xl bg-veluna-plum text-white flex items-center justify-center">
