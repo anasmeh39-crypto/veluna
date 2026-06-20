@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { getProductBySlug } from '@/lib/products'
 import StickyMobileCart from '@/components/StickyMobileCart'
 import OfferSelector from '@/components/OfferSelector'
-import BeforeAfterSlider from '@/components/BeforeAfterSlider'
 import ProductTrustStrip from '@/components/ProductTrustStrip'
 import ResultsGallery from '@/components/ResultsGallery'
 import ProblemCard from '@/components/ProblemCard'
@@ -247,16 +246,6 @@ export default function CreamProductPage() {
               </div>
             </div>
           </div>
-        </section>
-
-        {/* ══ 5. BEFORE / AFTER (interactive slider) ══ */}
-        <section className="py-12">
-          <div className="text-center mb-8">
-            <span className="tag">الفرق مع الاستعمال المنتظم</span>
-            <h2 className="section-heading mt-3">من ملمس خشن لروتين عناية أوضح</h2>
-            <p className="section-sub mt-2">زلّي الزر باش تشوفي الفرق قبل وبعد</p>
-          </div>
-          <BeforeAfterSlider caption="النتائج كتختلف من بشرة لبشرة. مع الاستعمال المنتظم." />
         </section>
 
         {/* ══ 6. REVIEWS ══ */}
