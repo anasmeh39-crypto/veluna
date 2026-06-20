@@ -246,7 +246,11 @@ export default function OilProductPage() {
             <h2 className="section-heading mt-3">بشرة أهدأ وأنعم مع روتين واضح</h2>
             <p className="section-sub mt-2">زلّي الزر باش تشوفي الفرق قبل وبعد</p>
           </div>
-          <BeforeAfterSlider caption="النتائج كتختلف من بشرة لبشرة." />
+          <BeforeAfterSlider
+            beforeSrc="/results/oil-before.jpg"
+            afterSrc="/results/oil-after.jpg"
+            caption="النتائج كتختلف من بشرة لبشرة."
+          />
         </section>
 
         {/* ══ 6. REVIEWS ══ */}
