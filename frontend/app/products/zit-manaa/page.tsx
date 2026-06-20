@@ -8,6 +8,7 @@ import OfferSelector from '@/components/OfferSelector'
 import BeforeAfterSlider from '@/components/BeforeAfterSlider'
 import ProductTrustStrip from '@/components/ProductTrustStrip'
 import ResultsGallery from '@/components/ResultsGallery'
+import ProblemCard from '@/components/ProblemCard'
 
 // ── Problem card icons ──────────────────────────────────────────
 function IconGrowth() {
@@ -45,10 +46,10 @@ function IconIngrown() {
 }
 
 const PROBLEMS = [
-  { Icon: IconGrowth,     title: 'الشعر كيبان بسرعة',          desc: 'الحلاقة كتحتاج تعاوديها بزاف وكتخلي البشرة خشنة' },
-  { Icon: IconBumps,      title: 'الحبوب من بعد الحلاقة',       desc: 'حبيبات صغيرة كتظهر من بعد الموس أو الحلاوة' },
-  { Icon: IconIrritation, title: 'الحمرة والتهيج',              desc: 'البشرة كتولي حساسة ومحمرة من بعد الإزالة' },
-  { Icon: IconIngrown,    title: 'جلد الوزة والشعر تحت الجلد', desc: 'ملمس غير ناعم ونقط كيبانو خصوصاً فالرجلين واليدين' },
+  { Icon: IconGrowth,     title: 'الشعر كيبان بسرعة',          desc: 'الحلاقة كتحتاج تعاوديها بزاف وكتخلي البشرة خشنة',           img: '/problems/regrowth.jpg' },
+  { Icon: IconBumps,      title: 'الحبوب من بعد الحلاقة',       desc: 'حبيبات صغيرة كتظهر من بعد الموس أو الحلاوة',              img: '/problems/bumps.jpg' },
+  { Icon: IconIrritation, title: 'الحمرة والتهيج',              desc: 'البشرة كتولي حساسة ومحمرة من بعد الإزالة',                img: '/problems/redness.jpg' },
+  { Icon: IconIngrown,    title: 'جلد الوزة والشعر تحت الجلد', desc: 'ملمس غير ناعم ونقط كيبانو خصوصاً فالرجلين واليدين',      img: '/problems/ingrown.jpg' },
 ]
 
 const REVIEWS = [
@@ -168,14 +169,8 @@ export default function OilProductPage() {
             <h2 className="section-heading mt-3">إزالة الشعر ما خاصهاش تخلي بشرتك متعبة</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {PROBLEMS.map(({ Icon, title, desc }) => (
-              <div key={title} className="bg-white rounded-2xl p-5 border border-veluna-petal hover:shadow-veluna-sm transition-shadow text-center">
-                <div className="w-12 h-12 rounded-2xl bg-veluna-plum text-white flex items-center justify-center mx-auto mb-3">
-                  <Icon />
-                </div>
-                <p className="font-bold text-veluna-dark text-sm leading-tight mb-1.5">{title}</p>
-                <p className="text-xs text-veluna-muted leading-relaxed">{desc}</p>
-              </div>
+            {PROBLEMS.map(({ Icon, title, desc, img }) => (
+              <ProblemCard key={title} icon={<Icon />} title={title} desc={desc} img={img} />
             ))}
           </div>
         </section>
