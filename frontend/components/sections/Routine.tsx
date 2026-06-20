@@ -1,6 +1,11 @@
 import Link from 'next/link'
-import ProductImage from '../ProductImage'
+import Image from 'next/image'
 import { products } from '@/lib/products'
+
+const PRODUCT_PHOTO: Record<'oil' | 'cream', string> = {
+  oil:   '/products/oil-studio.jpg',
+  cream: '/products/cream.png',
+}
 
 export default function Routine() {
   const oil   = products[0]
@@ -66,11 +71,13 @@ export default function Routine() {
 
               {/* Product */}
               <div className="flex gap-4 items-center">
-                <div className="w-20 h-28 flex-shrink-0">
-                  <ProductImage
-                    type={step.product.type}
-                    colorFrom={step.product.colorFrom}
-                    colorTo={step.product.colorTo}
+                <div className="relative w-20 h-28 flex-shrink-0 rounded-xl overflow-hidden bg-[#f0f0f0]">
+                  <Image
+                    src={PRODUCT_PHOTO[step.product.type]}
+                    alt={step.product.name}
+                    fill
+                    className="object-contain p-1"
+                    sizes="80px"
                   />
                 </div>
                 <div>
