@@ -12,10 +12,12 @@ type OfferKey = 'single' | 'double' | 'triple'
 const DOUBLE_SAVINGS = 20
 const TRIPLE_SAVINGS = 50
 
-const PRODUCT_IMG: Record<'oil' | 'cream', string> = {
-  oil:   '/products/oil-studio.jpg',
-  cream: '/products/cream.png',
+const OIL_IMGS: Record<OfferKey, string> = {
+  single: '/products/oil-studio.jpg',
+  double: '/products/oil-x2.jpg',
+  triple: '/products/oil-x3.jpg',
 }
+const CREAM_IMG = '/products/cream.png'
 
 const CREAM_ID = 'krim-jlid'
 
@@ -94,7 +96,9 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
   const infoCls = (active: boolean) =>
     `flex-1 px-4 py-3.5 flex flex-col justify-center gap-1 ${active ? 'bg-veluna-blush/30' : 'bg-white'}`
 
-  const imgSrc = PRODUCT_IMG[product.type]
+  function imgFor(key: OfferKey) {
+    return product.type === 'oil' ? OIL_IMGS[key] : CREAM_IMG
+  }
 
   return (
     <div className="flex flex-col gap-3">
@@ -103,7 +107,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
       {/* ── واحد فقط ── */}
       <button type="button" onClick={() => handleSelect('single')} className={cardCls(selected === 'single')}>
         <div className="flex items-stretch">
-          <OfferImage src={imgSrc} alt={product.name} />
+          <OfferImage src={imgFor('single')} alt={product.name} />
           <div className={infoCls(selected === 'single')}>
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
@@ -128,7 +132,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
         </span>
         <button type="button" onClick={() => handleSelect('double')} className={cardCls(selected === 'double')}>
           <div className="flex items-stretch">
-            <OfferImage src={imgSrc} alt={`${product.name} × 2`} badge="×2" />
+            <OfferImage src={imgFor('double')} alt={`${product.name} × 2`} />
             <div className={infoCls(selected === 'double')}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
@@ -157,7 +161,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
         </span>
         <button type="button" onClick={() => handleSelect('triple')} className={cardCls(selected === 'triple')}>
           <div className="flex items-stretch">
-            <OfferImage src={imgSrc} alt={`${product.name} × 3`} badge="×3" />
+            <OfferImage src={imgFor('triple')} alt={`${product.name} × 3`} />
             <div className={infoCls(selected === 'triple')}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
