@@ -5,9 +5,10 @@ import { useCart } from '@/context/CartContext'
 import { packs, getProductById } from '@/lib/products'
 import Link from 'next/link'
 
-const PHOTOS: Record<string, string> = {
-  'zit-manaa': '/products/oil-cutout.png',
-  'krim-jlid': '/products/cream-cutout.png',
+const PACK_IMGS: Record<string, string> = {
+  'routine-complete': '/products/bundle-duo.png',
+  'pack-oil-x2':     '/products/oil-x2.jpg',
+  'pack-cream-x2':   '/products/cream-pair.png',
 }
 
 const descriptions: Record<string, string> = {
@@ -35,9 +36,7 @@ export default function PacksPage() {
       {/* Packs grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {packs.map((pack) => {
-          const uniqueIds  = [...new Set(pack.productIds)]
-          const packProducts = uniqueIds.map(id => getProductById(id)).filter(Boolean)
-          const saving     = pack.originalPrice - pack.price
+          const saving = pack.originalPrice - pack.price
 
           return (
             <article
@@ -58,34 +57,19 @@ export default function PacksPage() {
                 {pack.badge}
               </div>
 
-              {/* Product photos */}
-              <div className="bg-gradient-to-br from-veluna-blush to-white px-6 pt-6 pb-4 flex items-end justify-center gap-4 min-h-[200px] relative">
-                {packProducts.map((p, i) => {
-                  const src = PHOTOS[p!.id]
-                  const isSingle = packProducts.length === 1
-                  return src ? (
-                    <div
-                      key={`${p!.id}-${i}`}
-                      className="relative"
-                      style={{
-                        width:  isSingle ? 120 : 88,
-                        height: isSingle ? 160 : 128,
-                        filter: i > 0 ? 'drop-shadow(4px 6px 12px rgba(0,0,0,0.18))' : 'drop-shadow(0 6px 14px rgba(0,0,0,0.14))',
-                        transform: packProducts.length === 2
-                          ? i === 0 ? 'rotate(-5deg) translateY(6px)' : 'rotate(4deg)'
-                          : undefined,
-                      }}
-                    >
-                      <Image
-                        src={src}
-                        alt={p!.name}
-                        fill
-                        className="object-contain"
-                        sizes={isSingle ? '120px' : '88px'}
-                      />
-                    </div>
-                  ) : null
-                })}
+              {/* Pack photo */}
+              <div className="bg-gradient-to-br from-veluna-blush to-white flex items-center justify-center min-h-[200px] relative overflow-hidden">
+                {PACK_IMGS[pack.id] && (
+                  <div className="relative w-full h-[200px]">
+                    <Image
+                      src={PACK_IMGS[pack.id]}
+                      alt={pack.name}
+                      fill
+                      className="object-contain p-4"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Info */}
