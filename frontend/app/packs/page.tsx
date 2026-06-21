@@ -58,14 +58,14 @@ export default function PacksPage() {
               </div>
 
               {/* Pack photo */}
-              <div className="bg-gradient-to-br from-veluna-blush to-white flex items-center justify-center min-h-[200px] relative overflow-hidden">
+              <div className="bg-gradient-to-br from-veluna-blush to-white flex items-center justify-center min-h-[300px] relative overflow-hidden">
                 {PACK_IMGS[pack.id] && (
-                  <div className="relative w-full h-[200px]">
+                  <div className="relative w-full h-[300px]">
                     <Image
                       src={PACK_IMGS[pack.id]}
                       alt={pack.name}
                       fill
-                      className="object-contain p-4"
+                      className="object-contain p-6"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   </div>
