@@ -45,7 +45,7 @@ function IconIngrown() {
 }
 
 const PROBLEMS = [
-  { Icon: IconGrowth,  title: 'الشعر تحت الجلد', desc: 'الشعر كيبقى محبوس وكيبان بحال نقط صغيرة',           img: undefined as string | undefined },
+  { Icon: IconGrowth,  title: 'الشعر تحت الجلد', desc: 'الشعر كيبقى محبوس وكيبان بحال نقط صغيرة',           img: '/problems/cream-ingrown.jpg' as string | undefined },
   { Icon: IconIngrown, title: 'جلد الوزة',       desc: 'خشونة ونقط كتظهر فالرجلين، اليدين، أو مناطق الجسم', img: undefined as string | undefined },
 ]
 
@@ -80,9 +80,9 @@ export default function CreamProductPage() {
   const offerRef     = useRef<HTMLDivElement>(null)
 
   const gallery = [
-    { src: '/products/cream.png',          alt: 'كريم الشعر تحت الجلد فيلونا — صورة المنتج',    bg: 'from-[#F8EEF5] to-[#FDF6FA]', pad: 'p-6', thumbCover: false },
-    { src: '/products/cream-2.jpg',        alt: 'روتين فيلونا الكامل — الكريم والزيت معاً',      bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true  },
-    { src: '/products/duo-lifestyle.jpg',  alt: 'روتين فيلونا — الزيت والكريم للعناية بعد الإزالة', bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true  },
+    { src: '/products/cream-2.jpg',       alt: 'كريم الشعر تحت الجلد فيلونا — صورة المنتج',       bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true },
+    { src: '/products/cream-pair.jpg',    alt: 'كريم فيلونا — جرّتين للعناية المستمرة',            bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true },
+    { src: '/products/duo-lifestyle.jpg', alt: 'روتين فيلونا — الزيت والكريم للعناية بعد الإزالة', bg: 'from-[#F8EEF5] to-[#F0E8F2]', pad: 'p-0', thumbCover: true },
   ]
   const active = gallery[activeImg]
 
