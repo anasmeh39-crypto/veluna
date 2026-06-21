@@ -18,7 +18,11 @@ const OIL_IMGS: Record<OfferKey, string> = {
   double: '/products/oil-x2.jpg',
   triple: '/products/oil-x3.jpg',
 }
-const CREAM_IMG = '/products/cream.png'
+const CREAM_IMGS: Record<OfferKey, string> = {
+  single: '/products/cream.png',
+  double: '/products/cream-x2.jpg',
+  triple: '/products/cream-x3.jpg',
+}
 
 const CREAM_ID = 'krim-jlid'
 
@@ -97,7 +101,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
     `flex-1 px-4 py-3.5 flex flex-col justify-center gap-1 ${active ? 'bg-veluna-blush/30' : 'bg-white'}`
 
   function imgFor(key: OfferKey) {
-    return product.type === 'oil' ? OIL_IMGS[key] : CREAM_IMG
+    return product.type === 'oil' ? OIL_IMGS[key] : CREAM_IMGS[key]
   }
 
   return (
@@ -191,7 +195,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
             <div className="flex items-start gap-3">
               <div className="relative w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-white">
                 <Image
-                  src="/products/cream.png"
+                  src="/products/cream-x2.jpg"
                   alt={cream.name}
                   fill
                   className="object-contain p-1"
