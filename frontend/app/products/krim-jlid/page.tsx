@@ -46,7 +46,7 @@ function IconIngrown() {
 
 const PROBLEMS = [
   { Icon: IconGrowth,  title: 'الشعر تحت الجلد', desc: 'الشعر كيبقى محبوس وكيبان بحال نقط صغيرة',           img: '/problems/cream-ingrown.jpg' as string | undefined },
-  { Icon: IconIngrown, title: 'جلد الوزة',       desc: 'خشونة ونقط كتظهر فالرجلين، اليدين، أو مناطق الجسم', img: undefined as string | undefined },
+  { Icon: IconIngrown, title: 'جلد الوزة',       desc: 'خشونة ونقط كتظهر فالرجلين، اليدين، أو مناطق الجسم', img: '/problems/goosebumps.jpg' as string | undefined },
 ]
 
 const REVIEWS = [
