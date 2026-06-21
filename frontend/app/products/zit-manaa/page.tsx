@@ -192,28 +192,47 @@ export default function OilProductPage() {
 
         {/* ══ 4. BENEFITS ══ */}
         <section className="py-12">
-          <div className="text-center mb-10">
-            <span className="tag">الروتين الصحيح</span>
-            <h2 className="section-heading mt-3">زيت فيلونا لإزالة سهلة وملمس ناعم</h2>
-            <p className="section-sub mt-2">فوائد واضحة وطريقة استعمال بسيطة فخطوات</p>
-          </div>
+          <div className="rounded-3xl overflow-hidden bg-gradient-to-br from-[#F9F0F6] to-white border border-veluna-petal shadow-veluna-sm">
+            <div className="flex flex-col md:flex-row">
 
-          {/* Benefits — premium card with check pills */}
-          <div className="bg-gradient-to-br from-veluna-blush to-white rounded-3xl p-7 border border-veluna-petal max-w-2xl mx-auto">
-            <div className="flex items-center gap-2.5 mb-5">
-              <span className="w-9 h-9 rounded-xl bg-veluna-plum text-white flex items-center justify-center flex-shrink-0">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M20 6L9 17l-5-5" /></svg>
-              </span>
-              <h3 className="font-extrabold text-veluna-dark text-lg">فوائد المنتج</h3>
+              {/* Photo */}
+              <div className="relative md:w-[44%] flex-shrink-0 min-h-[300px] md:min-h-[480px]">
+                <Image
+                  src="/products/oil-lifestyle-2.jpg"
+                  alt="زيت فيلونا — طريقة الاستعمال"
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, 44vw"
+                />
+                {/* Subtle overlay badge */}
+                <div className="absolute bottom-4 start-4 bg-veluna-plum/90 backdrop-blur-sm text-white rounded-2xl px-4 py-2.5 shadow-veluna-md">
+                  <p className="text-[11px] font-extrabold leading-tight">✓ طبيعي 100٪</p>
+                  <p className="text-[10px] opacity-80 mt-0.5">زيوت نباتية نقية</p>
+                </div>
+              </div>
+
+              {/* Benefits */}
+              <div className="flex-1 p-7 md:p-10 flex flex-col justify-center gap-5">
+                <div>
+                  <span className="tag">فوائد المنتج</span>
+                  <h2 className="section-heading mt-3 text-start">
+                    زيت فيلونا لإزالة{' '}
+                    <span className="text-veluna-plum">سهلة وملمس ناعم</span>
+                  </h2>
+                  <p className="text-veluna-muted text-sm mt-2 leading-relaxed">
+                    مركّب من زيوت نباتية مختارة — كيزيل الشعر بلطف ويرطب البشرة من بعد الإزالة.
+                  </p>
+                </div>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2.5" role="list">
+                  {product.benefits.map((b, i) => (
+                    <li key={i} className="flex items-start gap-3 bg-white rounded-2xl px-4 py-3 border border-veluna-petal/70 shadow-veluna-sm">
+                      <span className="w-5 h-5 rounded-full bg-veluna-plum/10 text-veluna-plum text-[11px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">✓</span>
+                      <span className="text-sm text-veluna-text leading-relaxed">{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <ul className="space-y-2.5 sm:grid sm:grid-cols-2 sm:gap-2.5 sm:space-y-0" role="list">
-              {product.benefits.map((b, i) => (
-                <li key={i} className="flex items-start gap-3 bg-white rounded-2xl px-4 py-3 border border-veluna-petal/70 shadow-veluna-sm">
-                  <span className="w-5 h-5 rounded-full bg-veluna-plum/10 text-veluna-plum text-[11px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">✓</span>
-                  <span className="text-sm text-veluna-text leading-relaxed">{b}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
 
