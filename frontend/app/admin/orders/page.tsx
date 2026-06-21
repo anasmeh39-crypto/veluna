@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import AdminHeader from '@/components/admin/AdminHeader'
 
 interface OrderItem {
   id: string
@@ -124,11 +125,6 @@ export default function AdminOrdersPage() {
     }
   }
 
-  async function handleLogout() {
-    await fetch('/api/admin/logout', { method: 'POST' })
-    window.location.href = '/admin/login'
-  }
-
   const totalRevenue = orders
     .filter((o) => o.status !== 'cancelled' && o.status !== 'returned')
     .reduce((s, o) => s + o.total, 0)
@@ -137,26 +133,16 @@ export default function AdminOrdersPage() {
     <div className="min-h-screen bg-gray-50 font-[Cairo,sans-serif]" dir="rtl">
 
       {/* Top bar */}
-      <div className="bg-veluna-dark text-white px-4 sm:px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="font-extrabold text-lg">فيلونا Admin</h1>
-          <span className="text-white/50 text-sm hidden sm:block">لوحة الطلبات</span>
-        </div>
-        <div className="flex items-center gap-3">
+      <AdminHeader
+        rightSlot={
           <button
             onClick={() => exportCSV(orders)}
             className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors"
           >
             تصدير CSV
           </button>
-          <button
-            onClick={handleLogout}
-            className="text-xs text-white/60 hover:text-white transition-colors"
-          >
-            خروج
-          </button>
-        </div>
-      </div>
+        }
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 
