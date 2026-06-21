@@ -201,7 +201,7 @@ export default function OilProductPage() {
                   src="/products/oil-lifestyle-2.jpg"
                   alt="زيت فيلونا — طريقة الاستعمال"
                   fill
-                  className="object-cover object-top"
+                  className="object-contain object-center"
                   sizes="(max-width: 768px) 100vw, 44vw"
                 />
                 {/* Subtle overlay badge */}
