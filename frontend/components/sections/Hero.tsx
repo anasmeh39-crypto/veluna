@@ -58,11 +58,11 @@ export default function Hero() {
           <div className="flex gap-2">
             <div className="bg-white rounded-xl border border-veluna-petal px-3 py-2 text-center shadow-veluna-sm flex-1">
               <p className="text-[10px] text-veluna-muted leading-tight">الزيت</p>
-              <p className="font-extrabold text-veluna-plum text-sm">149 درهم</p>
+              <p className="font-extrabold text-veluna-plum text-sm">219 درهم</p>
             </div>
             <div className="bg-white rounded-xl border border-veluna-petal px-3 py-2 text-center shadow-veluna-sm flex-1">
               <p className="text-[10px] text-veluna-muted leading-tight">الكريم</p>
-              <p className="font-extrabold text-veluna-plum text-sm">129 درهم</p>
+              <p className="font-extrabold text-veluna-plum text-sm">219 درهم</p>
             </div>
             <div className="bg-veluna-plum text-white rounded-xl px-3 py-2 text-center shadow-veluna-sm flex-1">
               <p className="text-[10px] font-bold leading-tight opacity-80">الروتين كامل</p>
@@ -129,11 +129,11 @@ export default function Hero() {
             <div className="flex gap-3">
               <div className="bg-white rounded-2xl border border-veluna-petal px-4 py-3 text-center shadow-veluna-sm">
                 <p className="text-[11px] text-veluna-muted leading-tight">زيت إزالة الشعر</p>
-                <p className="font-extrabold text-veluna-plum mt-1">149 <span className="text-xs font-normal">درهم</span></p>
+                <p className="font-extrabold text-veluna-plum mt-1">219 <span className="text-xs font-normal">درهم</span></p>
               </div>
               <div className="bg-white rounded-2xl border border-veluna-petal px-4 py-3 text-center shadow-veluna-sm">
                 <p className="text-[11px] text-veluna-muted leading-tight">كريم الشعر تحت الجلد</p>
-                <p className="font-extrabold text-veluna-plum mt-1">129 <span className="text-xs font-normal">درهم</span></p>
+                <p className="font-extrabold text-veluna-plum mt-1">219 <span className="text-xs font-normal">درهم</span></p>
               </div>
               <div className="bg-veluna-plum text-white rounded-2xl px-4 py-3 text-center shadow-veluna-md">
                 <p className="text-[11px] font-bold leading-tight opacity-80">الروتين الكامل</p>

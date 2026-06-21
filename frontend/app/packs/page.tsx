@@ -172,10 +172,10 @@ export default function PacksPage() {
         <p className="text-sm text-veluna-muted mb-3">أو اشتري منتجاً واحداً:</p>
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link href="/products/zit-manaa" className="btn-outline text-sm py-2.5 px-5">
-            زيت إزالة الشعر — 149 درهم
+            زيت إزالة الشعر — 219 درهم
           </Link>
           <Link href="/products/krim-jlid" className="btn-outline text-sm py-2.5 px-5">
-            كريم الشعر تحت الجلد — 129 درهم
+            كريم الشعر تحت الجلد — 219 درهم
           </Link>
         </div>
       </div>

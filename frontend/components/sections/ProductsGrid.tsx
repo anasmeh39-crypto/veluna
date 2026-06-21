@@ -41,8 +41,8 @@ const CARDS: Card[] = [
     img: '/products/home-oil.jpg',
     name: 'زيت إزالة الشعر',
     tagline: 'إزالة أسهل وبشرة مرطبة — بدون موس',
-    price: 149,
-    originalPrice: 179,
+    price: 219,
+    originalPrice: 219,
     rating: 4.8,
     reviews: 214,
     type: 'product',
@@ -55,8 +55,8 @@ const CARDS: Card[] = [
     img: '/products/home-cream.jpg',
     name: 'كريم الشعر تحت الجلد',
     tagline: 'ملمس أنعم ومظهر أصفى بعد الحلاقة',
-    price: 129,
-    originalPrice: 159,
+    price: 219,
+    originalPrice: 219,
     rating: 4.9,
     reviews: 186,
     type: 'product',
@@ -139,8 +139,8 @@ export default function ProductsGrid() {
                     <span className="text-xl font-extrabold text-veluna-plum">
                       {c.price} <span className="text-sm font-semibold">درهم</span>
                     </span>
-                    <span className="text-sm text-veluna-muted line-through">{c.originalPrice} درهم</span>
-                    <span className="text-xs font-bold text-[#25D366] ms-auto">وفري {saving} درهم</span>
+                    {saving > 0 && <span className="text-sm text-veluna-muted line-through">{c.originalPrice} درهم</span>}
+                    {saving > 0 && <span className="text-xs font-bold text-[#25D366] ms-auto">وفري {saving} درهم</span>}
                   </div>
 
                   <p className="text-[11px] text-veluna-muted">✓ الدفع عند الاستلام</p>

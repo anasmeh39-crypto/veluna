@@ -9,8 +9,9 @@ import type { Product } from '@/lib/products'
 type OfferKey = 'single' | 'double' | 'triple'
 
 // ── Pricing discounts (درهم off total) — edit here to change promos ──
-const DOUBLE_SAVINGS = 20
-const TRIPLE_SAVINGS = 50
+const DOUBLE_SAVINGS = 139   // 2 × 219 = 438 → offer 299 → saves 139
+const TRIPLE_SAVINGS = 278   // 3 × 219 = 657 → offer 379 → saves 278
+const UPSELL_CREAM_PRICE = 99  // cross-sell price (normal: 219 → saves 120)
 
 const OIL_IMGS: Record<OfferKey, string> = {
   single: '/products/oil-studio.jpg',
@@ -63,7 +64,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
       result.push({
         id:        cream.id,
         name:      cream.name,
-        price:     cream.price,
+        price:     UPSELL_CREAM_PRICE,
         quantity:  1,
         type:      'product' as const,
         colorFrom: cream.colorFrom,
@@ -204,9 +205,13 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
                 <p className="text-[11px] text-veluna-muted leading-relaxed mt-0.5">
                   من بعد إزالة الشعر، البشرة كتحتاج عناية باش يتحسن مظهر الحبيبات والشعر تحت الجلد.
                 </p>
-                <p className="font-bold text-veluna-plum text-sm mt-1">
-                  {cream.price} <span className="text-xs font-normal">درهم</span>
-                </p>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <p className="font-bold text-veluna-plum text-sm">
+                    {UPSELL_CREAM_PRICE} <span className="text-xs font-normal">درهم</span>
+                  </p>
+                  <p className="text-[10px] text-veluna-muted line-through">{cream.price} درهم</p>
+                  <p className="text-[10px] font-bold text-[#25D366]">وفري {cream.price - UPSELL_CREAM_PRICE} درهم</p>
+                </div>
               </div>
             </div>
           </div>
