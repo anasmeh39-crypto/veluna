@@ -38,7 +38,7 @@ export default function Hero() {
         </div>
 
         {/* Mobile content */}
-        <div className="px-5 pt-1 pb-16 space-y-5">
+        <div className="px-5 pt-1 pb-10 space-y-5">
           <span className="tag">روتين العناية بالجسم</span>
 
           <h1 className="text-[1.75rem] font-extrabold text-veluna-dark leading-[1.25]">

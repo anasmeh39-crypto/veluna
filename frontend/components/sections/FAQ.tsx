@@ -58,9 +58,9 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 export default function FAQ() {
   return (
-    <section className="bg-veluna-cream py-16 md:py-24">
+    <section className="bg-veluna-cream py-10 md:py-24">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 md:mb-12">
           <span className="tag">أسئلة شائعة</span>
           <h2 className="section-heading mt-4">
             عندك سؤال؟{' '}
