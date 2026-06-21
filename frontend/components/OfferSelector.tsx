@@ -50,12 +50,11 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
   function buildCartItems(includeCream: boolean) {
     const qty = selected === 'single' ? 1 : selected === 'double' ? 2 : 3
     const total = priceFor(selected)
-    const perUnit = Math.round(total / qty)
     const result = [{
       id:        product.id,
       name:      qty === 1 ? product.name : `${product.name} × ${qty}`,
-      price:     perUnit,
-      quantity:  qty,
+      price:     total,
+      quantity:  1,
       type:      'product' as const,
       colorFrom: product.colorFrom,
       colorTo:   product.colorTo,

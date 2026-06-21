@@ -83,7 +83,7 @@ export default function CheckoutPage() {
   }, [])
 
   const subtotal = total
-  const delivery = form.city ? clientDeliveryFee(form.city, subtotal) : 35
+  const delivery = form.city ? clientDeliveryFee(form.city, subtotal) : 0
   const orderTotal = subtotal + delivery
 
   const field = (key: keyof FormState) => ({
@@ -396,7 +396,7 @@ export default function CheckoutPage() {
                   <div key={item.id} className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-veluna-dark leading-tight">{item.name}</p>
-                      <p className="text-xs text-veluna-muted mt-0.5">× {item.quantity}</p>
+                      {item.quantity > 1 && <p className="text-xs text-veluna-muted mt-0.5">× {item.quantity}</p>}
                     </div>
                     <p className="text-sm font-bold text-veluna-plum flex-shrink-0">
                       {item.price * item.quantity} درهم
