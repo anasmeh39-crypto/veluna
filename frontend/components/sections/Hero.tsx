@@ -66,7 +66,7 @@ export default function Hero() {
             </div>
             <div className="bg-veluna-plum text-white rounded-xl px-3 py-2 text-center shadow-veluna-sm flex-1">
               <p className="text-[10px] font-bold leading-tight opacity-80">الروتين كامل</p>
-              <p className="font-extrabold text-sm">249 درهم</p>
+              <p className="font-extrabold text-sm">318 درهم</p>
             </div>
           </div>
 

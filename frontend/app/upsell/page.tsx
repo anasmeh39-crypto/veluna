@@ -7,8 +7,8 @@ import { useCart } from '@/context/CartContext'
 import { getProductById } from '@/lib/products'
 
 const BUNDLE_ID       = 'routine-complete'
-const BUNDLE_PRICE    = 249
-const BUNDLE_ORIGINAL = 278
+const BUNDLE_PRICE    = 318
+const BUNDLE_ORIGINAL = 438
 const OFFER_SECONDS   = 5 * 60 // urgency countdown
 
 export default function UpsellPage() {
