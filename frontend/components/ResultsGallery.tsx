@@ -4,7 +4,8 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 interface ResultItem {
-  src: string
+  /** Optional — when missing, a branded placeholder is shown (photos coming). */
+  src?: string
   alt: string
 }
 
@@ -35,10 +36,16 @@ export default function ResultsGallery({ header, subheadline, images = DEFAULT_R
         <p className="section-sub mt-2">{subheadline}</p>
       </div>
 
-      {/* 2 cols on phone · 4 cols on desktop — equal square framed cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-        {images.map((img) => (
-          <ResultCard key={img.src} {...img} />
+      {/* Fewer cards → bigger; 4 cards → compact 4-up grid */}
+      <div
+        className={`grid gap-4 ${
+          images.length <= 2
+            ? 'grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto'
+            : 'grid-cols-2 lg:grid-cols-4 md:gap-4'
+        }`}
+      >
+        {images.map((img, i) => (
+          <ResultCard key={img.src ?? i} {...img} />
         ))}
       </div>
 
@@ -51,6 +58,7 @@ export default function ResultsGallery({ header, subheadline, images = DEFAULT_R
 
 function ResultCard({ src, alt }: ResultItem) {
   const [failed, setFailed] = useState(false)
+  const showImg = !!src && !failed
 
   return (
     <figure
@@ -58,28 +66,32 @@ function ResultCard({ src, alt }: ResultItem) {
                  hover:shadow-veluna-md transition-shadow duration-200"
     >
       <div className="relative rounded-xl overflow-hidden bg-veluna-blush" style={{ aspectRatio: '1/1' }}>
-        {failed ? (
-          <Placeholder />
-        ) : (
+        {showImg ? (
           <Image
-            src={src}
+            src={src!}
             alt={alt}
             fill
             className="object-cover"
-            sizes="(max-width: 1024px) 50vw, 25vw"
+            sizes="(max-width: 1024px) 50vw, 40vw"
             onError={() => setFailed(true)}
           />
+        ) : (
+          <Placeholder />
         )}
 
-        {/* before / after badges — pinned to the physical sides of the split image */}
-        <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-veluna-dark
-                         text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-          قبل
-        </span>
-        <span className="absolute top-2 right-2 bg-veluna-plum text-white
-                         text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-          بعد
-        </span>
+        {/* before / after badges — only over a real image */}
+        {showImg && (
+          <>
+            <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-veluna-dark
+                             text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+              قبل
+            </span>
+            <span className="absolute top-2 right-2 bg-veluna-plum text-white
+                             text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+              بعد
+            </span>
+          </>
+        )}
       </div>
     </figure>
   )

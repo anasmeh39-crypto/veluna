@@ -45,10 +45,8 @@ function IconIngrown() {
 }
 
 const PROBLEMS = [
-  { Icon: IconGrowth,     title: 'الشعر تحت الجلد',            desc: 'الشعر كيبقى محبوس وكيبان بحال نقط صغيرة',              img: '/problems/ingrown.jpg' },
-  { Icon: IconBumps,      title: 'الحبيبات من بعد الحلاقة',     desc: 'حبيبات صغيرة كتخلي ملمس البشرة غير ناعم',              img: '/problems/bumps.jpg' },
-  { Icon: IconIrritation, title: 'تهيج وحمرة',                  desc: 'البشرة كتتحسس خصوصاً من بعد الموس أو الحلاوة',         img: '/problems/redness.jpg' },
-  { Icon: IconIngrown,    title: 'جلد الوزة',                   desc: 'خشونة ونقط كتظهر فالرجلين، اليدين، أو مناطق الجسم',    img: '/problems/roughness.jpg' },
+  { Icon: IconGrowth,  title: 'الشعر تحت الجلد', desc: 'الشعر كيبقى محبوس وكيبان بحال نقط صغيرة',           img: undefined as string | undefined },
+  { Icon: IconIngrown, title: 'جلد الوزة',       desc: 'خشونة ونقط كتظهر فالرجلين، اليدين، أو مناطق الجسم', img: undefined as string | undefined },
 ]
 
 const REVIEWS = [
@@ -178,17 +176,21 @@ export default function CreamProductPage() {
             <span className="tag">هاد الملمس كيزعجك؟</span>
             <h2 className="section-heading mt-3">الحبيبات والشعر تحت الجلد محتاجين روتين منتظم</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
             {PROBLEMS.map(({ Icon, title, desc, img }) => (
               <ProblemCard key={title} icon={<Icon />} title={title} desc={desc} img={img} />
             ))}
           </div>
         </section>
 
-        {/* ══ 3.5 RESULTS GALLERY ══ */}
+        {/* ══ 3.5 RESULTS GALLERY (photos coming soon) ══ */}
         <ResultsGallery
           header="بشرة أنعم... وحبيبات أقل بروزاً"
           subheadline="كريم فيلونا كيساعد يحسن مظهر جلد الوزة والشعر تحت الجلد مع الاستعمال المنتظم."
+          images={[
+            { alt: 'نتيجة قبل وبعد — مظهر جلد الوزة أصفى' },
+            { alt: 'نتيجة قبل وبعد — شعر تحت الجلد أقل بروزاً' },
+          ]}
         />
 
         {/* ══ 4. SOLUTION + HOW TO USE ══ */}
