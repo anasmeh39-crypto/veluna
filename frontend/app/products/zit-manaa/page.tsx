@@ -9,6 +9,15 @@ import BeforeAfterSlider from '@/components/BeforeAfterSlider'
 import ProductTrustStrip from '@/components/ProductTrustStrip'
 import ResultsGallery from '@/components/ResultsGallery'
 import ProblemCard from '@/components/ProblemCard'
+import HowToSteps from '@/components/HowToSteps'
+
+const HOWTO_STEPS = [
+  { img: '/howto/oil-1.jpg', text: 'طبقي طبقة كافية على بشرة ناشفة ونقية فالمكان اللي بغيتي تزيلي منو الشعر' },
+  { img: '/howto/oil-2.jpg', text: 'خليه من 5 حتى 8 دقايق، وراقبي البشرة ديالك' },
+  { img: '/howto/oil-3.jpg', text: 'ما تفوتيش 10 دقايق نهائياً', warn: true },
+  { img: '/howto/oil-4.jpg', text: 'مسحيه بلطف بقطعة قماش مبللة أو غسليه بالماء الدافئ' },
+  { img: '/howto/oil-5.jpg', text: 'نشفي البشرة بلا فرك قوي، ومن بعد ديري مرطب مهدئ' },
+]
 
 // ── Problem card icons ──────────────────────────────────────────
 function IconGrowth() {
@@ -181,7 +190,7 @@ export default function OilProductPage() {
           subheadline="روتين فيلونا كيساعدك تزيلي الشعر بسهولة ويخلي البشرة أنعم ومرتاحة."
         />
 
-        {/* ══ 4. SOLUTION + HOW TO USE ══ */}
+        {/* ══ 4. BENEFITS ══ */}
         <section className="py-12">
           <div className="text-center mb-10">
             <span className="tag">الروتين الصحيح</span>
@@ -189,55 +198,32 @@ export default function OilProductPage() {
             <p className="section-sub mt-2">فوائد واضحة وطريقة استعمال بسيطة فخطوات</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            {/* Benefits — premium card with check pills */}
-            <div className="bg-gradient-to-br from-veluna-blush to-white rounded-3xl p-7 border border-veluna-petal">
-              <div className="flex items-center gap-2.5 mb-5">
-                <span className="w-9 h-9 rounded-xl bg-veluna-plum text-white flex items-center justify-center flex-shrink-0">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M20 6L9 17l-5-5" /></svg>
-                </span>
-                <h3 className="font-extrabold text-veluna-dark text-lg">فوائد المنتج</h3>
-              </div>
-              <ul className="space-y-2.5" role="list">
-                {product.benefits.map((b, i) => (
-                  <li key={i} className="flex items-start gap-3 bg-white rounded-2xl px-4 py-3 border border-veluna-petal/70 shadow-veluna-sm">
-                    <span className="w-5 h-5 rounded-full bg-veluna-plum/10 text-veluna-plum text-[11px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">✓</span>
-                    <span className="text-sm text-veluna-text leading-relaxed">{b}</span>
-                  </li>
-                ))}
-              </ul>
+          {/* Benefits — premium card with check pills */}
+          <div className="bg-gradient-to-br from-veluna-blush to-white rounded-3xl p-7 border border-veluna-petal max-w-2xl mx-auto">
+            <div className="flex items-center gap-2.5 mb-5">
+              <span className="w-9 h-9 rounded-xl bg-veluna-plum text-white flex items-center justify-center flex-shrink-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M20 6L9 17l-5-5" /></svg>
+              </span>
+              <h3 className="font-extrabold text-veluna-dark text-lg">فوائد المنتج</h3>
             </div>
-
-            {/* How to use — vertical timeline */}
-            <div className="bg-white rounded-3xl p-7 border border-veluna-petal">
-              <div className="flex items-center gap-2.5 mb-5">
-                <span className="w-9 h-9 rounded-xl bg-veluna-plum text-white flex items-center justify-center flex-shrink-0">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
-                </span>
-                <h3 className="font-extrabold text-veluna-dark text-lg">طريقة الاستخدام</h3>
-              </div>
-              <ol className="relative space-y-4 ps-2">
-                {/* connecting line */}
-                <span className="absolute top-2 bottom-2 start-[18px] w-0.5 bg-gradient-to-b from-veluna-plum/60 to-veluna-lavender/40" aria-hidden="true" />
-                {product.howToUse.map((s) => (
-                  <li key={s.step} className="relative flex gap-4">
-                    <span className="relative z-10 w-9 h-9 rounded-full bg-veluna-plum text-white font-bold text-sm flex items-center justify-center flex-shrink-0 ring-4 ring-white" aria-hidden="true">{s.step}</span>
-                    <p className="text-sm text-veluna-text leading-relaxed pt-1.5">{s.text}</p>
-                  </li>
-                ))}
-              </ol>
-              <div className="mt-5 warning-box">
-                <p className="font-bold text-amber-900 mb-2 text-sm">تحذيرات</p>
-                <ul className="space-y-1" role="list">
-                  {product.warnings.map((w, i) => (
-                    <li key={i} className="flex gap-2 text-xs"><span className="flex-shrink-0">•</span><span>{w}</span></li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <ul className="space-y-2.5 sm:grid sm:grid-cols-2 sm:gap-2.5 sm:space-y-0" role="list">
+              {product.benefits.map((b, i) => (
+                <li key={i} className="flex items-start gap-3 bg-white rounded-2xl px-4 py-3 border border-veluna-petal/70 shadow-veluna-sm">
+                  <span className="w-5 h-5 rounded-full bg-veluna-plum/10 text-veluna-plum text-[11px] font-bold flex items-center justify-center flex-shrink-0 mt-0.5" aria-hidden="true">✓</span>
+                  <span className="text-sm text-veluna-text leading-relaxed">{b}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
+
+        {/* ══ 4.5 HOW TO USE (photo steps) ══ */}
+        <HowToSteps
+          title="زيت إزالة الشعر فخمس خطوات"
+          subtitle="استعمال بسيط — تابعي الخطوات وحصلي على بشرة ناعمة"
+          steps={HOWTO_STEPS}
+          warnings={product.warnings}
+        />
 
         {/* ══ 5. BEFORE / AFTER (interactive slider) ══ */}
         <section className="py-12">
@@ -257,7 +243,7 @@ export default function OilProductPage() {
         <section className="py-10">
           <div className="text-center mb-8">
             <span className="tag">تجارب العملاء</span>
-            <h2 className="section-heading mt-3">آراء بسيطة من نساء جربو الروتين</h2>
+            <h2 className="section-heading mt-3">تجارب نساء رجعات ليهم نعومة البشرة بثقة</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {REVIEWS.map((r) => (
