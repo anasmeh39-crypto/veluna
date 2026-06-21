@@ -2,10 +2,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { products } from '@/lib/products'
 
-// Clean transparent cutouts (no grey box) for a premium look
+// Studio product shots — full product on a soft studio backdrop
 const PRODUCT_PHOTO: Record<'oil' | 'cream', string> = {
-  oil:   '/products/oil-cutout.png',
-  cream: '/products/cream-cutout.png',
+  oil:   '/products/oil-studio.jpg',
+  cream: '/products/cream-studio.jpg',
 }
 
 export default function Routine() {
@@ -63,15 +63,14 @@ export default function Routine() {
                 className={`flex-1 flex flex-col bg-gradient-to-br ${step.bg} rounded-2xl border-2 ${step.border}
                             overflow-hidden transition-shadow duration-300 hover:shadow-veluna-md`}
               >
-                {/* Image band */}
-                <Link href={`/products/${step.product.slug}`} className={`relative block h-48 bg-gradient-to-br ${step.band}`}>
+                {/* Image band — studio shot fills the frame, full product visible */}
+                <Link href={`/products/${step.product.slug}`} className="relative block aspect-[4/5] overflow-hidden">
                   <Image
                     src={PRODUCT_PHOTO[step.product.type]}
                     alt={step.product.name}
                     fill
-                    className="object-contain p-4 transition-transform duration-500 hover:scale-105"
+                    className="object-cover transition-transform duration-500 hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 400px"
-                    style={{ filter: 'drop-shadow(0 8px 16px rgba(122,62,104,0.18))' }}
                   />
                   {/* Step number */}
                   <span className="absolute top-3 start-3 w-9 h-9 rounded-full bg-veluna-plum text-white font-extrabold text-lg flex items-center justify-center shadow-veluna-sm">
