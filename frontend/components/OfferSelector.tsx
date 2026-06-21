@@ -34,7 +34,7 @@ interface Props {
 export default function OfferSelector({ product, onSelectedChange }: Props) {
   const router = useRouter()
   const { setCart, items: cartItems, openCart } = useCart()
-  const [selected, setSelected] = useState<OfferKey>('triple')
+  const [selected, setSelected] = useState<OfferKey>('double')
   const [upsellChecked, setUpsellChecked] = useState(false)
 
   const cream = product.type === 'oil' ? getProductById(CREAM_ID) : undefined
@@ -131,8 +131,8 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
 
       {/* ── جوج قنينات ── */}
       <div className="relative">
-        <span className="absolute -top-2.5 start-4 z-10 bg-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full">
-          الأكثر طلباً
+        <span className="absolute -top-2.5 start-4 z-10 bg-[#25D366] text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm">
+          الأكثر طلباً ✦
         </span>
         <button type="button" onClick={() => handleSelect('double')} className={cardCls(selected === 'double')}>
           <div className="flex items-stretch">
@@ -160,8 +160,8 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
 
       {/* ── ثلاث قنينات ── */}
       <div className="relative">
-        <span className="absolute -top-2.5 start-4 z-10 bg-gradient-to-r from-[#7A3E68] to-veluna-plum text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm">
-          أفضل توفير
+        <span className="absolute -top-2.5 start-4 z-10 bg-gradient-to-r from-[#B45309] to-[#D97706] text-white text-[10px] font-bold px-3 py-0.5 rounded-full shadow-sm">
+          ✦ أفضل توفير
         </span>
         <button type="button" onClick={() => handleSelect('triple')} className={cardCls(selected === 'triple')}>
           <div className="flex items-stretch">
