@@ -251,7 +251,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
 
       {/* ── Trust strip ── */}
       <div className="grid grid-cols-3 gap-2">
-        {['الدفع عند الاستلام', 'توصيل داخل المغرب', 'غادي نتاصلو بك للتأكيد'].map((t) => (
+        {['الدفع عند الاستلام', 'توصيل مجاني لكل المغرب', 'غادي نتاصلو بك للتأكيد'].map((t) => (
           <div key={t} className="flex flex-col items-center gap-0.5 bg-veluna-blush rounded-xl px-2 py-2.5 text-center">
             <span className="text-veluna-plum text-xs font-bold">✓</span>
             <span className="text-[10px] font-medium text-veluna-text leading-tight">{t}</span>

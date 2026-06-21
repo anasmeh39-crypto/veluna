@@ -5,24 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
-import { MOROCCAN_CITIES, FREE_DELIVERY_THRESHOLD } from '@/lib/delivery'
-
-const DELIVERY_FEES: Record<string, number> = {
-  'الدار البيضاء': 20, 'سلا': 20, 'تمارة': 20,
-  'الرباط': 25, 'مراكش': 25, 'فاس': 25, 'طنجة': 25,
-  'أكادير': 25, 'مكناس': 25, 'القنيطرة': 25,
-  'المحمدية': 25, 'وجدة': 30, 'تطوان': 30,
-  'الجديدة': 30, 'آسفي': 30, 'بني ملال': 30,
-  'خريبكة': 30, 'الناظور': 30, 'العرائش': 30,
-  'القصر الكبير': 30, 'سطات': 30, 'برشيد': 30,
-  'بركان': 35, 'تزنيت': 35, 'طاطا': 35, 'إفران': 35,
-  'ورزازات': 40, 'الراشيدية': 40, 'العيون': 45, 'الداخلة': 50, 'السمارة': 50,
-}
-
-function clientDeliveryFee(city: string, subtotal: number): number {
-  if (subtotal >= FREE_DELIVERY_THRESHOLD) return 0
-  return DELIVERY_FEES[city.trim()] ?? 35
-}
+import { MOROCCAN_CITIES } from '@/lib/delivery'
 
 interface FormState {
   customer_name: string
@@ -83,8 +66,8 @@ export default function CheckoutPage() {
   }, [])
 
   const subtotal = total
-  const delivery = form.city ? clientDeliveryFee(form.city, subtotal) : 0
-  const orderTotal = subtotal + delivery
+  const delivery = 0
+  const orderTotal = subtotal
 
   const field = (key: keyof FormState) => ({
     value: form[key],
@@ -412,19 +395,13 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-veluna-muted">التوصيل</span>
-                  <span className="font-semibold">
-                    {form.city
-                      ? delivery === 0
-                        ? <span className="text-[#25D366]">مجاني</span>
-                        : `${delivery} درهم`
-                      : '—'}
+                  <span className="font-bold text-[#25D366] flex items-center gap-1">
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    مجاني
                   </span>
                 </div>
-                {subtotal > 0 && subtotal < FREE_DELIVERY_THRESHOLD && (
-                  <p className="text-xs text-veluna-muted bg-veluna-blush rounded-lg p-2 text-center">
-                    أضيفي {FREE_DELIVERY_THRESHOLD - subtotal} درهم للتوصيل المجاني
-                  </p>
-                )}
                 <div className="flex justify-between font-bold text-base pt-2 border-t border-veluna-petal">
                   <span className="text-veluna-dark">المجموع</span>
                   <span className="text-veluna-plum text-lg">{orderTotal} درهم</span>

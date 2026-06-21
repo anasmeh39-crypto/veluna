@@ -228,19 +228,30 @@ export default function CartDrawer() {
         {/* ── Footer ── */}
         {items.length > 0 && (
           <div className="border-t border-veluna-petal px-5 py-4 space-y-3 flex-shrink-0 bg-white">
-            {/* COD trust badge */}
-            <div className="flex items-center justify-center gap-2 text-xs text-veluna-muted
-                            bg-veluna-blush rounded-xl py-2 px-3">
-              <svg className="w-4 h-4 text-veluna-plum flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              الدفع عند الاستلام في جميع أنحاء المغرب
+            {/* Trust badges */}
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center justify-center gap-1.5 text-xs text-veluna-muted
+                              bg-veluna-blush rounded-xl py-2 px-2 text-center">
+                <svg className="w-3.5 h-3.5 text-veluna-plum flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                الدفع عند الاستلام
+              </div>
+              <div className="flex items-center justify-center gap-1.5 text-xs font-semibold text-[#25D366]
+                              bg-[#F0FDF4] rounded-xl py-2 px-2 text-center">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                </svg>
+                توصيل مجاني
+              </div>
             </div>
 
             {/* Total */}
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-veluna-muted text-sm">المجموع</span>
+              <div>
+                <span className="font-semibold text-veluna-muted text-sm">المجموع</span>
+                <p className="text-xs text-[#25D366] font-semibold">التوصيل مجاني</p>
+              </div>
               <span className="text-2xl font-extrabold text-veluna-plum tabular-nums">
                 {total} <span className="text-sm font-semibold">درهم</span>
               </span>
