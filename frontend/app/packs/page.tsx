@@ -24,7 +24,7 @@ export default function PacksPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
 
       {/* Header */}
-      <div className="text-center max-w-xl mx-auto mb-14">
+      <div className="text-center max-w-xl mx-auto mb-8 md:mb-14">
         <span className="tag">الباقات والعروض</span>
         <h1 className="section-heading mt-4">
           وفري أكثر مع{' '}
@@ -34,7 +34,7 @@ export default function PacksPage() {
       </div>
 
       {/* Packs grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
         {packs.map((pack) => {
           const saving = pack.originalPrice - pack.price
 
@@ -58,17 +58,16 @@ export default function PacksPage() {
               </div>
 
               {/* Pack photo */}
-              <div className="bg-gradient-to-br from-veluna-blush to-white flex items-center justify-center min-h-[300px] relative overflow-hidden">
+              <div className="relative w-full aspect-square sm:aspect-[4/5] bg-veluna-blush overflow-hidden">
                 {PACK_IMGS[pack.id] && (
-                  <div className="relative w-full h-[300px]">
-                    <Image
-                      src={PACK_IMGS[pack.id]}
-                      alt={pack.name}
-                      fill
-                      className="object-contain p-6"
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                    />
-                  </div>
+                  <Image
+                    src={PACK_IMGS[pack.id]}
+                    alt={pack.name}
+                    fill
+                    priority={pack.featured}
+                    className="object-cover object-center transition-transform duration-500 hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
                 )}
               </div>
 
