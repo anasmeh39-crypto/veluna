@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
+import { useTracking } from '@/context/TrackingContext'
+import { getAttribution } from '@/lib/tracking/attribution'
 import { MOROCCAN_CITIES } from '@/lib/delivery'
 
 interface FormState {
@@ -26,6 +28,7 @@ interface FieldErrors {
 export default function CheckoutPage() {
   const router = useRouter()
   const { items, total, clearCart } = useCart()
+  const { enabled: trackingEnabled, trackCart } = useTracking()
 
   const [form, setForm] = useState<FormState>({
     customer_name: '',
@@ -52,18 +55,23 @@ export default function CheckoutPage() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
-  // Capture UTM params from URL on mount
-  const utmRef = useRef<Record<string, string>>({})
+  // InitiateCheckout — once per cart, not once per render or refresh.
+  const initiateFired = useRef(false)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    utmRef.current = {
-      utm_source: params.get('utm_source') ?? '',
-      utm_medium: params.get('utm_medium') ?? '',
-      utm_campaign: params.get('utm_campaign') ?? '',
-      utm_content: params.get('utm_content') ?? '',
-      fbclid: params.get('fbclid') ?? '',
+    if (!trackingEnabled || initiateFired.current || items.length === 0) return
+
+    const signature = items.map((i) => `${i.id}x${i.quantity}`).sort().join('|') + `@${total}`
+    initiateFired.current = true
+
+    try {
+      if (window.sessionStorage.getItem('veluna_initiate_checkout') === signature) return
+      window.sessionStorage.setItem('veluna_initiate_checkout', signature)
+    } catch {
+      /* storage blocked — the in-memory ref still prevents re-renders firing */
     }
-  }, [])
+
+    trackCart('InitiateCheckout', items)
+  }, [trackingEnabled, items, total, trackCart])
 
   const subtotal = total
   const delivery = 0
@@ -112,7 +120,11 @@ export default function CheckoutPage() {
           address: form.address.trim(),
           notes: form.notes.trim() || undefined,
           items: items.map((i) => ({ id: i.id, quantity: i.quantity })),
-          ...utmRef.current,
+          // UTMs, click IDs and first-party cookie identifiers captured across
+          // the whole journey. The server re-validates and never trusts these
+          // for pricing — they are attribution keys only.
+          ...getAttribution(),
+          event_source_url: window.location.href,
           source: 'website',
         }),
       })

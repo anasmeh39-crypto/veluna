@@ -10,6 +10,7 @@ interface AdminHeaderProps {
 const TABS = [
   { href: '/admin/orders',            label: 'الطلبات' },
   { href: '/admin/profit-calculator', label: 'حاسبة الأرباح' },
+  { href: '/admin/advertising',       label: 'الإعلانات والبكسلات' },
 ]
 
 export default function AdminHeader({ rightSlot }: AdminHeaderProps) {

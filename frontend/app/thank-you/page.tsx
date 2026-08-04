@@ -1,10 +1,14 @@
 'use client'
 
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getProductById } from '@/lib/products'
+import { useTracking } from '@/context/TrackingContext'
+import { markPurchaseTracked, wasPurchaseTracked } from '@/lib/tracking/browser'
+import { numItems, nowInSeconds, purchaseEventId } from '@/lib/tracking/events'
+import { STORE_CURRENCY } from '@/lib/tracking/types'
 
 interface OrderItem {
   id: string
@@ -53,6 +57,8 @@ function ThankYouContent() {
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLoading] = useState(true)
   const [upsellDismissed, setUpsellDismissed] = useState(false)
+  const { enabled: trackingEnabled, track } = useTracking()
+  const purchaseFired = useRef(false)
 
   useEffect(() => {
     if (!orderId) { setLoading(false); return }
@@ -66,6 +72,37 @@ function ThankYouContent() {
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [orderId])
+
+  // Browser Purchase — idempotent three ways: an in-memory ref for re-renders,
+  // localStorage for page refreshes, and an event_id derived from the order id
+  // that matches the server-side event so the platforms dedupe the rest.
+  // Every value comes from the server's order record, never from local state.
+  useEffect(() => {
+    if (!trackingEnabled || !order || purchaseFired.current) return
+    purchaseFired.current = true
+    if (wasPurchaseTracked(order.id)) return
+    markPurchaseTracked(order.id)
+
+    const contents = order.items.map((i) => ({
+      id: i.id,
+      name: i.name_ar,
+      quantity: i.quantity,
+      price: i.price_mad,
+    }))
+
+    track({
+      name: 'Purchase',
+      event_id: purchaseEventId(order.id),
+      event_time: nowInSeconds(),
+      event_source_url: window.location.href,
+      currency: STORE_CURRENCY,
+      value: order.total,
+      contents,
+      order_id: order.id,
+      order_status: order.status,
+      num_items: numItems(contents),
+    })
+  }, [trackingEnabled, order, track])
 
   const waMessage = order ? buildWhatsAppMessage(order) : ''
   const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMessage)}`

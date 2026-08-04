@@ -1,6 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useReducer, useState, useCallback } from 'react'
+import { useTracking } from './TrackingContext'
 
 export interface CartItem {
   id: string
@@ -74,13 +75,17 @@ const CartContext = createContext<CartContextType | null>(null)
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [] })
   const [isOpen, setIsOpen] = useState(false)
+  const { trackCart } = useTracking()
 
+  // AddToCart fires here rather than in each button, so it is emitted exactly
+  // once per real add action and never on a re-render.
   const addItem = useCallback(
     (item: Omit<CartItem, 'quantity'>) => {
       dispatch({ type: 'ADD_ITEM', item })
       setIsOpen(true)
+      trackCart('AddToCart', [{ id: item.id, name: item.name, price: item.price, quantity: 1 }])
     },
-    []
+    [trackCart]
   )
 
   const removeItem = useCallback((id: string) => {

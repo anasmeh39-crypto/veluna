@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createOrder, listOrders, ORDER_STATUSES, type OrderStatus } from '@/lib/db'
+import { isAdminRequest } from '@/lib/admin-auth'
 import { calculateOrderPrices } from '@/lib/backend-products'
 import { getDeliveryFee } from '@/lib/delivery'
+import { attributionFromRequest, dispatchOrderPurchase } from '@/lib/tracking/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -43,9 +45,9 @@ export async function POST(req: NextRequest) {
     const delivery_fee = getDeliveryFee(city, subtotal)
     const total = subtotal + delivery_fee
 
-    const forwarded = req.headers.get('x-forwarded-for')
-    const ip_address = forwarded ? forwarded.split(',')[0].trim() : undefined
-    const user_agent = req.headers.get('user-agent') ?? undefined
+    // Click IDs, UTMs and first-party cookies. Opaque strings only — nothing
+    // here influences pricing, totals or order state.
+    const attribution = attributionFromRequest(req, body)
 
     const order = await createOrder({
       customer_name: name,
@@ -60,13 +62,42 @@ export async function POST(req: NextRequest) {
       status: 'new',
       notes,
       source: body.source ? String(body.source).slice(0, 100) : undefined,
-      utm_source: body.utm_source ? String(body.utm_source).slice(0, 100) : undefined,
-      utm_medium: body.utm_medium ? String(body.utm_medium).slice(0, 100) : undefined,
-      utm_campaign: body.utm_campaign ? String(body.utm_campaign).slice(0, 100) : undefined,
-      utm_content: body.utm_content ? String(body.utm_content).slice(0, 100) : undefined,
-      fbclid: body.fbclid ? String(body.fbclid).slice(0, 200) : undefined,
-      user_agent,
-      ip_address,
+      utm_source: attribution.utm_source,
+      utm_medium: attribution.utm_medium,
+      utm_campaign: attribution.utm_campaign,
+      utm_content: attribution.utm_content,
+      utm_term: attribution.utm_term,
+      fbclid: attribution.fbclid,
+      ttclid: attribution.ttclid,
+      sccid: attribution.sccid,
+      fbp: attribution.fbp,
+      fbc: attribution.fbc,
+      ttp: attribution.ttp,
+      scid: attribution.scid,
+      landing_page: attribution.landing_page,
+      referrer: attribution.referrer,
+      user_agent: attribution.user_agent,
+      ip_address: attribution.ip,
+    })
+
+    // Server-side conversion. Deliberately not awaited: an ad platform being
+    // slow or down must never delay or fail a customer's order. Delivery status
+    // is recorded in tracking_events and surfaced in /admin/advertising.
+    const eventSourceUrl = body.event_source_url ? String(body.event_source_url).slice(0, 500) : undefined
+    void dispatchOrderPurchase(
+      order,
+      {
+        ...attribution,
+        identity: {
+          phone: order.phone,
+          name: order.customer_name,
+          city: order.city,
+          external_id: order.phone,
+        },
+      },
+      eventSourceUrl
+    ).catch((err) => {
+      console.error('[POST /api/orders] purchase dispatch error:', err instanceof Error ? err.message : err)
     })
 
     return NextResponse.json({ order }, { status: 201 })
@@ -111,11 +142,4 @@ function isValidMoroccanPhone(phone: string): boolean {
 
 function normalizePhone(phone: string): string {
   return phone.replace(/[\s\-().]/g, '')
-}
-
-function isAdminRequest(req: NextRequest): boolean {
-  const token = req.cookies.get('admin_token')?.value
-  const expected = process.env.ADMIN_SECRET_TOKEN
-  if (!expected) return false
-  return token === expected
 }

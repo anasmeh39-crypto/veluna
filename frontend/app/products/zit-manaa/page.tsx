@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import Image from 'next/image'
 import { getProductBySlug } from '@/lib/products'
 import StickyMobileCart from '@/components/StickyMobileCart'
+import TrackViewContent from '@/components/TrackViewContent'
 import OfferSelector from '@/components/OfferSelector'
 import BeforeAfterSlider from '@/components/BeforeAfterSlider'
 import ProductTrustStrip from '@/components/ProductTrustStrip'
@@ -100,6 +101,7 @@ export default function OilProductPage() {
 
   return (
     <>
+      <TrackViewContent product={product} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ══ 1. HERO ══ */}

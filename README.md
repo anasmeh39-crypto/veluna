@@ -1,6 +1,6 @@
 # Veluna — متجر العناية بالجسم
 
-Veluna is a Moroccan DTC beauty store selling hair removal oil and under-skin hair cream. Built as a full-stack Next.js 14 app with COD checkout, Arabic RTL UI, and a built-in SQLite order management system.
+Veluna is a Moroccan DTC beauty store selling hair removal oil and under-skin hair cream. Built as a full-stack Next.js 14 app with COD checkout, Arabic RTL UI, a built-in Postgres order management system, and admin-configured ad tracking for Meta, TikTok and Snapchat.
 
 > **Brand rule:** Veluna is 100% separate from Nuraskin. Never mix code, data, or infrastructure between the two brands.
 
@@ -13,7 +13,7 @@ Veluna is a Moroccan DTC beauty store selling hair removal oil and under-skin ha
 | Framework | Next.js 14 (App Router) |
 | Language | TypeScript |
 | Styling | Tailwind CSS |
-| Database | SQLite via `better-sqlite3` |
+| Database | PostgreSQL via `pg` (file-based fallback store if unreachable) |
 | Auth | Cookie-based (admin only) |
 | Deployment | Easypanel on Hostinger VPS |
 
@@ -32,16 +32,19 @@ veluna/
 │   │   ├── packs/          # Bundle packs page
 │   │   └── thank-you/      # Post-order confirmation
 │   ├── components/         # Reusable UI components
-│   ├── context/            # Cart state (React Context)
+│   ├── context/            # Cart + tracking state (React Context)
 │   ├── lib/
-│   │   ├── db.ts           # SQLite database + order CRUD
+│   │   ├── db.ts           # Postgres pool, schema/migrations + order CRUD
+│   │   ├── order-fallback.ts    # Emergency store when Postgres is down
 │   │   ├── products.ts     # Frontend product catalog
 │   │   ├── backend-products.ts  # Server-side price source of truth
-│   │   └── delivery.ts     # Delivery fee logic by city
-│   ├── data/               # SQLite database file (gitignored, needs volume)
+│   │   ├── delivery.ts     # Delivery fee logic by city
+│   │   └── tracking/       # Ad tracking: adapters, hashing, dispatch
+│   ├── tests/              # Vitest unit tests
 │   ├── Dockerfile          # For Easypanel deployment
 │   └── middleware.ts       # Admin route protection
 ├── backend/
+│   ├── ADVERTISING.md
 │   ├── EASYPANEL_DEPLOYMENT.md
 │   ├── DATABASE.md
 │   ├── BACKEND.md
@@ -77,7 +80,7 @@ npm run dev
 # Open http://localhost:3000
 ```
 
-The SQLite database is created automatically at `frontend/data/veluna.db` on first request.
+Tables are created automatically on first request against `DATABASE_URL`. If Postgres is unreachable, orders fall back to a JSON file so none are ever lost.
 
 ---
 
@@ -90,6 +93,8 @@ npm run dev       # Start dev server (http://localhost:3000)
 npm run build     # Build for production
 npm run start     # Start production server
 npm run lint      # Run ESLint
+npm run typecheck # TypeScript, app + tests
+npm test          # Vitest unit tests
 ```
 
 ---
@@ -100,7 +105,7 @@ See [backend/EASYPANEL_DEPLOYMENT.md](backend/EASYPANEL_DEPLOYMENT.md) for full 
 
 **Summary:**
 - Deploy `frontend/` as a single app service on Easypanel
-- Mount a persistent volume at `/app/data` for SQLite
+- Point `DATABASE_URL` at the Postgres service
 - Set the 5 required environment variables
 - Connect domain `veluna.ma`
 
@@ -114,7 +119,8 @@ See [backend/EASYPANEL_DEPLOYMENT.md](backend/EASYPANEL_DEPLOYMENT.md) for full 
 | `ADMIN_SECRET_TOKEN` | Yes | Random secret for session cookie |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Yes | WA number (no + or spaces) |
 | `NEXT_PUBLIC_SITE_URL` | Yes | Full site URL |
-| `NEXT_PUBLIC_META_PIXEL_ID` | No | Facebook Pixel ID |
+| `NEXT_PUBLIC_META_PIXEL_ID` | No | Legacy Facebook Pixel ID — superseded by /admin/advertising |
+| `AD_TRACKING_ENCRYPTION_KEY` | For ads | AES-256-GCM key for advertising access tokens — `openssl rand -hex 32` |
 
 Generate `ADMIN_SECRET_TOKEN` with: `openssl rand -hex 32`
 
@@ -127,7 +133,22 @@ URL: `https://veluna.ma/admin`
 - View and manage all orders
 - Filter by status: new / confirmed / shipped / delivered / cancelled / returned
 - Update order status
+- Profit calculator at `/admin/profit-calculator`
+- Advertising & pixels at `/admin/advertising`
 - Protected by `ADMIN_PASSWORD` cookie session
+
+---
+
+## Advertising & Pixels
+
+Meta, TikTok and Snapchat browser pixels **and** their server-side conversions
+APIs are configured from `/admin/advertising` — no code changes, no pasted
+snippets. Access tokens are encrypted at rest with AES-256-GCM and never reach
+the browser.
+
+Requires `AD_TRACKING_ENCRYPTION_KEY` in the server environment. Full setup,
+schema, event lifecycle, hashing rules and the QA checklist:
+[backend/ADVERTISING.md](backend/ADVERTISING.md).
 
 ---
 

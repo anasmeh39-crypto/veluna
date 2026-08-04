@@ -13,7 +13,8 @@ if (!process.env.DATABASE_URL) {
   )
 }
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+/** Shared connection pool — also used by lib/tracking/store.ts. */
+export const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
 let schemaInitialized = false
 
@@ -47,6 +48,23 @@ async function initSchema(): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_orders_phone      ON orders(phone);
     CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);
   `)
+
+  // ── Additive attribution migration (safe on existing data) ────────────────
+  // ADD COLUMN IF NOT EXISTS never rewrites or drops rows; existing orders keep
+  // their values and get NULL for the new columns.
+  await pool.query(`
+    ALTER TABLE orders
+      ADD COLUMN IF NOT EXISTS utm_term     VARCHAR(100),
+      ADD COLUMN IF NOT EXISTS ttclid       VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS sccid        VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS fbp          VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS fbc          VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS ttp          VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS scid         VARCHAR(255),
+      ADD COLUMN IF NOT EXISTS landing_page TEXT,
+      ADD COLUMN IF NOT EXISTS referrer     TEXT;
+  `)
+
   schemaInitialized = true
 }
 
@@ -96,7 +114,22 @@ export interface Order {
   utm_medium?: string
   utm_campaign?: string
   utm_content?: string
+  utm_term?: string
   fbclid?: string
+  /** TikTok click id from the landing URL. */
+  ttclid?: string
+  /** Snapchat click id (ScCid) from the landing URL. */
+  sccid?: string
+  /** Meta browser pixel cookie. */
+  fbp?: string
+  /** Meta click cookie, derived from fbclid when the pixel has not set it. */
+  fbc?: string
+  /** TikTok pixel cookie. */
+  ttp?: string
+  /** Snapchat first-party cookie identifier. */
+  scid?: string
+  landing_page?: string
+  referrer?: string
   user_agent?: string
   ip_address?: string
   created_at: string
@@ -128,10 +161,12 @@ export async function createOrder(
           `INSERT INTO orders (
             id, customer_name, phone, city, address, items,
             subtotal, delivery_fee, total, payment_method, status, notes,
-            source, utm_source, utm_medium, utm_campaign, utm_content,
-            fbclid, user_agent, ip_address, created_at, updated_at
+            source, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+            fbclid, ttclid, sccid, fbp, fbc, ttp, scid, landing_page, referrer,
+            user_agent, ip_address, created_at, updated_at
           ) VALUES (
-            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22
+            $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,
+            $20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31
           ) RETURNING *`,
           [
             id,
@@ -151,7 +186,16 @@ export async function createOrder(
             data.utm_medium ?? null,
             data.utm_campaign ?? null,
             data.utm_content ?? null,
+            data.utm_term ?? null,
             data.fbclid ?? null,
+            data.ttclid ?? null,
+            data.sccid ?? null,
+            data.fbp ?? null,
+            data.fbc ?? null,
+            data.ttp ?? null,
+            data.scid ?? null,
+            data.landing_page ?? null,
+            data.referrer ?? null,
             data.user_agent ?? null,
             data.ip_address ?? null,
             now,

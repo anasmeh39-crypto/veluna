@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getOrderById } from '@/lib/db'
+import { isAdminRequest } from '@/lib/admin-auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,11 +23,4 @@ export async function GET(
     console.error('[GET /api/orders/[id]]', err)
     return NextResponse.json({ error: 'خطأ في الخادم' }, { status: 500 })
   }
-}
-
-function isAdminRequest(req: NextRequest): boolean {
-  const token = req.cookies.get('admin_token')?.value
-  const expected = process.env.ADMIN_SECRET_TOKEN
-  if (!expected) return false
-  return token === expected
 }
