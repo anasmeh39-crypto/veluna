@@ -5,6 +5,19 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+
+  // Lint and typecheck are run before committing (`npm run lint`,
+  // `npm run typecheck`) — not inside the Docker build. Next runs both in a
+  // single pass that loads the whole TypeScript program into memory, which is
+  // the peak-memory step of `next build` and gets OOM-killed on the VPS: the
+  // build log ends at "Linting and checking validity of types ..." with no
+  // error, right after "✓ Compiled successfully".
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 }
 
 module.exports = (phase) => {

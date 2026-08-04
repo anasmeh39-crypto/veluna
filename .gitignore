@@ -44,3 +44,6 @@ coverage/
 # ── Misc ──────────────────────────────────────────────────────────────────────
 *.tgz
 .vercel
+
+# TypeScript incremental build cache — regenerated on every typecheck
+frontend/tsconfig.tsbuildinfo
