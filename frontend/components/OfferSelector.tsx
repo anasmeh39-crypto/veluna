@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useCart } from '@/context/CartContext'
+import { useTracking } from '@/context/TrackingContext'
 import { getProductById } from '@/lib/products'
 import type { Product } from '@/lib/products'
 
@@ -34,6 +35,7 @@ interface Props {
 export default function OfferSelector({ product, onSelectedChange }: Props) {
   const router = useRouter()
   const { setCart, items: cartItems, openCart } = useCart()
+  const { trackCart } = useTracking()
   const [selected, setSelected] = useState<OfferKey>('double')
   const [upsellChecked, setUpsellChecked] = useState(false)
 
@@ -77,8 +79,12 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
     return result
   }
 
+  // These two paths replace the cart via setCart instead of addItem, so they
+  // emit AddToCart themselves (CartContext only tracks the addItem path).
   function handleConfirm() {
-    setCart(buildCartItems(upsellChecked))
+    const newItems = buildCartItems(upsellChecked)
+    setCart(newItems)
+    trackCart('AddToCart', newItems)
     // Route through the upsell popup. If the complement (cream) is already in
     // the cart, /upsell auto-forwards to /checkout — so it only shows when the
     // customer hasn't added the cream yet.
@@ -89,6 +95,7 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
     const newItems = buildCartItems(upsellChecked)
     const kept = cartItems.filter(i => i.id !== product.id && i.id !== CREAM_ID)
     setCart([...kept, ...newItems])
+    trackCart('AddToCart', newItems)
     openCart()
   }
 
@@ -189,7 +196,18 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
 
       {/* ── Cream upsell (oil page only) ── */}
       {product.type === 'oil' && cream && (
-        <label className="flex items-start gap-3 mt-1 rounded-2xl border border-veluna-petal bg-veluna-blush/20 p-4 cursor-pointer">
+        <label
+          className={`relative flex items-start gap-3 mt-3 rounded-2xl border-2 p-4 pt-5 cursor-pointer
+                      transition-all duration-150 ${
+            upsellChecked
+              ? 'border-veluna-plum bg-veluna-blush shadow-veluna-md'
+              : 'border-dashed border-veluna-lavender bg-veluna-blush/40 hover:border-veluna-plum/60'
+          }`}
+        >
+          {/* Ribbon so the bump reads as its own offer, not page background */}
+          <span className="absolute -top-2.5 start-4 bg-veluna-plum text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full leading-none shadow-sm">
+            عرض خاص
+          </span>
           <div className="flex-1 min-w-0">
             <p className="font-bold text-veluna-dark text-sm mb-1">كملي الروتين مع كريم جلد الوزة</p>
             <div className="flex items-start gap-3">
@@ -225,16 +243,20 @@ export default function OfferSelector({ product, onSelectedChange }: Props) {
               onChange={(e) => setUpsellChecked(e.target.checked)}
               className="sr-only"
             />
-            <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
-              upsellChecked ? 'bg-veluna-plum border-veluna-plum' : 'bg-white border-veluna-petal'
+            <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${
+              upsellChecked ? 'bg-veluna-plum border-veluna-plum' : 'bg-white border-veluna-plum/50'
             }`}>
               {upsellChecked && (
-                <svg className="w-3 h-3 text-white" viewBox="0 0 12 10" fill="none">
+                <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 12 10" fill="none">
                   <path d="M1 5l3.5 3.5L11 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               )}
             </div>
-            <span className="text-[10px] font-semibold text-veluna-dark text-center leading-tight max-w-[52px]">زيدي للطلب</span>
+            <span className={`text-[10px] font-bold text-center leading-tight max-w-[52px] transition-colors ${
+              upsellChecked ? 'text-veluna-plum' : 'text-veluna-dark'
+            }`}>
+              {upsellChecked ? 'مزيدة ✓' : 'زيدي للطلب'}
+            </span>
           </div>
         </label>
       )}
