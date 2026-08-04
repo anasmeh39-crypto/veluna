@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { useCart } from '@/context/CartContext'
+import { useTracking } from '@/context/TrackingContext'
 import { getProductById } from '@/lib/products'
 
 const BUNDLE_ID       = 'routine-complete'
@@ -14,6 +15,7 @@ const OFFER_SECONDS   = 5 * 60 // urgency countdown
 export default function UpsellPage() {
   const router = useRouter()
   const { items, total, setCart } = useCart()
+  const { trackCart } = useTracking()
   const [mounted, setMounted] = useState(false)
   const [shown, setShown] = useState(false)
   const [secondsLeft, setSecondsLeft] = useState(OFFER_SECONDS)
@@ -55,6 +57,9 @@ export default function UpsellPage() {
 
   const isCream = upsellProduct.type === 'cream'
   const name    = upsellProduct.shortName ?? upsellProduct.name
+  // What the customer already has in the cart — used on the decline button so
+  // the refusal reads as an explicit choice, not a vague "no".
+  const keepName = hasOil ? 'الزيت' : 'الكريم'
 
   // Pricing: accepting always upgrades to the routine-complete bundle (249,
   // a real backend product → server total stays correct).
@@ -82,15 +87,17 @@ export default function UpsellPage() {
       ]
 
   function acceptUpsell() {
-    setCart([{
+    const bundle = {
       id:        BUNDLE_ID,
       name:      'روتين فيلونا الكامل',
       price:     BUNDLE_PRICE,
       quantity:  1,
-      type:      'pack',
+      type:      'pack' as const,
       colorFrom: '#DCC7FF',
       colorTo:   '#7A3E68',
-    }])
+    }
+    setCart([bundle])
+    trackCart('AddToCart', [bundle])
     router.push('/checkout')
   }
 
@@ -230,9 +237,11 @@ export default function UpsellPage() {
             <button
               type="button"
               onClick={declineUpsell}
-              className="text-sm text-veluna-muted hover:text-veluna-text transition-colors py-1.5 text-center"
+              className="w-full bg-white border-2 border-veluna-petal text-veluna-dark font-bold
+                         py-3.5 px-5 rounded-2xl hover:bg-veluna-blush hover:border-veluna-lavender
+                         active:scale-[0.97] transition-all duration-150 text-[14px] text-center"
             >
-              لا شكراً، كمّلي بالطلب الحالي
+              لا شكراً، بغيت غير {keepName} فقط
             </button>
           </div>
 
