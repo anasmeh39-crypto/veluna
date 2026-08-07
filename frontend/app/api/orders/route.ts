@@ -4,6 +4,7 @@ import { isAdminRequest } from '@/lib/admin-auth'
 import { calculateOrderPrices } from '@/lib/backend-products'
 import { getDeliveryFee } from '@/lib/delivery'
 import { attributionFromRequest, dispatchOrderPurchase } from '@/lib/tracking/server'
+import { addOrderToSheet } from '@/lib/googleSheets'
 
 export const dynamic = 'force-dynamic'
 
@@ -78,6 +79,24 @@ export async function POST(req: NextRequest) {
       referrer: attribution.referrer,
       user_agent: attribution.user_agent,
       ip_address: attribution.ip,
+    })
+
+    // Sheets is an operational copy of the order. Keep checkout successful
+    // if Google is temporarily unavailable or its credentials are incomplete.
+    void addOrderToSheet({
+      id: order.id,
+      customerName: order.customer_name,
+      phone: order.phone,
+      city: order.city,
+      address: order.address,
+      items: order.items.map((item) => `${item.name_ar} x ${item.quantity}`).join(' | '),
+      quantity: order.items.reduce((sum, item) => sum + item.quantity, 0),
+      total: order.total,
+      status: order.status,
+      notes: order.notes,
+      createdAt: order.created_at,
+    }).catch((err) => {
+      console.error('[POST /api/orders] Google Sheets append failed:', err instanceof Error ? err.message : err)
     })
 
     // Server-side conversion. Deliberately not awaited: an ad platform being
